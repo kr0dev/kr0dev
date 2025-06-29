@@ -346,18 +346,31 @@
   });
 
   // ===== 현재시간 =====
-  function startClock() {
-    const clock = document.getElementById('clockDisplay');
-    function update() {
-      const now = new Date();
-      const h = now.getHours().toString().padStart(2,'0');
-      const m = now.getMinutes().toString().padStart(2,'0');
-      const s = now.getSeconds().toString().padStart(2,'0');
-      clock.textContent = `${h}:${m}:${s}`;
-    }
-    update();
-    setInterval(update, 1000);
-  }
+function updateClock() {
+  const now = new Date();
+
+  // 시간
+  const h = now.getHours().toString().padStart(2, '0');
+  const m = now.getMinutes().toString().padStart(2, '0');
+  const s = now.getSeconds().toString().padStart(2, '0');
+
+  // 날짜
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const date = now.getDate().toString().padStart(2, '0');
+
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+  const day = dayNames[now.getDay()];
+
+  const dateStr = `${year}년 ${month}월 ${date}일 (${day})`;
+
+  document.getElementById('clockTime').textContent = `${h}:${m}:${s}`;
+  document.getElementById('clockDate').textContent = dateStr;
+}
+
+// 1초마다 업데이트 시작
+setInterval(updateClock, 1000);
+updateClock();  // 페이지 로드시 즉시 한번 실행
 
   // ===== 타이머 =====
   let timerInterval;
