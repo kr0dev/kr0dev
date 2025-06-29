@@ -414,38 +414,42 @@ updateClock();  // 페이지 로드시 즉시 한번 실행
     document.getElementById('timerStopBtn').disabled = true;
   }
 
- const { jsPDF } = window.jspdf;
 
-document.getElementById('convertBtn').onclick = () => {
-  const input = document.getElementById('imgInput');
-  if (!input.files.length) {
-    alert('PNG 파일을 선택해주세요!');
-    return;
-  }
-  const file = input.files[0];
-  const reader = new FileReader();
+document.addEventListener('DOMContentLoaded', () => {
+  const { jsPDF } = window.jspdf;
 
-  reader.onload = (e) => {
-    const imgData = e.target.result;
-    const pdf = new jsPDF();
+  document.getElementById('convertBtn').onclick = () => {
+    const input = document.getElementById('imgInput');
+    if (!input.files.length) {
+      alert('PNG 파일을 선택해주세요!');
+      return;
+    }
+    const file = input.files[0];
+    const reader = new FileReader();
 
-    // 이미지 비율 맞춰서 PDF에 넣기 (A4 기준)
-    const img = new Image();
-    img.onload = () => {
-      const pdfWidth = 210;
-      const pdfHeight = (img.height * pdfWidth) / img.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('converted.pdf');
+    reader.onload = (e) => {
+      const imgData = e.target.result;
+      const pdf = new jsPDF();
+
+      const img = new Image();
+      img.onload = () => {
+        const pdfWidth = 210;
+        const pdfHeight = (img.height * pdfWidth) / img.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('converted.pdf');
+      };
+      img.src = imgData;
     };
-    img.src = imgData;
+
+    reader.readAsDataURL(file);
   };
 
-  reader.readAsDataURL(file);
-};
-function show(id) {
-  document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-  document.getElementById(id).style.display = 'block';
-}
+  window.show = function(id) {
+    document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+  };
+});
+
 
 
   // ===== 음악 =====
