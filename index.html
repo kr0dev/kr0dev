@@ -179,7 +179,9 @@
 <!-- 현재시간 -->
 <section id="clock">
   <h2>🕐 현재시간</h2>
-  <div id="clockDisplay"></div>
+ <div id="clockTime" style="font-size:2rem; font-weight:bold;"></div>
+<div id="clockDate" style="font-size:1.2rem; color:#666;"></div>
+
 </section>
 
 <!-- 타이머 -->
@@ -419,6 +421,27 @@
     }
     alert('유튜브 링크나 MP3/WAV/OGG URL만 지원합니다.');
   }
+function updateClock() {
+  const now = new Date();
+
+  // 시간
+  const h = now.getHours().toString().padStart(2, '0');
+  const m = now.getMinutes().toString().padStart(2, '0');
+  const s = now.getSeconds().toString().padStart(2, '0');
+
+  // 날짜 (년-월-일)
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const date = now.getDate().toString().padStart(2, '0');
+
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+  const day = dayNames[now.getDay()];
+
+  const dateStr = `${year}년 ${month}월 ${date}일 (${day})`;
+
+  document.getElementById('clockTime').textContent = `${h}:${m}:${s}`;
+  document.getElementById('clockDate').textContent = dateStr;
+}
 
   // ===== 영상다운 =====
   function downloadVideo() {
