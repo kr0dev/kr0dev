@@ -150,6 +150,8 @@
     border-radius: 8px;
   }
 </style>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 <body>
 
@@ -164,6 +166,7 @@
   <button onclick="showTab('memo', this)">📝 메모</button>
   <button onclick="showTab('diary', this)">📔 일기</button>
   <button onclick="showTab('font', this)">🔤 폰트변환</button>
+ <button onclick="showTab('pngToPdf', this)">🖼 PNG → PDF 변환기</button>
 </nav>
 
 <!-- 플래너 -->
@@ -173,6 +176,11 @@
   <textarea id="planText" rows="3" placeholder="할 일이나 계획을 적어보세요"></textarea>
   <button class="action" onclick="addPlan()">➕ 추가</button>
   <ul id="planList"></ul>
+</section>
+<section id="pngToPdf" style="display:none;">
+  <h2>🖼 PNG → PDF 변환기</h2>
+  <input type="file" id="imgInput" accept="image/png" />
+  <button id="convertBtn">PDF 변환 및 다운로드</button>
 </section>
 
 <!-- 현재시간 -->
@@ -405,6 +413,40 @@ updateClock();  // 페이지 로드시 즉시 한번 실행
     document.getElementById('timerStartBtn').disabled = false;
     document.getElementById('timerStopBtn').disabled = true;
   }
+
+ const { jsPDF } = window.jspdf;
+
+document.getElementById('convertBtn').onclick = () => {
+  const input = document.getElementById('imgInput');
+  if (!input.files.length) {
+    alert('PNG 파일을 선택해주세요!');
+    return;
+  }
+  const file = input.files[0];
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    const imgData = e.target.result;
+    const pdf = new jsPDF();
+
+    // 이미지 비율 맞춰서 PDF에 넣기 (A4 기준)
+    const img = new Image();
+    img.onload = () => {
+      const pdfWidth = 210;
+      const pdfHeight = (img.height * pdfWidth) / img.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('converted.pdf');
+    };
+    img.src = imgData;
+  };
+
+  reader.readAsDataURL(file);
+};
+function show(id) {
+  document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+}
+
 
   // ===== 음악 =====
   function playMusic() {
