@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나만의 감성 사이트</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #fffafc; margin: 0; padding: 0; }
+    header { background: #ffccdd; padding: 10px 20px; text-align: center; font-size: 1.5em; font-weight: bold; }
+    nav { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; background: #ffeef2; padding: 10px; }
+    nav button { padding: 10px 15px; border: none; background: #ff80aa; color: white; border-radius: 6px; cursor: pointer; }
+    nav button:hover { background: #ff6699; }
+    section { display: none; padding: 20px; }
+    section.active { display: block; }
+    textarea, input[type="text"], input[type="number"] { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; }
+    .result { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <header>🌸 감성 + 유틸 통합 사이트 🌸</header>
+  <nav>
+    <button onclick="show('music')">🎵 음악</button>
+    <button onclick="show('diary')">📔 일기</button>
+    <button onclick="show('timer')">⏱ 타이머</button>
+    <button onclick="show('memo')">📝 메모</button>
+    <button onclick="show('font')">🔤 폰트</button>
+    <button onclick="show('video')">🎥 영상 다운</button>
+    <button onclick="show('song')">🎶 노래 만들기</button>
+    <button onclick="show('code')">💻 코드 테스트</button>
+    <button onclick="show('score')">📊 성적 계산</button>
+  </nav>
+
+  <section id="music">
+    <h2>🎵 음악 플레이어</h2>
+    <audio controls>
+      <source src="yourmusic.mp3" type="audio/mpeg">
+      브라우저가 오디오 태그를 지원하지 않습니다.
+    </audio>
+    <pre style="white-space: pre-wrap; background: #f9f9f9; padding: 10px;">[00:00] 🎶 시작!
+[00:15] 사랑이란 이런 건가요?
+[00:35] 오늘도 네 생각만 가득해~
+(※ LRC 가사 지원 개발 가능)</pre>
+  </section>
+
+  <section id="diary">
+    <h2>📔 일기쓰기</h2>
+    <textarea rows="10" placeholder="오늘 있었던 일을 감성적으로 남겨보세요..."></textarea>
+  </section>
+
+  <section id="timer">
+    <h2>⏱ 타이머 / 현재시간</h2>
+    <div id="clock"></div>
+    <input type="number" id="sec" placeholder="초 단위 타이머 설정" />
+    <button onclick="startTimer()">시작</button>
+    <div id="timerResult"></div>
+  </section>
+
+  <section id="memo">
+    <h2>📝 메모장</h2>
+    <textarea id="memoInput" rows="6" placeholder="메모를 남겨보세요..."></textarea>
+    <button onclick="saveMemo()">저장</button>
+    <div class="result" id="memoResult"></div>
+  </section>
+
+  <section id="font">
+    <h2>🔤 텍스트 스타일 변환</h2>
+    <input type="text" id="fontInput" placeholder="변환할 텍스트" />
+    <button onclick="fancyFont()">변환</button>
+    <div id="fontResult"></div>
+  </section>
+
+  <section id="video">
+    <h2>🎥 네이버 대용량 링크 입력</h2>
+    <input type="text" placeholder="네이버 bigfile 링크를 붙여넣으세요." />
+    <p>※ 브라우저 보안상 직접 다운로드는 제한될 수 있습니다.</p>
+  </section>
+
+  <section id="song">
+    <h2>🎶 나만의 노래 만들기</h2>
+    <input type="text" placeholder="가사 입력" />
+    <select>
+      <option>피아노</option>
+      <option>기타</option>
+      <option>로파이</option>
+    </select>
+    <button>🎧 재생</button>
+  </section>
+
+  <section id="code">
+    <h2>💻 자바스크립트 코드 실행</h2>
+    <textarea id="codeInput" rows="6" placeholder="JS 코드를 입력해보세요"></textarea>
+    <button onclick="runCode()">실행</button>
+    <div class="result" id="codeOutput"></div>
+  </section>
+
+  <section id="score">
+    <h2>📊 성적 계산기</h2>
+    <input type="number" id="actScore" placeholder="수행 점수" />
+    <input type="number" id="actRate" placeholder="수행 반영 비율 (%)" />
+    <input type="number" id="midScore" placeholder="중간 점수" />
+    <input type="number" id="midRate" placeholder="중간 반영 비율 (%)" />
+    <input type="number" id="finRate" placeholder="기말 반영 비율 (%)" />
+    <input type="number" id="target" placeholder="목표 총점" />
+    <button onclick="calcScore()">기말 목표 계산</button>
+    <div class="result" id="scoreResult"></div>
+  </section>
+
+  <script>
+    function show(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // 시계
+    setInterval(() => {
+      document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+    }, 1000);
+
+    // 타이머
+    function startTimer() {
+      const sec = parseInt(document.getElementById('sec').value);
+      let left = sec;
+      const out = document.getElementById('timerResult');
+      const interval = setInterval(() => {
+        if (left <= 0) {
+          clearInterval(interval);
+          out.textContent = '⏰ 타이머 완료!';
+        } else {
+          out.textContent = `${left--}초 남음...`;
+        }
+      }, 1000);
+    }
+
+    // 메모 저장
+    function saveMemo() {
+      const memo = document.getElementById('memoInput').value;
+      localStorage.setItem('memo', memo);
+      document.getElementById('memoResult').textContent = '저장 완료 ✔';
+    }
+
+    // 폰트 변환
+    function fancyFont() {
+      const map = { 'a':'𝒂','b':'𝒃','c':'𝒄','d':'𝒅','e':'𝒆','f':'𝒇','g':'𝒈','h':'𝒉','i':'𝒊','j':'𝒋','k':'𝒌','l':'𝒍','m':'𝒎','n':'𝒏','o':'𝒐','p':'𝒑','q':'𝒒','r':'𝒓','s':'𝒔','t':'𝒕','u':'𝒖','v':'𝒗','w':'𝒘','x':'𝒙','y':'𝒚','z':'𝒛' };
+      const input = document.getElementById('fontInput').value;
+      let out = '';
+      for (let ch of input.toLowerCase()) {
+        out += map[ch] || ch;
+      }
+      document.getElementById('fontResult').textContent = out;
+    }
+
+    // 코드 실행기
+    function runCode() {
+      const code = document.getElementById('codeInput').value;
+      try {
+        const result = eval(code);
+        document.getElementById('codeOutput').textContent = `결과: ${result}`;
+      } catch (e) {
+        document.getElementById('codeOutput').textContent = `에러: ${e.message}`;
+      }
+    }
+
+    // 성적 계산기
+    function calcScore() {
+      const a = parseFloat(document.getElementById('actScore').value);
+      const ar = parseFloat(document.getElementById('actRate').value) / 100;
+      const m = parseFloat(document.getElementById('midScore').value);
+      const mr = parseFloat(document.getElementById('midRate').value) / 100;
+      const fr = parseFloat(document.getElementById('finRate').value) / 100;
+      const target = parseFloat(document.getElementById('target').value);
+      const current = a * ar + m * mr;
+      const needed = (target - current) / fr;
+      document.getElementById('scoreResult').textContent = `기말에 필요한 점수: ${needed.toFixed(2)}점`;
+    }
+  </script>
+</body>
+</html>
