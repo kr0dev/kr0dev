@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+ <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>All-in-One 감성 유틸</title>
@@ -267,8 +268,17 @@
 <!-- 폰트변환 -->
 <section id="font">
   <h2>🔤 폰트 변환기</h2>
-  <input type="text" id="fontInput" placeholder="여기에 글을 입력하세요 (영어만 지원)" />
-  <div id="fontResult" title="변환 결과가 여기에 표시됩니다"></div>
+<input type="text" id="fontInput" placeholder="영어 입력">
+
+<div>
+  <h3>팬시 폰트</h3>
+  <div id="fontResultFancy" style="font-family: 'Fraktur', serif; font-size: 1.5rem;"></div>
+</div>
+
+<div>
+  <h3>필기체 폰트</h3>
+  <div id="fontResultHandwriting" style="font-family: 'Dancing Script', cursive; font-size: 1.5rem;"></div>
+</div>
 </section>
 
 <!-- 코드 테스트 -->
@@ -583,24 +593,30 @@ ${finalMsg}
 
   // ===== 폰트 변환 =====
   // 예시: 영어 글자들 → 팬시 스타일
-  const fontMap = {
-    A: '𝔄', B: '𝔅', C: 'ℭ', D: '𝔇', E: '𝔈', F: '𝔉', G: '𝔊',
-    H: 'ℌ', I: 'ℑ', J: '𝔍', K: '𝔎', L: '𝔏', M: '𝔐', N: '𝔑',
-    O: '𝔒', P: '𝔓', Q: '𝔔', R: 'ℜ', S: '𝔖', T: '𝔗', U: '𝔘',
-    V: '𝔙', W: '𝔚', X: '𝔛', Y: '𝔜', Z: 'ℨ',
-    a: '𝔞', b: '𝔟', c: '𝔠', d: '𝔡', e: '𝔢', f: '𝔣', g: '𝔤',
-    h: '𝔥', i: '𝔦', j: '𝔧', k: '𝔨', l: '𝔩', m: '𝔪', n: '𝔫',
-    o: '𝔬', p: '𝔭', q: '𝔮', r: '𝔯', s: '𝔰', t: '𝔱', u: '𝔲',
-    v: '𝔳', w: '𝔴', x: '𝔵', y: '𝔶', z: '𝔷'
-  };
-  document.getElementById('fontInput').addEventListener('input', e => {
-    const txt = e.target.value;
-    let res = '';
-    for (const ch of txt) {
-      res += fontMap[ch] || ch;
-    }
-    document.getElementById('fontResult').textContent = res;
-  });
+const fontMapFancy = {
+  A: '𝔄', B: '𝔅', C: 'ℭ', D: '𝔇', E: '𝔈', F: '𝔉', G: '𝔊',
+  H: 'ℌ', I: 'ℑ', J: '𝔍', K: '𝔎', L: '𝔏', M: '𝔐', N: '𝔑',
+  O: '𝔒', P: '𝔓', Q: '𝔔', R: 'ℜ', S: '𝔖', T: '𝔗', U: '𝔘',
+  V: '𝔙', W: '𝔚', X: '𝔛', Y: '𝔜', Z: 'ℨ',
+  a: '𝔞', b: '𝔟', c: '𝔠', d: '𝔡', e: '𝔢', f: '𝔣', g: '𝔤',
+  h: '𝔥', i: '𝔦', j: '𝔧', k: '𝔨', l: '𝔩', m: '𝔪', n: '𝔫',
+  o: '𝔬', p: '𝔭', q: '𝔮', r: '𝔯', s: '𝔰', t: '𝔱', u: '𝔲',
+  v: '𝔳', w: '𝔴', x: '𝔵', y: '𝔶', z: '𝔷'
+};
+
+document.getElementById('fontInput').addEventListener('input', e => {
+  const txt = e.target.value;
+  // 팬시 폰트 변환
+  let fancy = '';
+  for (const ch of txt) {
+    fancy += fontMapFancy[ch] || ch;
+  }
+  document.getElementById('fontResultFancy').textContent = fancy;
+
+  // 필기체 폰트 (CSS로 그냥 cursive 적용)
+  document.getElementById('fontResultHandwriting').textContent = txt;
+});
+
 
   // ===== 코드 테스트 =====
   function runCode() {
