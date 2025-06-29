@@ -327,27 +327,24 @@
   <button class="action" onclick="saveDiary()">💾 저장</button>
   <button class="action" onclick="downloadDiary()">📥 PNG로 캡쳐 저장</button>
 </section>
+ 
+<section id="fontConverter">
+  <h2>폰트 변환기</h2>
+  <textarea id="fontInput" placeholder="입력하세요" rows="3" style="width:100%;"></textarea>
 
-<!-- 폰트변환 -->
-<section id="font" style="padding: 30px; background: #f9f9f9;">
-  <h2>🅵🅾🅽🆃 변환기</h2>
-  <textarea id="inputText" placeholder="여기에 텍스트 입력" style="width: 300px; height: 100px; font-size: 16px; padding: 10px; margin-bottom: 20px;"></textarea>
-  <div class="output" style="margin-bottom: 20px; text-align: center;">
-    <p><strong>✍️ 필기체:</strong></p>
-    <p id="handwritten" style="font-size: 20px;"></p>
-    <button onclick="copyText('handwritten')">복사</button>
+  <div style="margin-top: 10px;">
+    <p><strong>팬시체:</strong></p>
+    <div id="fontResultFancy" style="border: 1px solid #ccc; padding: 10px; font-size: 18px;"></div>
+    <button onclick="copyFancy()">복사</button>
   </div>
 
-  <div class="output" style="margin-bottom: 20px; text-align: center;">
-    <p><strong>🎀 팬시체:</strong></p>
-    <p id="fancy" style="font-size: 20px;"></p>
-    <button onclick="copyText('fancy')">복사</button>
+  <div style="margin-top: 10px;">
+    <p><strong>필기체 (Cursive):</strong></p>
+    <div id="fontResultHandwriting" style="border: 1px solid #ccc; padding: 10px; font-family: cursive; font-size: 18px;"></div>
+    <button onclick="copyHandwriting()">복사</button>
   </div>
 </section>
-<div>
-  <h3>팬시 폰트</h3>
-  <div id="fontResultFancy" style="font-family: 'Fraktur', serif; font-size: 1.5rem;"></div>
-</div>
+
 
 <div>
   <h3>필기체 폰트</h3>
@@ -806,8 +803,6 @@ ${finalMsg}
     link.click();
   }
 
-  // ===== 폰트 변환 =====
-  // 예시: 영어 글자들 → 팬시 스타일
 const fontMapFancy = {
   A: '𝔄', B: '𝔅', C: 'ℭ', D: '𝔇', E: '𝔈', F: '𝔉', G: '𝔊',
   H: 'ℌ', I: 'ℑ', J: '𝔍', K: '𝔎', L: '𝔏', M: '𝔐', N: '𝔑',
@@ -821,23 +816,28 @@ const fontMapFancy = {
 
 document.getElementById('fontInput').addEventListener('input', e => {
   const txt = e.target.value;
-  // 팬시 폰트 변환
+
+  // 팬시 폰트
   let fancy = '';
   for (const ch of txt) {
     fancy += fontMapFancy[ch] || ch;
   }
   document.getElementById('fontResultFancy').textContent = fancy;
 
-  // 필기체 폰트 (CSS로 그냥 cursive 적용)
+  // 필기체는 그대로 보여주되 폰트만 cursive
   document.getElementById('fontResultHandwriting').textContent = txt;
 });
 
-    function copyText(id) {
-    const text = document.getElementById(id).textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      alert('복사되었습니다!');
-    });
-  }
+// 복사 버튼 기능
+function copyFancy() {
+  const text = document.getElementById('fontResultFancy').textContent;
+  navigator.clipboard.writeText(text);
+}
+
+function copyHandwriting() {
+  const text = document.getElementById('fontResultHandwriting').textContent;
+  navigator.clipboard.writeText(text);
+}
 
 
   // ===== 코드 테스트 =====
