@@ -4,7 +4,7 @@
  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>All-in-One 감성 유틸</title>
+<title>Title Site</title>
 <style>
   * { box-sizing: border-box; }
   body {
@@ -155,7 +155,7 @@
 </head>
 <body>
 
-<header>🌸 All-in-One 감성 유틸 🌸</header>
+<header>🌸 Main Title Site 🌸</header>
 
 <nav>
   <button class="active" onclick="showTab('planner', this)">📅 플래너</button>
@@ -166,7 +166,34 @@
   <button onclick="showTab('diary', this)">📔 일기</button>
   <button onclick="showTab('font', this)">🔤 폰트변환</button>
  <button onclick="showTab('pngToPdf', this)">🖼 PNG → PDF 변환기</button>
+ <button onclick="showTab('cheerMusic', this)">⚾ KBO 응원가</button>
 </nav>
+
+ <section id="cheerMusic">
+  <h2>⚾ KBO 응원가 재생기</h2>
+
+  <select id="teamSelect">
+    <option value="">-- 팀 선택 --</option>
+    <option value="doosan">두산</option>
+    <option value="lg">LG</option>
+    <option value="kt">KT</option>
+    <option value="kia">KIA</option>
+    <option value="nc">NC</option>
+    <option value="hanwha">한화</option>
+    <option value="kiwoom">키움</option>
+    <option value="samsung">삼성</option>
+    <option value="ssg">SSG</option>
+    <option value="lotte">롯데</option>
+  </select>
+
+  <div style="margin-top:10px;">
+    <button onclick="showCheerType('team')">🎶 팀 응원가</button>
+    <button onclick="showCheerType('player')">🎵 선수 응원가</button>
+  </div>
+
+  <div id="cheerButtons" style="margin-top:10px;"></div>
+  <div id="cheerAudioPlayer"></div>
+</section>
 
 <!-- 플래너 -->
 <section id="planner" class="active">
@@ -299,6 +326,92 @@
 </section>
 
 <script>
+
+ const cheerDatabase = {
+  doosan: {
+    team: { "승리의 두산": "https://www.youtube.com/watch?v=Jv_Pe2ulcJM" },
+    player: { "정수빈": "https://www.youtube.com/watch?v=DsDkbsVQyEA" }
+  },
+  lg: {
+    team: { "LG 응원가 모음": "https://www.youtube.com/watch?v=1SaWIrgWiTo" },
+    player: { "백승현": "https://www.youtube.com/watch?v=RtaEZ0i1yIk" }
+  },
+  kt: {
+    team: { "KT 팀 응원가": "https://www.youtube.com/watch?v=t9k2hE63SJw" },
+    player: { "로하스": "https://www.youtube.com/watch?v=nxH5VWainEo" }
+  },
+  kia: {
+    team: { "KIA 타이거즈 응원가": "https://www.youtube.com/watch?v=example_kia_team" },
+    player: { "이의리":    "https://www.youtube.com/watch?v=example_kia_player" }
+  },
+  nc: {
+    team: { "NC 응원가": "https://www.youtube.com/watch?v=example_nc_team" },
+    player: { "양의지": "https://www.youtube.com/watch?v=TfWltglBGgA" }
+  },
+  hanwha: {
+    team: { "한화 응원가": "https://www.youtube.com/watch?v=example_han_team" },
+    player: { "최진행": "https://www.youtube.com/watch?v=example_han_player" }
+  },
+  kiwoom: {
+    team: { "키움 응원가": "https://www.youtube.com/watch?v=example_kiwoom_team" },
+    player: { "고종욱": "https://www.youtube.com/watch?v=example_kiwoom_player" }
+  },
+  samsung: {
+    team: { "삼성 응원가": "https://www.youtube.com/watch?v=example_sam_team" },
+    player: { "이원석": "https://www.youtube.com/watch?v=example_sam_player" }
+  },
+  ssg: {
+    team: { "SSG 응원가": "https://www.youtube.com/watch?v=example_ssg_team" },
+    player: { "최정": "https://www.youtube.com/watch?v=example_ssg_player" }
+  },
+  lotte: {
+    team: { "롯데 응원가": "https://www.youtube.com/watch?v=example_lotte_team" },
+    player: { "손아섭": "https://www.youtube.com/watch?v=example_lotte_player" }
+  }
+};
+
+function showCheerType(type) {
+  const team = document.getElementById('teamSelect').value;
+  const cheerButtons = document.getElementById('cheerButtons');
+  cheerButtons.innerHTML = '';
+  document.getElementById('cheerAudioPlayer').innerHTML = '';
+
+  if (!team) {
+    alert('먼저 팀을 선택하세요!');
+    return;
+  }
+
+  const data = cheerDatabase[team]?.[type];
+  if (!data) {
+    cheerButtons.textContent = '응원가 데이터가 없습니다.';
+    return;
+  }
+
+  for (const title in data) {
+    const btn = document.createElement('button');
+    btn.textContent = title;
+    btn.onclick = () => playCheer(data[title]);
+    cheerButtons.appendChild(btn);
+  }
+}
+
+function playCheer(link) {
+  const player = document.getElementById('cheerAudioPlayer');
+  player.innerHTML = '';
+
+  try {
+    const url = new URL(link);
+    const id = url.searchParams.get('v');
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+    iframe.allow = "autoplay";
+    iframe.style = "width:0;height:0;border:0;display:none;";
+    player.appendChild(iframe);
+  } catch {
+    alert('유효한 유튜브 링크가 아닙니다.');
+  }
+}
+
   // 탭 전환
   function showTab(id, btn) {
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
