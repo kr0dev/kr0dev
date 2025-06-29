@@ -300,10 +300,22 @@
 </section>
 
 <!-- 폰트변환 -->
-<section id="font">
-  <h2>🔤 폰트 변환기</h2>
-<input type="text" id="fontInput" placeholder="영어 입력">
+<section id="font-converter" style="padding: 30px; background: #f9f9f9;">
+  <h2>🅵🅾🅽🆃 변환기</h2>
+  <textarea id="inputText" placeholder="여기에 텍스트 입력" style="width: 300px; height: 100px; font-size: 16px; padding: 10px; margin-bottom: 20px;"></textarea>
 
+  <div class="output" style="margin-bottom: 20px; text-align: center;">
+    <p><strong>✍️ 필기체:</strong></p>
+    <p id="handwritten" style="font-size: 20px;"></p>
+    <button onclick="copyText('handwritten')">복사</button>
+  </div>
+
+  <div class="output" style="margin-bottom: 20px; text-align: center;">
+    <p><strong>🎀 팬시체:</strong></p>
+    <p id="fancy" style="font-size: 20px;"></p>
+    <button onclick="copyText('fancy')">복사</button>
+  </div>
+</section>
 <div>
   <h3>팬시 폰트</h3>
   <div id="fontResultFancy" style="font-family: 'Fraktur', serif; font-size: 1.5rem;"></div>
