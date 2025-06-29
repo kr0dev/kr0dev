@@ -177,11 +177,13 @@
   <button class="action" onclick="addPlan()">➕ 추가</button>
   <ul id="planList"></ul>
 </section>
+
 <section id="pngToPdf">
-  <h2>🖼 PNG → PDF 변환기</h2>
-  <input type="file" id="imgInput" accept="image/png" />
+  <h2>🖼 PNG → PDF 변환기 (복수 선택 가능)</h2>
+  <input type="file" id="imgInput" accept="image/png" multiple />
   <button id="convertBtn">PDF 변환 및 다운로드</button>
 </section>
+
 
 <!-- 현재시간 -->
 <section id="clock">
@@ -415,40 +417,44 @@ updateClock();  // 페이지 로드시 즉시 한번 실행
   }
 
 
-document.addEventListener('DOMContentLoaded', () => {
+document.getElementById('convertBtn').onclick = () => {
+  const input = document.getElementById('imgInput');
+  if (!input.files.length) {
+    alert('PNG 파일을 선택해주세요!');
+    return;
+  }
+
   const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
 
-  document.getElementById('convertBtn').onclick = () => {
-    const input = document.getElementById('imgInput');
-    if (!input.files.length) {
-      alert('PNG 파일을 선택해주세요!');
-      return;
-    }
-    const file = input.files[0];
+  const files = Array.from(input.files);
+
+  // 파일 하나씩 읽고 PDF에 페이지로 추가
+  const loadImage = (file) => new Promise((resolve) => {
     const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const imgData = e.target.result;
-      const pdf = new jsPDF();
-
-      const img = new Image();
-      img.onload = () => {
-        const pdfWidth = 210;
-        const pdfHeight = (img.height * pdfWidth) / img.width;
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('converted.pdf');
-      };
-      img.src = imgData;
-    };
-
+    reader.onload = (e) => resolve(e.target.result);
     reader.readAsDataURL(file);
-  };
+  });
 
-  window.show = function(id) {
-    document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-  };
-});
+  (async () => {
+    for (let i = 0; i < files.length; i++) {
+      const imgData = await loadImage(files[i]);
+      const img = new Image();
+      await new Promise(r => {
+        img.onload = r;
+        img.src = imgData;
+      });
+
+      const pdfWidth = 210; // A4 가로(mm)
+      const pdfHeight = (img.height * pdfWidth) / img.width;
+
+      if (i > 0) pdf.addPage(); // 첫 페이지 아니면 새 페이지 추가
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    }
+    pdf.save('converted_multiple.pdf');
+  })();
+};
+
 
 
 
