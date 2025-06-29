@@ -809,7 +809,7 @@ const fontMapFancy = {
   v: '𝔳', w: '𝔴', x: '𝔵', y: '𝔶', z: '𝔷'
 };
 
- const fontMapHandwriting = {
+const fontMapHandwriting = {
   A: '𝓐', B: '𝓑', C: '𝓒', D: '𝓓', E: '𝓔', F: '𝓕', G: '𝓖',
   H: '𝓗', I: '𝓘', J: '𝓙', K: '𝓚', L: '𝓛', M: '𝓜', N: '𝓝',
   O: '𝓞', P: '𝓟', Q: '𝓠', R: '𝓡', S: '𝓢', T: '𝓣', U: '𝓤',
@@ -830,14 +830,12 @@ document.getElementById('fontInput').addEventListener('input', e => {
   }
   document.getElementById('fontResultFancy').textContent = fancy;
 
-  // 필기체는 그대로 보여주되 폰트만 cursive
-  // 필기체 변환
+  // 필기체 폰트 변환
   let handwriting = '';
   for (const ch of txt) {
     handwriting += fontMapHandwriting[ch] || ch;
   }
   document.getElementById('fontResultHandwriting').textContent = handwriting;
-});
 });
 
 // 복사 버튼 기능
@@ -850,6 +848,7 @@ function copyHandwriting() {
   const text = document.getElementById('fontResultHandwriting').textContent;
   navigator.clipboard.writeText(text);
 }
+
 
 
   // ===== 코드 테스트 =====
