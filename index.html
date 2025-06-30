@@ -175,6 +175,13 @@
     border-radius: 6px;
     border: 1px solid #ccc;
   }
+  #wordCountResult {
+    margin-top: 15px;
+    font-weight: 600;
+    background: #ffe6f1;
+    padding: 10px;
+    border-radius: 8px;
+  }
   .error, .success {
     font-size: 14px;
     margin-top: 10px;
@@ -223,6 +230,7 @@
   <button onclick="showTab('pngToPdf', this)">🖼 PNG → PDF 변환기</button>
   <button onclick="showTab('cheerMusic', this)">⚾ KBO 응원가</button>
   <button onclick="showTab('score', this)">📊 성적 계산기</button>
+  <button onclick="showTab('wordCount', this)">🔢 글자수 세기</button>
   <button onclick="logout()">🚪 로그아웃</button>
 </nav>
 
@@ -275,15 +283,9 @@
 <section id="timer">
   <h2>⏱ 타이머</h2>
   <div style="display:flex; gap:10px; flex-wrap: wrap;">
-    <select id="timerHours" title="시간">
-      ${[...Array(25).keys()].map(h => `<option value="${h}">${h} 시간</option>`).join('')}
-    </select>
-    <select id="timerMinutes" title="분">
-      ${[...Array(61).keys()].map(m => `<option value="${m}">${m} 분</option>`).join('')}
-    </select>
-    <select id="timerSeconds" title="초">
-      ${[...Array(61).keys()].map(s => `<option value="${s}">${s} 초</option>`).join('')}
-    </select>
+    <select id="timerHours" title="시간"></select>
+    <select id="timerMinutes" title="분"></select>
+    <select id="timerSeconds" title="초"></select>
   </div>
   <button class="action" id="timerStartBtn" onclick="startTimer()">▶ 시작</button>
   <button class="action" id="timerStopBtn" onclick="stopTimer()" disabled>■ 정지</button>
@@ -372,6 +374,13 @@
   <button class="action" onclick="checkCode()">문법 검사</button>
   <div id="codeOutput"></div>
   <iframe id="codeFrame" style="width:100%; height:300px; margin-top: 10px; border-radius: 8px;"></iframe>
+</section>
+
+<!-- 글자수 세기 -->
+<section id="wordCount">
+  <h2>🔢 글자수 세기</h2>
+  <textarea id="wordCountInput" rows="8" placeholder="여기에 텍스트를 입력하세요..."></textarea>
+  <div id="wordCountResult"></div>
 </section>
 
 <script>
@@ -566,7 +575,25 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
-// 페이지 로드 시 로그인 상태 확인
+// 글자수 세기
+function countWords() {
+  const text = document.getElementById('wordCountInput').value;
+  const resultDiv = document.getElementById('wordCountResult');
+  
+  const charCountWithSpaces = text.length;
+  const charCountWithoutSpaces = text.replace(/\s/g, '').length;
+  const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const lineCount = text ? text.split('\n').length : 0;
+
+  resultDiv.innerHTML = `
+    글자수 (공백 포함): ${charCountWithSpaces}<br>
+    글자수 (공백 미포함): ${charCountWithoutSpaces}<br>
+    단어 수: ${wordCount}<br>
+    줄 수: ${lineCount}
+  `;
+}
+
+// 페이지 로드 시 초기화
 window.addEventListener('DOMContentLoaded', () => {
   console.log('페이지 로드 완료');
   checkLoginStatus();
@@ -574,6 +601,8 @@ window.addEventListener('DOMContentLoaded', () => {
   loadMemo();
   loadDiary();
   updateClock();
+  document.getElementById('wordCountInput').addEventListener('input', countWords);
+  fillTimerSelects();
 });
 
 // ===== 플래너 =====
@@ -666,6 +695,29 @@ function stopTimer() {
   clearInterval(timerInterval);
   document.getElementById('timerStartBtn').disabled = false;
   document.getElementById('timerStopBtn').disabled = true;
+}
+
+function fillTimerSelects() {
+  const timerHours = document.getElementById('timerHours');
+  const timerMinutes = document.getElementById('timerMinutes');
+  const timerSeconds = document.getElementById('timerSeconds');
+  function fillSelectOptions(select, max) {
+    for (let i = 0; i <= max; i++) {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${i} ${select.title}`;
+      select.appendChild(opt);
+    }
+  }
+  timerHours.innerHTML = '';
+  timerMinutes.innerHTML = '';
+  timerSeconds.innerHTML = '';
+  fillSelectOptions(timerHours, 24);
+  fillSelectOptions(timerMinutes, 60);
+  fillSelectOptions(timerSeconds, 60);
+  timerHours.value = 0;
+  timerMinutes.value = 0;
+  timerSeconds.value = 0;
 }
 
 document.getElementById('convertBtn').onclick = () => {
@@ -958,30 +1010,6 @@ function checkCode() {
     document.getElementById('codeOutput').textContent = '문법 검사 중 오류: ' + e.message;
   }
 }
-
-const timerHours = document.getElementById('timerHours');
-const timerMinutes = document.getElementById('timerMinutes');
-const timerSeconds = document.getElementById('timerSeconds');
-
-function fillSelectOptions(select, max) {
-  for (let i = 0; i <= max; i++) {
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = `${i} ${select.title}`;
-    select.appendChild(opt);
-  }
-}
-
-timerHours.innerHTML = '';
-timerMinutes.innerHTML = '';
-timerSeconds.innerHTML = '';
-fillSelectOptions(timerHours, 24);
-fillSelectOptions(timerMinutes, 60);
-fillSelectOptions(timerSeconds, 60);
-
-timerHours.value = 0;
-timerMinutes.value = 0;
-timerSeconds.value = 0;
 </script>
 </body>
 </html>
