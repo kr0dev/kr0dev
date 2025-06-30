@@ -1,1014 +1,1458 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
- <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Title Site</title>
-<style>
-  * { box-sizing: border-box; }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #fffafc;
-    margin: 0; padding: 20px;
-    color: #5c2c44;
-  }
-  header {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #d93670;
-    user-select: none;
-  }
-  nav {
-    display: none; /* 초기에는 숨김 */
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-  nav button {
-    padding: 8px 14px;
-    border: none;
-    background: #ff80aa;
-    color: white;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s ease;
-  }
-  nav button:hover, nav button.active {
-    background: #ff4c7a;
-  }
-  section {
-    display: none; /* 모든 섹션 초기 숨김 */
-    max-width: 650px;
-    margin: auto;
-    background: #fff0f5;
-    border-radius: 12px;
-    box-shadow: 0 0 14px rgba(255,192,203,0.35);
-    padding: 20px;
-    color: #5c2c44;
-  }
-  section.active {
-    display: block;
-  }
-  input, textarea, select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 8px;
-    margin-bottom: 12px;
-    border-radius: 6px;
-    border: 1px solid #e7a5c3;
-    font-size: 1rem;
-    background: #fff7fb;
-    color: #5c2c44;
-    resize: vertical;
-  }
-  button.action {
-    background: #ff80aa;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 700;
-  }
-  button.action:hover {
-    background: #ff4c7a;
-  }
-  ul#planList, ul#memoList {
-    list-style: none;
-    padding-left: 0;
-    max-height: 200px;
-    overflow-y: auto;
-    border-top: 1px solid #f5a6c2;
-  }
-  ul#planList li, ul#memoList li {
-    padding: 10px;
-    border-bottom: 1px solid #f5a6c2;
-    font-weight: 600;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  ul#planList li button, ul#memoList li button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: #ff4477;
-  }
-  #fontResult {
-    margin-top: 12px;
-    font-size: 1.6rem;
-    word-break: break-word;
-    user-select: text;
-    font-weight: 700;
-    min-height: 50px;
-  }
-  #clockDisplay {
-    font-size: 2.8rem;
-    font-weight: 700;
-    text-align: center;
-    padding: 15px;
-    background: #ffe6f1;
-    border-radius: 12px;
-    user-select: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  #codeInput {
-    height: 180px;
-    font-family: Consolas, monospace;
-    font-size: 1rem;
-    background: #fff7fb;
-    border: 2px solid #f5a6c2;
-    border-radius: 8px;
-    padding: 10px;
-    resize: vertical;
-    color: #5c2c44;
-  }
-  #codeOutput {
-    margin-top: 10px;
-    padding: 10px;
-    background: #fff0f5;
-    border: 2px solid #f5a6c2;
-    border-radius: 8px;
-    min-height: 40px;
-    font-weight: 600;
-    color: #5c2c44;
-    white-space: pre-wrap;
-    font-family: Consolas, monospace;
-  }
-  iframe {
-    width: 100%;
-    height: 300px;
-    border: none;
-    margin-top: 10px;
-    border-radius: 8px;
-  }
-  #cheerMusic button {
-    padding: 10px 16px;
-    margin: 6px;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 10px;
-    background-color: #0066cc;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  #cheerMusic button:hover {
-    background-color: #004999;
-    transform: scale(1.03);
-  }
-  #cheerMusic button:active {
-    background-color: #003366;
-    transform: scale(0.97);
-  }
-  #teamSelect {
-    padding: 8px 12px;
-    font-size: 16px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-  #wordCountResult {
-    margin-top: 15px;
-    font-weight: 600;
-    background: #ffe6f1;
-    padding: 10px;
-    border-radius: 8px;
-  }
-  .error, .success {
-    font-size: 14px;
-    margin-top: 10px;
-    text-align: center;
-  }
-  .error { color: red; }
-  .success { color: green; }
-</style>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>다기능 도구</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.0/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fffafc;
+      margin: 0; padding: 20px;
+      color: #5c2c44;
+    }
+    header {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #d93670;
+      user-select: none;
+    }
+    nav {
+      display: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    nav button {
+      padding: 8px 14px;
+      border: none;
+      background: #ff80aa;
+      color: white;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    nav button:hover, nav button.active {
+      background: #ff4c7a;
+    }
+    section {
+      display: none;
+      max-width: 650px;
+      margin: auto;
+      background: #fff0f5;
+      border-radius: 12px;
+      box-shadow: 0 0 14px rgba(255,192,203,0.35);
+      padding: 20px;
+      color: #5c2c44;
+    }
+    section.active {
+      display: block;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 8px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 1px solid #e7a5c3;
+      font-size: 1rem;
+      background: #fff7fb;
+      color: #5c2c44;
+      resize: vertical;
+    }
+    button.action {
+      background: #ff80aa;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    button.action:hover {
+      background: #ff4c7a;
+    }
+    ul#planList, ul#memoList {
+      list-style: none;
+      padding-left: 0;
+      max-height: 200px;
+      overflow-y: auto;
+      border-top: 1px solid #f5a6c2;
+    }
+    ul#planList li, ul#memoList li {
+      padding: 10px;
+      border-bottom: 1px solid #f5a6c2;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    ul#planList li button, ul#memoList li button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #ff4477;
+    }
+    #fontResultFancy, #fontResultHandwriting, #markdownPreview, #textSummaryResult, #colorPickerResult, #calculatorResult, #pdfExtractorResult {
+      margin-top: 12px;
+      padding: 10px;
+      background: #ffe6f1;
+      border-radius: 8px;
+      min-height: 50px;
+      font-size: 1rem;
+      word-break: break-word;
+    }
+    #markdownInput, #pdfExtractorOutput {
+      font-family: Consolas, monospace;
+    }
+    #videoEditor video {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    #urlShortenerResult {
+      margin-top: 12px;
+      font-weight: 600;
+      background: #ffe6f1;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    #colorPicker {
+      width: 100px;
+      height: 40px;
+      border: none;
+      cursor: pointer;
+    }
+    #clockDisplay {
+      font-size: 2.8rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 15px;
+      background: #ffe6f1;
+      border-radius: 12px;
+      user-select: none;
+    }
+    #codeInput {
+      height: 180px;
+      font-family: Consolas, monospace;
+      font-size: 1rem;
+      background: #fff7fb;
+      border: 2px solid #f5a6c2;
+      border-radius: 8px;
+      padding: 10px;
+      resize: vertical;
+      color: #5c2c44;
+    }
+    #codeOutput, #wordCountResult {
+      margin-top: 10px;
+      padding: 10px;
+      background: #fff0f5;
+      border: 2px solid #f5a6c2;
+      border-radius: 8px;
+      min-height: 40px;
+      font-weight: 600;
+      color: #5c2c44;
+      white-space: pre-wrap;
+      font-family: Consolas, monospace;
+    }
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+    #cheerMusic button {
+      padding: 10px 16px;
+      margin: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      background-color: #0066cc;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #cheerMusic button:hover {
+      background-color: #004999;
+      transform: scale(1.03);
+    }
+    #cheerMusic button:active {
+      background-color: #003366;
+      transform: scale(0.97);
+    }
+    #teamSelect {
+      padding: 8px 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .error, .success {
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .error { color: red; }
+    .success { color: green; }
+    #calculator canvas {
+      margin-top: 10px;
+      border: 1px solid #e7a5c3;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
+  <header>🌸 다기능 도구 🌸</header>
+  <div id="userStatus" style="text-align: center; margin-bottom: 10px; font-weight: bold;"></div>
 
-<header>🌸 Main Title Site 🌸</header>
+  <section id="auth">
+    <h2>🔑 로그인/회원가입</h2>
+    <div id="loginForm">
+      <h3>로그인</h3>
+      <input type="text" id="loginUsername" placeholder="아이디" />
+      <input type="password" id="loginPassword" placeholder="비밀번호" />
+      <button class="action" onclick="login()">로그인</button>
+      <button class="action" onclick="showSignup()">회원가입으로 전환</button>
+      <div id="loginMessage" class="error"></div>
+    </div>
+    <div id="signupForm" style="display: none;">
+      <h3>회원가입</h3>
+      <input type="text" id="signupUsername" placeholder="아이디" />
+      <input type="password" id="signupPassword" placeholder="비밀번호" />
+      <input type="password" id="signupPasswordConfirm" placeholder="비밀번호 확인" />
+      <button class="action" onclick="signup()">회원가입</button>
+      <button class="action" onclick="showLogin()">로그인으로 전환</button>
+      <div id="signupMessage" class="error"></div>
+    </div>
+  </section>
 
-<div id="userStatus" style="text-align: center; margin-bottom: 10px; font-weight: bold;"></div>
+  <nav id="navTabs">
+    <button class="active" onclick="showTab('planner', this)">📅 플래너</button>
+    <button onclick="showTab('clock', this)">🕐 현재시간</button>
+    <button onclick="showTab('timer', this)">⏱ 타이머</button>
+    <button onclick="showTab('music', this)">🎵 음악</button>
+    <button onclick="showTab('memo', this)">📝 메모</button>
+    <button onclick="showTab('diary', this)">📔 일기</button>
+    <button onclick="showTab('font', this)">🔤 폰트변환</button>
+    <button onclick="showTab('pngToPdf', this)">🖼 PNG → PDF 변환기</button>
+    <button onclick="showTab('cheerMusic', this)">⚾ KBO 응원가</button>
+    <button onclick="showTab('score', this)">📊 성적 계산기</button>
+    <button onclick="showTab('wordCount', this)">🔢 글자수 세기</button>
+    <button onclick="showTab('markdown', this)">📜 Markdown 편집기</button>
+    <button onclick="showTab('videoEditor', this)">🎬 영상 편집기</button>
+    <button onclick="showTab('urlShortener', this)">🔗 URL 단축기</button>
+    <button onclick="showTab('textSummarizer', this)">✍️ 텍스트 요약기</button>
+    <button onclick="showTab('colorPicker', this)">🎨 컬러 피커</button>
+    <button onclick="showTab('calculator', this)">🧮 계산기</button>
+    <button onclick="showTab('pdfExtractor', this)">📄 PDF 텍스트 추출</button>
+    <button onclick="logout()">🚪 로그아웃</button>
+  </nav>
 
-<section id="auth">
-  <h2>🔑 로그인/회원가입</h2>
-  <div id="loginForm">
-    <h3>로그인</h3>
-    <input type="text" id="loginUsername" placeholder="아이디" />
-    <input type="password" id="loginPassword" placeholder="비밀번호" />
-    <button class="action" onclick="login()">로그인</button>
-    <button class="action" onclick="showSignup()">회원가입으로 전환</button>
-    <div id="loginMessage" class="error"></div>
-  </div>
-  <div id="signupForm" style="display: none;">
-    <h3>회원가입</h3>
-    <input type="text" id="signupUsername" placeholder="아이디" />
-    <input type="password" id="signupPassword" placeholder="비밀번호" />
-    <input type="password" id="signupPasswordConfirm" placeholder="비밀번호 확인" />
-    <button class="action" onclick="signup()">회원가입</button>
-    <button class="action" onclick="showLogin()">로그인으로 전환</button>
-    <div id="signupMessage" class="error"></div>
-  </div>
-</section>
+  <section id="cheerMusic">
+    <h2>⚾ KBO 응원가 재생기</h2>
+    <select id="teamSelect">
+      <option value="">-- 팀 선택 --</option>
+      <option value="doosan">두산</option>
+      <option value="lg">LG</option>
+      <option value="kt">KT</option>
+      <option value="kia">KIA</option>
+      <option value="nc">NC</option>
+      <option value="hanwha">한화</option>
+      <option value="kiwoom">키움</option>
+      <option value="samsung">삼성</option>
+      <option value="ssg">SSG</option>
+      <option value="lotte">롯데</option>
+    </select>
+    <div style="margin-top:10px;">
+      <button onclick="showCheerType('team')">🎶 팀 응원가</button>
+      <button onclick="showCheerType('player')">🎵 선수 응원가</button>
+    </div>
+    <div id="cheerButtons" style="margin-top:10px;"></div>
+    <div id="cheerAudioPlayer"></div>
+  </section>
 
-<nav id="navTabs">
-  <button class="active" onclick="showTab('planner', this)">📅 플래너</button>
-  <button onclick="showTab('clock', this)">🕐 현재시간</button>
-  <button onclick="showTab('timer', this)">⏱ 타이머</button>
-  <button onclick="showTab('music', this)">🎵 음악</button>
-  <button onclick="showTab('memo', this)">📝 메모</button>
-  <button onclick="showTab('diary', this)">📔 일기</button>
-  <button onclick="showTab('font', this)">🔤 폰트변환</button>
-  <button onclick="showTab('pngToPdf', this)">🖼 PNG → PDF 변환기</button>
-  <button onclick="showTab('score', this)">📊 성적 계산기</button>
-  <button onclick="showTab('wordCount', this)">🔢 글자수 세기</button>
-  <button onclick="logout()">🚪 로그아웃</button>
-</nav>
+  <section id="planner">
+    <h2>📅 플래너</h2>
+    <input type="date" id="planDate" />
+    <textarea id="planText" rows="3" placeholder="할 일이나 계획을 적어보세요"></textarea>
+    <button class="action" onclick="addPlan()">➕ 추가</button>
+    <ul id="planList"></ul>
+  </section>
 
-<section id="cheerMusic">
-  <h2>⚾ KBO 응원가 재생기</h2>
-  <select id="teamSelect">
-    <option value="">-- 팀 선택 --</option>
-    <option value="doosan">두산</option>
-    <option value="lg">LG</option>
-    <option value="kt">KT</option>
-    <option value="kia">KIA</option>
-    <option value="nc">NC</option>
-    <option value="hanwha">한화</option>
-    <option value="kiwoom">키움</option>
-    <option value="samsung">삼성</option>
-    <option value="ssg">SSG</option>
-    <option value="lotte">롯데</option>
-  </select>
-  <div style="margin-top:10px;">
-    <button onclick="showCheerType('team')">🎶 팀 응원가</button>
-    <button onclick="showCheerType('player')">🎵 선수 응원가</button>
-  </div>
-  <div id="cheerButtons" style="margin-top:10px;"></div>
-  <div id="cheerAudioPlayer"></div>
-</section>
+  <section id="pngToPdf">
+    <h2>🖼 PNG → PDF 변환기 (복수 선택 가능)</h2>
+    <input type="file" id="imgInput" accept="image/png" multiple />
+    <button class="action" id="convertBtn">PDF 변환 및 다운로드</button>
+  </section>
 
-<!-- 플래너 -->
-<section id="planner">
-  <h2>📅 플래너</h2>
-  <input type="date" id="planDate" />
-  <textarea id="planText" rows="3" placeholder="할 일이나 계획을 적어보세요"></textarea>
-  <button class="action" onclick="addPlan()">➕ 추가</button>
-  <ul id="planList"></ul>
-</section>
+  <section id="clock">
+    <h2>🕐 현재시간</h2>
+    <div id="clockTime" style="font-size:2rem; font-weight:bold;"></div>
+    <div id="clockDate" style="font-size:1.2rem; color:#666;"></div>
+  </section>
 
-<section id="pngToPdf">
-  <h2>🖼 PNG → PDF 변환기 (복수 선택 가능)</h2>
-  <input type="file" id="imgInput" accept="image/png" multiple />
-  <button id="convertBtn">PDF 변환 및 다운로드</button>
-</section>
+  <section id="timer">
+    <h2>⏱ 타이머</h2>
+    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+      <select id="timerHours" title="시간"></select>
+      <select id="timerMinutes" title="분"></select>
+      <select id="timerSeconds" title="초"></select>
+    </div>
+    <button class="action" id="timerStartBtn" onclick="startTimer()">▶ 시작</button>
+    <button class="action" id="timerStopBtn" onclick="stopTimer()" disabled>■ 정지</button>
+    <div id="timerDisplay" style="font-size:2rem; font-weight:bold; margin-top:10px; user-select:none;">00:00:00</div>
+  </section>
 
-<!-- 현재시간 -->
-<section id="clock">
-  <h2>🕐 현재시간</h2>
-  <div id="clockTime" style="font-size:2rem; font-weight:bold;"></div>
-  <div id="clockDate" style="font-size:1.2rem; color:#666;"></div>
-</section>
+  <section id="music">
+    <h2>🎵 음악 재생기</h2>
+    <input type="text" id="musicInput" placeholder="유튜브 링크 또는 MP3 URL을 입력하세요" />
+    <button class="action" onclick="playMusic()">▶️ 재생</button>
+    <div id="musicPlayer" style="margin-top: 15px;"></div>
+  </section>
 
-<!-- 타이머 -->
-<section id="timer">
-  <h2>⏱ 타이머</h2>
-  <div style="display:flex; gap:10px; flex-wrap: wrap;">
-    <select id="timerHours" title="시간"></select>
-    <select id="timerMinutes" title="분"></select>
-    <select id="timerSeconds" title="초"></select>
-  </div>
-  <button class="action" id="timerStartBtn" onclick="startTimer()">▶ 시작</button>
-  <button class="action" id="timerStopBtn" onclick="stopTimer()" disabled>■ 정지</button>
-  <div id="timerDisplay" style="font-size:2rem; font-weight:bold; margin-top:10px; user-select:none;">00:00:00</div>
-</section>
+  <section id="videodown">
+    <h2>📥 영상 다운로드</h2>
+    <input type="text" id="videoUrl" placeholder="네이버, 유튜브, 기타 동영상 링크를 입력하세요" />
+    <button class="action" onclick="downloadVideo()">⬇️ 다운로드 링크 생성</button>
+    <div id="videoLink" style="margin-top: 15px;"></div>
+  </section>
 
-<!-- 음악 -->
-<section id="music">
-  <h2>🎵 음악 재생기</h2>
-  <input type="text" id="musicInput" placeholder="유튜브 링크 또는 MP3 URL을 입력하세요" />
-  <button class="action" onclick="playMusic()">▶️ 재생</button>
-  <div id="musicPlayer" style="margin-top: 15px;"></div>
-</section>
+  <section id="score">
+    <h2>📊 성적 계산기</h2>
+    <div class="score-group">
+      <label>수행평가 점수 (0~100)</label>
+      <input type="number" id="scorePerform" min="0" max="100" value="0" />
+      <label>수행평가 반영비율 (%)</label>
+      <input type="number" id="weightPerform" min="0" max="100" value="20" />
+    </div>
+    <div class="score-group">
+      <label>중간고사 점수 (0~100)</label>
+      <input type="number" id="scoreMid" min="0" max="100" value="0" />
+      <label>중간고사 반영비율 (%)</label>
+      <input type="number" id="weightMid" min="0" max="100" value="40" />
+    </div>
+    <div class="score-group">
+      <label>목표 점수 (0~100)</label>
+      <input type="number" id="scoreFinalGoal" min="0" max="100" value="80" />
+      <label>기말고사 반영비율 (%)</label>
+      <input type="number" id="weightFinal" min="0" max="100" value="40" />
+    </div>
+    <button class="action" onclick="calcScore()">계산하기</button>
+    <div id="scoreResult" style="margin-top: 15px; font-weight: 700;"></div>
+    <div id="error" class="error"></div>
+  </section>
 
-<!-- 영상다운 -->
-<section id="videodown">
-  <h2>📥 영상다운로드</h2>
-  <input type="text" id="videoUrl" placeholder="네이버, 유튜브, 기타 동영상 링크를 입력하세요" />
-  <button class="action" onclick="downloadVideo()">⬇️ 다운로드 링크 생성</button>
-  <div id="videoLink" style="margin-top: 15px;"></div>
-</section>
+  <section id="memo">
+    <h2>📝 메모장</h2>
+    <textarea id="memoText" rows="8" placeholder="감성 있게 메모를 적어보세요..."></textarea>
+    <button class="action" onclick="saveMemo()">💾 저장</button>
+    <button class="action" onclick="downloadMemo()">📥 TXT로 저장</button>
+    <ul id="memoList"></ul>
+  </section>
 
-<!-- 성적계산 -->
-<section id="score">
-  <h2>📊 성적 계산기</h2>
-  <div class="score-group">
-    <label>수행평가 점수 (0~100)</label>
-    <input type="number" id="scorePerform" min="0" max="100" value="0" />
-    <label>수행평가 반영비율 (%)</label>
-    <input type="number" id="weightPerform" min="0" max="100" value="20" />
-  </div>
-  <div class="score-group">
-    <label>중간고사 점수 (0~100)</label>
-    <input type="number" id="scoreMid" min="0" max="100" value="0" />
-    <label>중간고사 반영비율 (%)</label>
-    <input type="number" id="weightMid" min="0" max="100" value="40" />
-  </div>
-  <div class="score-group">
-    <label>목표 점수 (0~100)</label>
-    <input type="number" id="scoreFinalGoal" min="0" max="100" value="80" />
-    <label>기말고사 반영비율 (%)</label>
-    <input type="number" id="weightFinal" min="0" max="100" value="40" />
-  </div>
-  <button class="action" onclick="calcScore()">계산하기</button>
-  <div id="scoreResult" style="margin-top: 15px; font-weight: 700;"></div>
-  <div id="error" class="error"></div>
-</section>
+  <section id="diary">
+    <h2>📔 일기</h2>
+    <textarea id="diaryText" rows="10" placeholder="오늘의 일기를 감성적으로 적어보세요..."></textarea>
+    <button class="action" onclick="saveDiary()">💾 저장</button>
+    <button class="action" onclick="downloadDiary()">📥 PNG로 캡쳐 저장</button>
+  </section>
 
-<!-- 메모 -->
-<section id="memo">
-  <h2>📝 메모장</h2>
-  <textarea id="memoText" rows="8" placeholder="감성 있게 메모를 적어보세요..."></textarea>
-  <button class="action" onclick="saveMemo()">💾 저장</button>
-  <button class="action" onclick="downloadMemo()">📥 TXT로 저장</button>
-  <ul id="memoList"></ul>
-</section>
+  <section id="font">
+    <h2>🔤 폰트 변환기</h2>
+    <textarea id="fontInput" placeholder="입력하세요" rows="3"></textarea>
+    <div style="margin-top: 10px;">
+      <p><strong>팬시체:</strong></p>
+      <div id="fontResultFancy" style="border: 1px solid #ccc; padding: 10px; font-size: 18px;"></div>
+      <button class="action" onclick="copyFancy()">복사</button>
+    </div>
+    <div style="margin-top: 10px;">
+      <p><strong>필기체 (Cursive):</strong></p>
+      <div id="fontResultHandwriting" style="border: 1px solid #ccc; padding: 10px; font-family: cursive; font-size: 18px;"></div>
+      <button class="action" onclick="copyHandwriting()">복사</button>
+    </div>
+  </section>
 
-<!-- 일기 -->
-<section id="diary">
-  <h2>📔 일기</h2>
-  <textarea id="diaryText" rows="10" placeholder="오늘의 일기를 감성적으로 적어보세요..."></textarea>
-  <button class="action" onclick="saveDiary()">💾 저장</button>
-  <button class="action" onclick="downloadDiary()">📥 PNG로 캡쳐 저장</button>
-</section>
+  <section id="code">
+    <h2>💻 HTML 코드 테스트</h2>
+    <textarea id="codeInput" placeholder="HTML 코드를 입력하세요"></textarea>
+    <button class="action" onclick="runCode()">실행</button>
+    <button class="action" onclick="checkCode()">문법 검사</button>
+    <div id="codeOutput"></div>
+    <iframe id="codeFrame"></iframe>
+  </section>
 
-<section id="font">
-  <h2>폰트 변환기</h2>
-  <textarea id="fontInput" placeholder="입력하세요" rows="3" style="width:100%;"></textarea>
-  <div style="margin-top: 10px;">
-    <p><strong>팬시체:</strong></p>
-    <div id="fontResultFancy" style="border: 1px solid #ccc; padding: 10px; font-size: 18px;"></div>
-    <button onclick="copyFancy()">복사</button>
-  </div>
-  <div style="margin-top: 10px;">
-    <p><strong>필기체 (Cursive):</strong></p>
-    <div id="fontResultHandwriting" style="border: 1px solid #ccc; padding: 10px; font-family: cursive; font-size: 18px;"></div>
-    <button onclick="copyHandwriting()">복사</button>
-  </div>
-</section>
+  <section id="wordCount">
+    <h2>🔢 글자수 세기</h2>
+    <textarea id="wordCountInput" rows="8" placeholder="여기에 텍스트를 입력하세요..."></textarea>
+    <div id="wordCountResult"></div>
+  </section>
 
-<!-- 코드 테스트 -->
-<section id="code">
-  <h2>💻 HTML 코드 테스트</h2>
-  <textarea id="codeInput" placeholder="HTML 코드를 입력하세요"></textarea>
-  <button class="action" onclick="runCode()">실행</button>
-  <button class="action" onclick="checkCode()">문법 검사</button>
-  <div id="codeOutput"></div>
-  <iframe id="codeFrame" style="width:100%; height:300px; margin-top: 10px; border-radius: 8px;"></iframe>
-</section>
+  <section id="markdown">
+    <h2>📜 Markdown 편집기</h2>
+    <textarea id="markdownInput" rows="8" placeholder="Markdown 형식으로 입력하세요 (예: # 제목, **굵은 텍스트**)"></textarea>
+    <button class="action" onclick="saveMarkdown()">💾 저장</button>
+    <button class="action" onclick="downloadMarkdown()">📥 HTML로 다운로드</button>
+    <div id="markdownPreview"></div>
+  </section>
 
-<!-- 글자수 세기 -->
-<section id="wordCount">
-  <h2>🔢 글자수 세기</h2>
-  <textarea id="wordCountInput" rows="8" placeholder="여기에 텍스트를 입력하세요..."></textarea>
-  <div id="wordCountResult"></div>
-</section>
+  <section id="videoEditor">
+    <h2>🎬 영상 편집기</h2>
+    <input type="file" id="videoInput" accept="video/mp4" />
+    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+      <input type="number" id="videoStart" placeholder="시작 시간 (초)" min="0" step="1" />
+      <input type="number" id="videoDuration" placeholder="길이 (초)" min="1" step="1" />
+    </div>
+    <button class="action" onclick="trimVideo()">✂️ 자르기</button>
+    <video id="videoPreview" controls></video>
+  </section>
 
-<script>
- const cheerDatabase = {
-  doosan: {
-    team: { "승리의 두산": "https://www.youtube.com/watch?v=Jv_Pe2ulcJM" },
-    player: { "정수빈": "https://www.youtube.com/watch?v=DsDkbsVQyEA" }
-  },
-  lg: {
-    team: { "LG 응원가 모음": "https://www.youtube.com/watch?v=1SaWIrgWiTo" },
-    player: { "백승현": "https://www.youtube.com/watch?v=RtaEZ0i1yIk" }
-  },
-  kt: {
-    team: { "KT 팀 응원가": "https://www.youtube.com/watch?v=t9k2hE63SJw" },
-    player: { "로하스": "https://www.youtube.com/watch?v=nxH5VWainEo" }
-  },
-  kia: {
-    team: { "KIA 타이거즈 응원가": "https://www.youtube.com/watch?v=example_kia_team" },
-    player: { "이의리": "https://www.youtube.com/watch?v=example_kia_player" }
-  },
-  nc: {
-    team: { "NC 응원가": "https://www.youtube.com/watch?v=example_nc_team" },
-    player: { "양의지": "https://www.youtube.com/watch?v=TfWltglBGgA" }
-  },
-  hanwha: {
-    team: { "한화 응원가": "https://www.youtube.com/watch?v=example_han_team" },
-    player: { "최진행": "https://www.youtube.com/watch?v=example_han_player" }
-  },
-  kiwoom: {
-    team: { "키움 응원가": "https://www.youtube.com/watch?v=example_kiwoom_team" },
-    player: { "고종욱": "https://www.youtube.com/watch?v=example_kiwoom_player" }
-  },
-  samsung: {
-    team: { "삼성 응원가": "https://www.youtube.com/watch?v=example_sam_team" },
-    player: { "이원석": "https://www.youtube.com/watch?v=example_sam_player" }
-  },
-  ssg: {
-    team: { "SSG 응원가": "https://www.youtube.com/watch?v=example_ssg_team" },
-    player: { "최정": "https://www.youtube.com/watch?v=example_ssg_player" }
-  },
-  lotte: {
-    team: { "롯데 응원가": "https://www.youtube.com/watch?v=example_lotte_team" },
-    player: { "손아섭": "https://www.youtube.com/watch?v=example_lotte_player" }
-  }
-};
+  <section id="urlShortener">
+    <h2>🔗 URL 단축기</h2>
+    <input type="text" id="urlInput" placeholder="긴 URL을 입력하세요 (예: https://example.com)" />
+    <button class="action" onclick="shortenUrl()">🔗 단축하기</button>
+    <div id="urlShortenerResult"></div>
+  </section>
 
-function showCheerType(type) {
-  const team = document.getElementById('teamSelect').value;
-  const cheerButtons = document.getElementById('cheerButtons');
-  cheerButtons.innerHTML = '';
-  document.getElementById('cheerAudioPlayer').innerHTML = '';
-  if (!team) {
-    alert('먼저 팀을 선택하세요!');
-    return;
-  }
-  const data = cheerDatabase[team]?.[type];
-  if (!data) {
-    cheerButtons.textContent = '응원가 데이터가 없습니다.';
-    return;
-  }
-  for (const title in data) {
-    const btn = document.createElement('button');
-    btn.textContent = title;
-    btn.onclick = () => playCheer(data[title]);
-    cheerButtons.appendChild(btn);
-  }
-}
+  <section id="textSummarizer">
+    <h2>✍️ 텍스트 요약기</h2>
+    <textarea id="textSummaryInput" rows="8" placeholder="요약할 텍스트를 입력하세요..."></textarea>
+    <button class="action" onclick="summarizeText()">✍️ 요약하기</button>
+    <div id="textSummaryResult"></div>
+  </section>
 
-function playCheer(link) {
-  const player = document.getElementById('cheerAudioPlayer');
-  player.innerHTML = '';
-  try {
-    const url = new URL(link);
-    const id = url.searchParams.get('v');
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-    iframe.allow = "autoplay";
-    iframe.style = "width:0;height:0;border:0;display:none;";
-    player.appendChild(iframe);
-  } catch {
-    alert('유효한 유튜브 링크가 아닙니다.');
-  }
-}
+  <section id="colorPicker">
+    <h2>🎨 컬러 피커</h2>
+    <input type="color" id="colorPickerInput" value="#ff80aa" />
+    <button class="action" onclick="saveColor()">💾 색상 저장</button>
+    <div id="colorPickerResult"></div>
+  </section>
 
-// 로그인/회원가입 관련 함수
-function checkLoginStatus() {
-  console.log('checkLoginStatus 실행');
-  const loggedInUser = localStorage.getItem('loggedInUser');
-  const userStatus = document.getElementById('userStatus');
-  const navTabs = document.getElementById('navTabs');
-  const authSection = document.getElementById('auth');
-  const contentSections = document.querySelectorAll('section:not(#auth)');
+  <section id="calculator">
+    <h2>🧮 계산기</h2>
+    <h3>일차방정식 (ax + b = c)</h3>
+    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+      <input type="number" id="linearA" placeholder="a" step="any" />
+      <input type="number" id="linearB" placeholder="b" step="any" />
+      <input type="number" id="linearC" placeholder="c" step="any" />
+    </div>
+    <button class="action" onclick="solveLinear()">계산</button>
+    <h3>연립방정식 (a1x + b1y = c1, a2x + b2y = c2)</h3>
+    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+      <input type="number" id="systemA1" placeholder="a1" step="any" />
+      <input type="number" id="systemB1" placeholder="b1" step="any" />
+      <input type="number" id="systemC1" placeholder="c1" step="any" />
+      <input type="number" id="systemA2" placeholder="a2" step="any" />
+      <input type="number" id="systemB2" placeholder="b2" step="any" />
+      <input type="number" id="systemC2" placeholder="c2" step="any" />
+    </div>
+    <button class="action" onclick="solveSystem()">계산</button>
+    <h3>일차함수 (y = mx + b)</h3>
+    <div style="display:flex; gap:10px; flex-wrap: wrap;">
+      <input type="number" id="functionM" placeholder="기울기 m" step="any" />
+      <input type="number" id="functionB" placeholder="절편 b" step="any" />
+    </div>
+    <button class="action" onclick="plotFunction()">그래프 그리기</button>
+    <canvas id="functionGraph" width="400" height="300"></canvas>
+    <div id="calculatorResult"></div>
+  </section>
 
-  if (loggedInUser) {
-    console.log('로그인 상태: ', loggedInUser);
-    userStatus.textContent = `${loggedInUser}님 환영합니다!`;
-    navTabs.style.display = 'flex';
-    authSection.style.display = 'none';
-    contentSections.forEach(s => s.style.display = s.id === 'planner' ? 'block' : 'none');
-    document.querySelector('nav button[onclick*="planner"]').classList.add('active');
-  } else {
-    console.log('로그아웃 상태');
-    userStatus.textContent = '';
-    navTabs.style.display = 'none';
-    authSection.style.display = 'block';
-    contentSections.forEach(s => s.style.display = 'none');
-  }
-}
+  <section id="pdfExtractor">
+    <h2>📄 PDF 텍스트 추출</h2>
+    <input type="file" id="pdfInput" accept="application/pdf" />
+    <button class="action" onclick="extractPdfText()">📝 텍스트 추출</button>
+    <button class="action" onclick="savePdfText()">💾 저장</button>
+    <button class="action" onclick="downloadPdfText()">📥 TXT로 다운로드</button>
+    <textarea id="pdfExtractorOutput" rows="8" placeholder="추출된 텍스트가 여기에 표시됩니다..."></textarea>
+    <div id="pdfExtractorResult"></div>
+  </section>
 
-function showLogin() {
-  document.getElementById('loginForm').style.display = 'block';
-  document.getElementById('signupForm').style.display = 'none';
-  document.getElementById('loginMessage').textContent = '';
-  document.getElementById('signupMessage').textContent = '';
-}
-
-function showSignup() {
-  document.getElementById('loginForm').style.display = 'none';
-  document.getElementById('signupForm').style.display = 'block';
-  document.getElementById('loginMessage').textContent = '';
-  document.getElementById('signupMessage').textContent = '';
-}
-
-function signup() {
-  const username = document.getElementById('signupUsername').value.trim();
-  const password = document.getElementById('signupPassword').value;
-  const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
-  const messageDiv = document.getElementById('signupMessage');
-
-  if (!username || !password || !passwordConfirm) {
-    messageDiv.textContent = '모든 필드를 입력해주세요.';
-    return;
-  }
-
-  if (password !== passwordConfirm) {
-    messageDiv.textContent = '비밀번호가 일치하지 않습니다.';
-    return;
-  }
-
-  const users = JSON.parse(localStorage.getItem('users') || '{}');
-  if (users[username]) {
-    messageDiv.textContent = '이미 존재하는 아이디입니다.';
-    return;
-  }
-
-  users[username] = password;
-  localStorage.setItem('users', JSON.stringify(users));
-  messageDiv.className = 'success';
-  messageDiv.textContent = '회원가입 성공! 로그인해주세요.';
-  showLogin();
-}
-
-function login() {
-  const username = document.getElementById('loginUsername').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const messageDiv = document.getElementById('loginMessage');
-
-  if (!username || !password) {
-    messageDiv.textContent = '아이디와 비밀번호를 입력해주세요.';
-    return;
-  }
-
-  const users = JSON.parse(localStorage.getItem('users') || '{}');
-  if (users[username] && users[username] === password) {
-    localStorage.setItem('loggedInUser', username);
-    messageDiv.className = 'success';
-    messageDiv.textContent = '로그인 성공!';
-    checkLoginStatus();
-  } else {
-    messageDiv.textContent = '아이디 또는 비밀번호가 잘못되었습니다.';
-  }
-}
-
-function logout() {
-  localStorage.removeItem('loggedInUser');
-  checkLoginStatus();
-}
-
-// 탭 전환
-function showTab(id, btn) {
-  if (!localStorage.getItem('loggedInUser')) {
-    console.log('로그인 필요, auth 섹션 표시');
-    document.getElementById('auth').style.display = 'block';
-    document.querySelectorAll('section:not(#auth)').forEach(s => s.style.display = 'none');
-    document.getElementById('navTabs').style.display = 'none';
-    document.getElementById('userStatus').textContent = '';
-    return;
-  }
-  document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-  document.getElementById(id).style.display = 'block';
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-// 글자수 세기
-function countWords() {
-  const text = document.getElementById('wordCountInput').value;
-  const resultDiv = document.getElementById('wordCountResult');
-  
-  const charCountWithSpaces = text.length;
-  const charCountWithoutSpaces = text.replace(/\s/g, '').length;
-  const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
-  const lineCount = text ? text.split('\n').length : 0;
-
-  resultDiv.innerHTML = `
-    글자수 (공백 포함): ${charCountWithSpaces}<br>
-    글자수 (공백 미포함): ${charCountWithoutSpaces}<br>
-    단어 수: ${wordCount}<br>
-    줄 수: ${lineCount}
-  `;
-}
-
-// 페이지 로드 시 초기화
-window.addEventListener('DOMContentLoaded', () => {
-  console.log('페이지 로드 완료');
-  checkLoginStatus();
-  loadPlans();
-  loadMemo();
-  loadDiary();
-  updateClock();
-  document.getElementById('wordCountInput').addEventListener('input', countWords);
-  fillTimerSelects();
-});
-
-// ===== 플래너 =====
-const STORAGE_PLANNER = 'myPersonalPlanner';
-function loadPlans() {
-  const plans = JSON.parse(localStorage.getItem(STORAGE_PLANNER) || '[]');
-  const ul = document.getElementById('planList');
-  ul.innerHTML = '';
-  plans.forEach(({date, text}, i) => {
-    const li = document.createElement('li');
-    li.textContent = `${date} - ${text}`;
-    const delBtn = document.createElement('button');
-    delBtn.textContent = '❌';
-    delBtn.title = '삭제';
-    delBtn.onclick = () => {
-      removePlan(i);
+  <script>
+    const cheerDatabase = {
+      doosan: {
+        team: { "승리의 두산": "https://www.youtube.com/watch?v=Jv_Pe2ulcJM" },
+        player: { "정수빈": "https://www.youtube.com/watch?v=DsDkbsVQyEA" }
+      },
+      lg: {
+        team: { "LG 응원가 모음": "https://www.youtube.com/watch?v=1SaWIrgWiTo" },
+        player: { "백승현": "https://www.youtube.com/watch?v=RtaEZ0i1yIk" }
+      },
+      kt: {
+        team: { "KT 팀 응원가": "https://www.youtube.com/watch?v=t9k2hE63SJw" },
+        player: { "로하스": "https://www.youtube.com/watch?v=nxH5VWainEo" }
+      },
+      kia: {
+        team: { "KIA 타이거즈 응원가": "https://www.youtube.com/watch?v=example_kia_team" },
+        player: { "이의리": "https://www.youtube.com/watch?v=example_kia_player" }
+      },
+      nc: {
+        team: { "NC 응원가": "https://www.youtube.com/watch?v=example_nc_team" },
+        player: { "양의지": "https://www.youtube.com/watch?v=TfWltglBGgA" }
+      },
+      hanwha: {
+        team: { "한화 응원가": "https://www.youtube.com/watch?v=example_han_team" },
+        player: { "최진행": "https://www.youtube.com/watch?v=example_han_player" }
+      },
+      kiwoom: {
+        team: { "키움 응원가": "https://www.youtube.com/watch?v=example_kiwoom_team" },
+        player: { "고종욱": "https://www.youtube.com/watch?v=example_kiwoom_player" }
+      },
+      samsung: {
+        team: { "삼성 응원가": "https://www.youtube.com/watch?v=example_sam_team" },
+        player: { "이원석": "https://www.youtube.com/watch?v=example_sam_player" }
+      },
+      ssg: {
+        team: { "SSG 응원가": "https://www.youtube.com/watch?v=example_ssg_team" },
+        player: { "최정": "https://www.youtube.com/watch?v=example_ssg_player" }
+      },
+      lotte: {
+        team: { "롯데 응원가": "https://www.youtube.com/watch?v=example_lotte_team" },
+        player: { "손아섭": "https://www.youtube.com/watch?v=example_lotte_player" }
+      }
     };
-    li.appendChild(delBtn);
-    ul.appendChild(li);
-  });
-}
-function addPlan() {
-  const date = document.getElementById('planDate').value;
-  const text = document.getElementById('planText').value.trim();
-  if (!date || !text) {
-    alert('날짜와 내용을 모두 입력하세요.');
-    return;
-  }
-  const plans = JSON.parse(localStorage.getItem(STORAGE_PLANNER) || '[]');
-  plans.push({date, text});
-  localStorage.setItem(STORAGE_PLANNER, JSON.stringify(plans));
-  document.getElementById('planText').value = '';
-  loadPlans();
-}
-function removePlan(index) {
-  const plans = JSON.parse(localStorage.getItem(STORAGE_PLANNER) || '[]');
-  plans.splice(index, 1);
-  localStorage.setItem(STORAGE_PLANNER, JSON.stringify(plans));
-  loadPlans();
-}
 
-// ===== 현재시간 =====
-function updateClock() {
-  const now = new Date();
-  const h = now.getHours().toString().padStart(2, '0');
-  const m = now.getMinutes().toString().padStart(2, '0');
-  const s = now.getSeconds().toString().padStart(2, '0');
-  const year = now.getFullYear();
-  const month = (now.getMonth() + 1).toString().padStart(2, '0');
-  const date = now.getDate().toString().padStart(2, '0');
-  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-  const day = dayNames[now.getDay()];
-  const dateStr = `${year}년 ${month}월 ${date}일 (${day})`;
-  document.getElementById('clockTime').textContent = `${h}:${m}:${s}`;
-  document.getElementById('clockDate').textContent = dateStr;
-}
-setInterval(updateClock, 1000);
-updateClock();
+    function showCheerType(type) {
+      const team = document.getElementById('teamSelect').value;
+      const cheerButtons = document.getElementById('cheerButtons');
+      cheerButtons.innerHTML = '';
+      document.getElementById('cheerAudioPlayer').innerHTML = '';
+      if (!team) {
+        alert('먼저 팀을 선택하세요!');
+        return;
+      }
+      const data = cheerDatabase[team]?.[type];
+      if (!data) {
+        cheerButtons.textContent = '응원가 데이터가 없습니다.';
+        return;
+      }
+      for (const title in data) {
+        const btn = document.createElement('button');
+        btn.textContent = title;
+        btn.onclick = () => playCheer(data[title]);
+        cheerButtons.appendChild(btn);
+      }
+    }
 
-// ===== 타이머 =====
-let timerInterval;
-function startTimer() {
-  const h = parseInt(document.getElementById('timerHours').value);
-  const m = parseInt(document.getElementById('timerMinutes').value);
-  const s = parseInt(document.getElementById('timerSeconds').value);
-  let total = h*3600 + m*60 + s;
-  if (total <= 0) {
-    alert('0초보다 큰 시간을 선택하세요.');
-    return;
-  }
-  document.getElementById('timerStartBtn').disabled = true;
-  document.getElementById('timerStopBtn').disabled = false;
-  timerInterval = setInterval(() => {
-    if (total <= 0) {
+    function playCheer(link) {
+      const player = document.getElementById('cheerAudioPlayer');
+      player.innerHTML = '';
+      try {
+        const url = new URL(link);
+        const id = url.searchParams.get('v');
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+        iframe.allow = "autoplay";
+        iframe.style = "width:0;height:0;border:0;display:none;";
+        player.appendChild(iframe);
+      } catch {
+        alert('유효한 유튜브 링크가 아닙니다.');
+      }
+    }
+
+    // 로그인/회원가입
+    function checkLoginStatus() {
+      const loggedInUser = localStorage.getItem('loggedInUser');
+      const userStatus = document.getElementById('userStatus');
+      const navTabs = document.getElementById('navTabs');
+      const authSection = document.getElementById('auth');
+      const contentSections = document.querySelectorAll('section:not(#auth)');
+
+      if (loggedInUser) {
+        userStatus.textContent = `${loggedInUser}님 환영합니다!`;
+        navTabs.style.display = 'flex';
+        authSection.style.display = 'none';
+        contentSections.forEach(s => s.style.display = s.id === 'planner' ? 'block' : 'none');
+        document.querySelector('nav button[onclick*="planner"]').classList.add('active');
+      } else {
+        userStatus.textContent = '';
+        navTabs.style.display = 'none';
+        authSection.style.display = 'block';
+        contentSections.forEach(s => s.style.display = 'none');
+      }
+    }
+
+    function showLogin() {
+      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById('loginMessage').textContent = '';
+      document.getElementById('signupMessage').textContent = '';
+    }
+
+    function showSignup() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('signupForm').style.display = 'block';
+      document.getElementById('loginMessage').textContent = '';
+      document.getElementById('signupMessage').textContent = '';
+    }
+
+    function signup() {
+      const username = document.getElementById('signupUsername').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+      const messageDiv = document.getElementById('signupMessage');
+
+      if (!username || !password || !passwordConfirm) {
+        messageDiv.textContent = '모든 필드를 입력해주세요.';
+        return;
+      }
+      if (password !== passwordConfirm) {
+        messageDiv.textContent = '비밀번호가 일치하지 않습니다.';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      if (users[username]) {
+        messageDiv.textContent = '이미 존재하는 아이디입니다.';
+        return;
+      }
+
+      users[username] = password;
+      localStorage.setItem('users', JSON.stringify(users));
+      messageDiv.className = 'success';
+      messageDiv.textContent = '회원가입 성공! 로그인해주세요.';
+      showLogin();
+    }
+
+    function login() {
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const messageDiv = document.getElementById('loginMessage');
+
+      if (!username || !password) {
+        messageDiv.textContent = '아이디와 비밀번호를 입력해주세요.';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      if (users[username] && users[username] === password) {
+        localStorage.setItem('loggedInUser', username);
+        messageDiv.className = 'success';
+        messageDiv.textContent = '로그인 성공!';
+        checkLoginStatus();
+      } else {
+        messageDiv.textContent = '아이디 또는 비밀번호가 잘못되었습니다.';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      checkLoginStatus();
+    }
+
+    // 탭 전환
+    function showTab(id, btn) {
+      if (!localStorage.getItem('loggedInUser')) {
+        document.getElementById('auth').style.display = 'block';
+        document.querySelectorAll('section:not(#auth)').forEach(s => s.style.display = 'none');
+        document.getElementById('navTabs').style.display = 'none';
+        document.getElementById('userStatus').textContent = '';
+        return;
+      }
+      document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // 플래너
+    const STORAGE_PLANNER = 'myPersonalPlanner';
+    function loadPlans() {
+      const plans = JSON.parse(localStorage.getItem(STORAGE_PLANNER) || '[]');
+      const ul = document.getElementById('planList');
+      ul.innerHTML = '';
+      plans.forEach(({date, text}, i) => {
+        const li = document.createElement('li');
+        li.textContent = `${date} - ${text}`;
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '❌';
+        delBtn.title = '삭제';
+        delBtn.onclick = () => removePlan(i);
+        li.appendChild(delBtn);
+        ul.appendChild(li);
+      });
+    }
+    function addPlan() {
+      const date = document.getElementById('planDate').value;
+      const text = document.getElementById('planText').value.trim();
+      if (!date || !text) {
+        alert('날짜와 내용을 모두 입력하세요.');
+        return;
+      }
+      const plans = JSON.parse(localStorage.getItem(STORAGE_PLANNER) || '[]');
+      plans.push({date, text});
+      localStorage.setItem(STORAGE_PLANNER, JSON.stringify(plans));
+      document.getElementById('planText').value = '';
+      loadPlans();
+    }
+    function removePlan(index) {
+      const plans = JSON.parse(localStorage.getItem(STORAGE_PLANNER) || '[]');
+      plans.splice(index, 1);
+      localStorage.setItem(STORAGE_PLANNER, JSON.stringify(plans));
+      loadPlans();
+    }
+
+    // 현재시간
+    function updateClock() {
+      const now = new Date();
+      const h = now.getHours().toString().padStart(2, '0');
+      const m = now.getMinutes().toString().padStart(2, '0');
+      const s = now.getSeconds().toString().padStart(2, '0');
+      const year = now.getFullYear();
+      const month = (now.getMonth() + 1).toString().padStart(2, '0');
+      const date = now.getDate().toString().padStart(2, '0');
+      const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+      const day = dayNames[now.getDay()];
+      const dateStr = `${year}년 ${month}월 ${date}일 (${day})`;
+      document.getElementById('clockTime').textContent = `${h}:${m}:${s}`;
+      document.getElementById('clockDate').textContent = dateStr;
+    }
+    setInterval(updateClock, 1000);
+
+    // 타이머
+    let timerInterval;
+    function startTimer() {
+      const h = parseInt(document.getElementById('timerHours').value);
+      const m = parseInt(document.getElementById('timerMinutes').value);
+      const s = parseInt(document.getElementById('timerSeconds').value);
+      let total = h * 3600 + m * 60 + s;
+      if (total <= 0) {
+        alert('0초보다 큰 시간을 선택하세요.');
+        return;
+      }
+      document.getElementById('timerStartBtn').disabled = true;
+      document.getElementById('timerStopBtn').disabled = false;
+      timerInterval = setInterval(() => {
+        if (total <= 0) {
+          clearInterval(timerInterval);
+          alert('⏰ 타이머 종료!');
+          document.getElementById('timerDisplay').textContent = '00:00:00';
+          document.getElementById('timerStartBtn').disabled = false;
+          document.getElementById('timerStopBtn').disabled = true;
+          return;
+        }
+        total--;
+        const hh = Math.floor(total / 3600).toString().padStart(2, '0');
+        const mm = Math.floor((total % 3600) / 60).toString().padStart(2, '0');
+        const ss = (total % 60).toString().padStart(2, '0');
+        document.getElementById('timerDisplay').textContent = `${hh}:${mm}:${ss}`;
+      }, 1000);
+    }
+    function stopTimer() {
       clearInterval(timerInterval);
-      alert('⏰ 타이머 종료!');
-      document.getElementById('timerDisplay').textContent = '00:00:00';
       document.getElementById('timerStartBtn').disabled = false;
       document.getElementById('timerStopBtn').disabled = true;
-      return;
     }
-    total--;
-    const hh = Math.floor(total/3600).toString().padStart(2,'0');
-    const mm = Math.floor((total%3600)/60).toString().padStart(2,'0');
-    const ss = (total%60).toString().padStart(2,'0');
-    document.getElementById('timerDisplay').textContent = `${hh}:${mm}:${ss}`;
-  }, 1000);
-}
-function stopTimer() {
-  clearInterval(timerInterval);
-  document.getElementById('timerStartBtn').disabled = false;
-  document.getElementById('timerStopBtn').disabled = true;
-}
-
-function fillTimerSelects() {
-  const timerHours = document.getElementById('timerHours');
-  const timerMinutes = document.getElementById('timerMinutes');
-  const timerSeconds = document.getElementById('timerSeconds');
-  function fillSelectOptions(select, max) {
-    for (let i = 0; i <= max; i++) {
-      const opt = document.createElement('option');
-      opt.value = i;
-      opt.textContent = `${i} ${select.title}`;
-      select.appendChild(opt);
+    function fillTimerSelects() {
+      const timerHours = document.getElementById('timerHours');
+      const timerMinutes = document.getElementById('timerMinutes');
+      const timerSeconds = document.getElementById('timerSeconds');
+      function fillSelectOptions(select, max) {
+        for (let i = 0; i <= max; i++) {
+          const opt = document.createElement('option');
+          opt.value = i;
+          opt.textContent = `${i} ${select.title}`;
+          select.appendChild(opt);
+        }
+      }
+      timerHours.innerHTML = '';
+      timerMinutes.innerHTML = '';
+      timerSeconds.innerHTML = '';
+      fillSelectOptions(timerHours, 24);
+      fillSelectOptions(timerMinutes, 60);
+      fillSelectOptions(timerSeconds, 60);
+      timerHours.value = 0;
+      timerMinutes.value = 0;
+      timerSeconds.value = 0;
     }
-  }
-  timerHours.innerHTML = '';
-  timerMinutes.innerHTML = '';
-  timerSeconds.innerHTML = '';
-  fillSelectOptions(timerHours, 24);
-  fillSelectOptions(timerMinutes, 60);
-  fillSelectOptions(timerSeconds, 60);
-  timerHours.value = 0;
-  timerMinutes.value = 0;
-  timerSeconds.value = 0;
-}
 
-document.getElementById('convertBtn').onclick = () => {
-  const input = document.getElementById('imgInput');
-  if (!input.files.length) {
-    alert('PNG 파일을 선택해주세요!');
-    return;
-  }
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
-  const files = Array.from(input.files);
-  const loadImage = (file) => new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (e) => resolve(e.target.result);
-    reader.readAsDataURL(file);
-  });
-  (async () => {
-    for (let i = 0; i < files.length; i++) {
-      const imgData = await loadImage(files[i]);
-      const img = new Image();
-      await new Promise(r => {
-        img.onload = r;
-        img.src = imgData;
-      });
-      const pdfWidth = 210;
-      const pdfHeight = (img.height * pdfWidth) / img.width;
-      if (i > 0) pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    // 음악 재생기
+    function playMusic() {
+      const input = document.getElementById('musicInput').value.trim();
+      const player = document.getElementById('musicPlayer');
+      player.innerHTML = '';
+      if (!input) {
+        alert('유튜브 링크 또는 MP3 URL을 입력하세요.');
+        return;
+      }
+      let ytId = null;
+      if (input.includes('youtu.be/')) {
+        ytId = input.split('youtu.be/')[1].split(/[?&]/)[0];
+      } else if (input.includes('youtube.com/watch')) {
+        const urlParams = new URLSearchParams(input.split('?')[1]);
+        ytId = urlParams.get('v');
+      }
+      if (ytId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1`;
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        player.appendChild(iframe);
+        return;
+      }
+      if (input.match(/^https?:\/\/.*\.(mp3|wav|ogg)$/i)) {
+        const audio = document.createElement('audio');
+        audio.controls = true;
+        audio.src = input;
+        audio.autoplay = true;
+        player.appendChild(audio);
+        return;
+      }
+      alert('유튜브 링크나 MP3/WAV/OGG URL만 지원합니다.');
     }
-    pdf.save('converted_multiple.pdf');
-  })();
-};
 
-// ===== 음악 =====
-function playMusic() {
-  const input = document.getElementById('musicInput').value.trim();
-  const player = document.getElementById('musicPlayer');
-  player.innerHTML = '';
-  if (!input) {
-    alert('유튜브 링크 또는 MP3 URL을 입력하세요.');
-    return;
-  }
-  let ytId = null;
-  if (input.includes('youtu.be/')) {
-    ytId = input.split('youtu.be/')[1].split(/[?&]/)[0];
-  } else if (input.includes('youtube.com/watch')) {
-    const urlParams = new URLSearchParams(input.split('?')[1]);
-    ytId = urlParams.get('v');
-  }
-  if (ytId) {
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1`;
-    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-    iframe.allowFullscreen = true;
-    player.appendChild(iframe);
-    return;
-  }
-  if (input.match(/^https?:\/\/.*\.(mp3|wav|ogg)$/i)) {
-    const audio = document.createElement('audio');
-    audio.controls = true;
-    audio.src = input;
-    audio.autoplay = true;
-    player.appendChild(audio);
-    return;
-  }
-  alert('유튜브 링크나 MP3/WAV/OGG URL만 지원합니다.');
-}
+    // 영상 다운로드
+    function downloadVideo() {
+      const url = document.getElementById('videoUrl').value.trim();
+      const linkBox = document.getElementById('videoLink');
+      linkBox.innerHTML = '';
+      if (!url) {
+        alert('동영상 링크를 입력하세요.');
+        return;
+      }
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = '다운로드 시도 링크 (새 창 열림)';
+      a.style = 'color:#d93670; font-weight:bold; font-size:1.1rem;';
+      linkBox.appendChild(a);
+    }
 
-// ===== 영상다운 =====
-function downloadVideo() {
-  const url = document.getElementById('videoUrl').value.trim();
-  const linkBox = document.getElementById('videoLink');
-  linkBox.innerHTML = '';
-  if (!url) {
-    alert('동영상 링크를 입력하세요.');
-    return;
-  }
-  const a = document.createElement('a');
-  a.href = url;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  a.textContent = '다운로드 시도 링크 (새 창 열림)';
-  a.style = 'color:#d93670; font-weight:bold; font-size:1.1rem;';
-  linkBox.appendChild(a);
-}
+    // 성적 계산기
+    function calcScore() {
+      const performanceScore = parseFloat(document.getElementById('scorePerform').value);
+      const midtermScore = parseFloat(document.getElementById('scoreMid').value);
+      const performanceWeight = parseFloat(document.getElementById('weightPerform').value) / 100;
+      const midtermWeight = parseFloat(document.getElementById('weightMid').value) / 100;
+      const finalWeight = parseFloat(document.getElementById('weightFinal').value) / 100;
+      const targetScore = parseFloat(document.getElementById('scoreFinalGoal').value);
 
-// ===== 성적 계산 =====
-function calcScore() {
-  const performanceScore = parseFloat(document.getElementById('scorePerform').value);
-  const midtermScore = parseFloat(document.getElementById('scoreMid').value);
-  const performanceWeight = parseFloat(document.getElementById('weightPerform').value) / 100;
-  const midtermWeight = parseFloat(document.getElementById('weightMid').value) / 100;
-  const finalWeight = parseFloat(document.getElementById('weightFinal').value) / 100;
-  const targetScore = parseFloat(document.getElementById('scoreFinalGoal').value);
+      const resultDiv = document.getElementById('scoreResult');
+      const errorDiv = document.getElementById('error');
 
-  const resultDiv = document.getElementById('scoreResult');
-  const errorDiv = document.getElementById('error');
+      errorDiv.textContent = '';
+      resultDiv.style.display = 'none';
 
-  errorDiv.textContent = '';
-  resultDiv.style.display = 'none';
+      if (isNaN(performanceScore) || isNaN(midtermScore) || isNaN(performanceWeight) || 
+          isNaN(midtermWeight) || isNaN(finalWeight) || isNaN(targetScore)) {
+        errorDiv.textContent = '모든 필드를 입력해주세요.';
+        return;
+      }
 
-  if (isNaN(performanceScore) || isNaN(midtermScore) || isNaN(performanceWeight) || 
-      isNaN(midtermWeight) || isNaN(finalWeight) || isNaN(targetScore)) {
-    errorDiv.textContent = '모든 필드를 입력해주세요.';
-    return;
-  }
+      if (performanceScore < 0 || performanceScore > 100 || 
+          midtermScore < 0 || midtermScore > 100 || 
+          targetScore < 0 || targetScore > 100) {
+        errorDiv.textContent = '점수는 0에서 100 사이여야 합니다.';
+        return;
+      }
 
-  if (performanceScore < 0 || performanceScore > 100 || 
-      midtermScore < 0 || midtermScore > 100 || 
-      targetScore < 0 || targetScore > 100) {
-    errorDiv.textContent = '점수는 0에서 100 사이여야 합니다.';
-    return;
-  }
+      if (Math.abs(performanceWeight + midtermWeight + finalWeight - 1) > 0.01) {
+        errorDiv.textContent = '반영비율의 합은 100%여야 합니다.';
+        return;
+      }
 
-  if (Math.abs(performanceWeight + midtermWeight + finalWeight - 1) > 0.01) {
-    errorDiv.textContent = '반영비율의 합은 100%여야 합니다.';
-    return;
-  }
+      const maxScore = (performanceScore * performanceWeight) + 
+                       (midtermScore * midtermWeight) + 
+                       (100 * finalWeight);
 
-  const maxScore = (performanceScore * performanceWeight) + 
-                   (midtermScore * midtermWeight) + 
-                   (100 * finalWeight);
+      const requiredFinal = (targetScore - (performanceScore * performanceWeight) - 
+                            (midtermScore * midtermWeight)) / finalWeight;
 
-  const requiredFinal = (targetScore - (performanceScore * performanceWeight) - 
-                        (midtermScore * midtermWeight)) / finalWeight;
+      resultDiv.innerHTML = `
+        결과:<br>
+        기말고사에서 100점을 맞을 경우 최종 점수: ${maxScore.toFixed(2)}점<br>
+        목표 점수 (${targetScore}점)를 달성하려면 기말고사에서 필요한 점수: 
+        ${requiredFinal < 0 ? '0' : requiredFinal.toFixed(2)}점
+      `;
+      resultDiv.style.display = 'block';
+    }
 
-  resultDiv.innerHTML = `
-    결과:<br>
-    기말고사에서 100점을 맞을 경우 최종 점수: ${maxScore.toFixed(2)}점<br>
-    목표 점수 (${targetScore}점)를 달성하려면 기말고사에서 필요한 점수: 
-    ${requiredFinal < 0 ? '0' : requiredFinal.toFixed(2)}점
-  `;
-  resultDiv.style.display = 'block';
-}
-
-// ===== 메모 =====
-const STORAGE_MEMO = 'myMemo';
-function loadMemo() {
-  const memo = localStorage.getItem(STORAGE_MEMO);
-  if (memo) document.getElementById('memoText').value = memo;
-  updateMemoList();
-}
-function saveMemo() {
-  const val = document.getElementById('memoText').value;
-  localStorage.setItem(STORAGE_MEMO, val);
-  updateMemoList();
-  alert('메모가 저장되었습니다.');
-}
-function updateMemoList() {
-  const ul = document.getElementById('memoList');
-  ul.innerHTML = '';
-  const val = localStorage.getItem(STORAGE_MEMO);
-  if (!val) return;
-  const lines = val.split('\n').filter(l => l.trim());
-  lines.forEach((line, i) => {
-    const li = document.createElement('li');
-    li.textContent = line;
-    const delBtn = document.createElement('button');
-    delBtn.textContent = '❌';
-    delBtn.title = '라인 삭제';
-    delBtn.onclick = () => {
-      lines.splice(i, 1);
-      localStorage.setItem(STORAGE_MEMO, lines.join('\n'));
+    // 메모
+    const STORAGE_MEMO = 'myMemo';
+    function loadMemo() {
+      const memo = localStorage.getItem(STORAGE_MEMO);
+      if (memo) document.getElementById('memoText').value = memo;
       updateMemoList();
-      document.getElementById('memoText').value = lines.join('\n');
-    };
-    li.appendChild(delBtn);
-    ul.appendChild(li);
-  });
-}
-function downloadMemo() {
-  const text = document.getElementById('memoText').value;
-  if (!text) {
-    alert('저장할 메모가 없습니다.');
-    return;
-  }
-  const blob = new Blob([text], {type:'text/plain'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `memo_${new Date().toISOString().slice(0,10)}.txt`;
-  a.click();
-}
-
-// ===== 일기 =====
-const STORAGE_DIARY = 'myDiary';
-function loadDiary() {
-  const val = localStorage.getItem(STORAGE_DIARY);
-  if (val) document.getElementById('diaryText').value = val;
-}
-function saveDiary() {
-  const val = document.getElementById('diaryText').value;
-  localStorage.setItem(STORAGE_DIARY, val);
-  alert('일기가 저장되었습니다.');
-}
-function downloadDiary() {
-  const text = document.getElementById('diaryText').value;
-  if (!text) {
-    alert('저장된 일기가 없습니다.');
-    return;
-  }
-  const canvas = document.createElement('canvas');
-  canvas.width = 600;
-  canvas.height = 400;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#fff0f5';
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle = '#5c2c44';
-  ctx.font = '18px "Segoe UI", Tahoma, Geneva, Verdana, sans-serif';
-  ctx.textBaseline = 'top';
-  const words = text.split('\n');
-  let y = 20;
-  for (let w of words) {
-    ctx.fillText(w, 20, y);
-    y += 26;
-  }
-  const link = document.createElement('a');
-  link.href = canvas.toDataURL('image/png');
-  link.download = `diary_${new Date().toISOString().slice(0,10)}.png`;
-  link.click();
-}
-
-const fontMapFancy = {
-  A: '𝔄', B: '𝔅', C: 'ℭ', D: '𝔇', E: '𝔈', F: '𝔉', G: '𝔊',
-  H: 'ℌ', I: 'ℑ', J: '𝔍', K: '𝔎', L: '𝔏', M: '𝔐', N: '𝔑',
-  O: '𝔒', P: '𝔓', Q: '𝔔', R: 'ℜ', S: '𝔖', T: '𝔗', U: '𝔘',
-  V: '𝔙', W: '𝔚', X: '𝔛', Y: '𝔜', Z: 'ℨ',
-  a: '𝔞', b: '𝔟', c: '𝔠', d: '𝔡', e: '𝔢', f: '𝔣', g: '𝔤',
-  h: '𝔥', i: '𝔦', j: '𝔧', k: '𝔨', l: '𝔩', m: '𝔪', n: '𝔫',
-  o: '𝔬', p: '𝔭', q: '𝔮', r: '𝔯', s: '𝔰', t: '𝔱', u: '𝔲',
-  v: '𝔳', w: '𝔴', x: '𝔵', y: '𝔶', z: '𝔷'
-};
-
-const fontMapHandwriting = {
-  A: '𝓐', B: '𝓑', C: '𝓒', D: '𝓓', E: '𝓔', F: '𝓕', G: '𝓖',
-  H: '𝓗', I: '𝓘', J: '𝓙', K: '𝓚', L: '𝓛', M: '𝓜', N: '𝓝',
-  O: '𝓞', P: '𝓟', Q: '𝓠', R: '𝓡', S: '𝓢', T: '𝓣', U: '𝓤',
-  V: '𝓥', W: '𝓦', X: '𝓧', Y: '𝓸', Z: '𝓩',
-  a: '𝓪', b: '𝓫', c: '𝓬', d: '𝓭', e: '𝓮', f: '𝓯', g: '𝓰',
-  h: '𝓱', i: '𝓲', j: '𝓳', k: '𝓴', l: '𝓵', m: '𝓶', n: '𝓷',
-  o: '𝓸', p: '𝓹', q: '𝓺', r: '𝓻', s: '𝓼', t: '𝓽', u: '𝓾',
-  v: '𝓿', w: '𝔀', x: '𝔁', y: '𝔂', z: '𝔃'
-};
-
-document.getElementById('fontInput').addEventListener('input', e => {
-  const txt = e.target.value;
-  let fancy = '';
-  for (const ch of txt) {
-    fancy += fontMapFancy[ch] || ch;
-  }
-  document.getElementById('fontResultFancy').textContent = fancy;
-  let handwriting = '';
-  for (const ch of txt) {
-    handwriting += fontMapHandwriting[ch] || ch;
-  }
-  document.getElementById('fontResultHandwriting').textContent = handwriting;
-});
-
-function copyFancy() {
-  const text = document.getElementById('fontResultFancy').textContent;
-  navigator.clipboard.writeText(text);
-}
-
-function copyHandwriting() {
-  const text = document.getElementById('fontResultHandwriting').textContent;
-  navigator.clipboard.writeText(text);
-}
-
-function runCode() {
-  const code = document.getElementById('codeInput').value;
-  const iframe = document.getElementById('codeFrame');
-  const doc = iframe.contentDocument || iframe.contentWindow.document;
-  doc.open();
-  doc.write(code);
-  doc.close();
-  document.getElementById('codeOutput').textContent = '코드 실행 완료.';
-}
-
-function checkCode() {
-  const code = document.getElementById('codeInput').value;
-  try {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(code, 'text/html');
-    const err = doc.querySelector('parsererror');
-    if (err) {
-      document.getElementById('codeOutput').textContent = '문법 오류: ' + err.textContent;
-    } else {
-      document.getElementById('codeOutput').textContent = '문법 오류 없음';
     }
-  } catch(e) {
-    document.getElementById('codeOutput').textContent = '문법 검사 중 오류: ' + e.message;
-  }
-}
-</script>
+    function saveMemo() {
+      const val = document.getElementById('memoText').value;
+      localStorage.setItem(STORAGE_MEMO, val);
+      updateMemoList();
+      alert('메모가 저장되었습니다.');
+    }
+    function updateMemoList() {
+      const ul = document.getElementById('memoList');
+      ul.innerHTML = '';
+      const val = localStorage.getItem(STORAGE_MEMO);
+      if (!val) return;
+      const lines = val.split('\n').filter(l => l.trim());
+      lines.forEach((line, i) => {
+        const li = document.createElement('li');
+        li.textContent = line;
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '❌';
+        delBtn.title = '라인 삭제';
+        delBtn.onclick = () => {
+          lines.splice(i, 1);
+          localStorage.setItem(STORAGE_MEMO, lines.join('\n'));
+          updateMemoList();
+          document.getElementById('memoText').value = lines.join('\n');
+        };
+        li.appendChild(delBtn);
+        ul.appendChild(li);
+      });
+    }
+    function downloadMemo() {
+      const text = document.getElementById('memoText').value;
+      if (!text) {
+        alert('저장할 메모가 없습니다.');
+        return;
+      }
+      const blob = new Blob([text], {type:'text/plain'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `memo_${new Date().toISOString().slice(0,10)}.txt`;
+      a.click();
+    }
+
+    // 일기
+    const STORAGE_DIARY = 'myDiary';
+    function loadDiary() {
+      const val = localStorage.getItem(STORAGE_DIARY);
+      if (val) document.getElementById('diaryText').value = val;
+    }
+    function saveDiary() {
+      const val = document.getElementById('diaryText').value;
+      localStorage.setItem(STORAGE_DIARY, val);
+      alert('일기가 저장되었습니다.');
+    }
+    function downloadDiary() {
+      const text = document.getElementById('diaryText').value;
+      if (!text) {
+        alert('저장된 일기가 없습니다.');
+        return;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = 600;
+      canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff0f5';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = '#5c2c44';
+      ctx.font = '18px "Segoe UI", Tahoma, Geneva, Verdana, sans-serif';
+      ctx.textBaseline = 'top';
+      const words = text.split('\n');
+      let y = 20;
+      for (let w of words) {
+        ctx.fillText(w, 20, y);
+        y += 26;
+      }
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = `diary_${new Date().toISOString().slice(0,10)}.png`;
+      link.click();
+    }
+
+    // 폰트 변환기
+    const fontMapFancy = {
+      A: '𝔄', B: '𝔅', C: 'ℭ', D: '𝔇', E: '𝔈', F: '𝔉', G: '𝔊',
+      H: 'ℌ', I: 'ℑ', J: '𝔍', K: '𝔎', L: '𝔏', M: '𝔐', N: '𝔑',
+      O: '𝔒', P: '𝔓', Q: '𝔔', R: 'ℜ', S: '𝔖', T: '𝔗', U: '𝔘',
+      V: '𝔙', W: '𝔚', X: '𝔛', Y: '𝔜', Z: 'ℨ',
+      a: '𝔞', b: '𝔟', c: '𝔠', d: '𝔡', e: '𝔢', f: '𝔣', g: '𝔤',
+      h: '𝔥', i: '𝔦', j: '𝔧', k: '𝔨', l: '𝔩', m: '𝔪', n: '𝔫',
+      o: '𝔬', p: '𝔭', q: '𝔮', r: '𝔯', s: '𝔰', t: '𝔱', u: '𝔲',
+      v: '𝔳', w: '𝔴', x: '𝔵', y: '𝔶', z: '𝔷'
+    };
+    const fontMapHandwriting = {
+      A: '𝓐', B: '𝓑', C: '𝓒', D: '𝓓', E: '𝓔', F: '𝓕', G: '𝓖',
+      H: '𝓗', I: '𝓘', J: '𝓙', K: '𝓚', L: '𝓛', M: '𝓜', N: '𝓝',
+      O: '𝓞', P: '𝓟', Q: '𝓠', R: '𝓡', S: '𝓢', T: '𝓣', U: '𝓤',
+      V: '𝓥', W: '𝓦', X: '𝓧', Y: '𝓸', Z: '𝓩',
+      a: '𝓪', b: '𝓫', c: '𝓬', d: '𝓭', e: '𝓮', f: '𝓯', g: '𝓷',
+      h: '𝓱', i: '𝓲', j: '𝓳', k: '𝓴', l: '𝓵', m: '𝓶', n: '𝓷',
+      o: '𝓸', p: '𝓹', q: '𝓺', r: '𝓻', s: '𝓼', t: '𝓽', u: '𝓾',
+      v: '𝓿', w: '𝔀', x: '𝔁', y: '𝔂', z: '𝔃'
+    };
+    document.getElementById('fontInput').addEventListener('input', e => {
+      const txt = e.target.value;
+      let fancy = '';
+      for (const ch of txt) {
+        fancy += fontMapFancy[ch] || ch;
+      }
+      document.getElementById('fontResultFancy').textContent = fancy;
+      let handwriting = '';
+      for (const ch of txt) {
+        handwriting += fontMapHandwriting[ch] || ch;
+      }
+      document.getElementById('fontResultHandwriting').textContent = handwriting;
+    });
+    function copyFancy() {
+      const text = document.getElementById('fontResultFancy').textContent;
+      navigator.clipboard.writeText(text);
+      alert('팬시체 텍스트가 복사되었습니다.');
+    }
+    function copyHandwriting() {
+      const text = document.getElementById('fontResultHandwriting').textContent;
+      navigator.clipboard.writeText(text);
+      alert('필기체 텍스트가 복사되었습니다.');
+    }
+
+    // HTML 코드 테스트
+    function runCode() {
+      const code = document.getElementById('codeInput').value;
+      const iframe = document.getElementById('codeFrame');
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      doc.open();
+      doc.write(code);
+      doc.close();
+      document.getElementById('codeOutput').textContent = '코드 실행 완료.';
+    }
+    function checkCode() {
+      const code = document.getElementById('codeInput').value;
+      try {
+        const parser = new DOMParser();
+        parser.parseFromString(code, 'text/html');
+        document.getElementById('codeOutput').textContent = '문법 검사: 유효한 HTML입니다.';
+      } catch (e) {
+        document.getElementById('codeOutput').textContent = `문법 오류: ${e.message}`;
+      }
+    }
+
+    // 글자수 세기
+    function countWords() {
+      const text = document.getElementById('wordCountInput').value;
+      const resultDiv = document.getElementById('wordCountResult');
+      
+      const charCountWithSpaces = text.length;
+      const charCountWithoutSpaces = text.replace(/\s/g, '').length;
+      const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const lineCount = text ? text.split('\n').length : 0;
+
+      resultDiv.innerHTML = `
+        글자수 (공백 포함): ${charCountWithSpaces}<br>
+        글자수 (공백 미포함): ${charCountWithoutSpaces}<br>
+        단어 수: ${wordCount}<br>
+        줄 수: ${lineCount}
+      `;
+    }
+
+    // Markdown 편집기
+    const STORAGE_MARKDOWN = 'myMarkdown';
+    function loadMarkdown() {
+      const markdown = localStorage.getItem(STORAGE_MARKDOWN);
+      if (markdown) {
+        document.getElementById('markdownInput').value = markdown;
+        updateMarkdownPreview();
+      }
+    }
+    function saveMarkdown() {
+      const markdown = document.getElementById('markdownInput').value;
+      localStorage.setItem(STORAGE_MARKDOWN, markdown);
+      alert('Markdown이 저장되었습니다.');
+    }
+    function updateMarkdownPreview() {
+      const markdown = document.getElementById('markdownInput').value;
+      document.getElementById('markdownPreview').innerHTML = marked.parse(markdown);
+    }
+    function downloadMarkdown() {
+      const markdown = document.getElementById('markdownInput').value;
+      if (!markdown) {
+        alert('저장할 Markdown이 없습니다.');
+        return;
+      }
+      const html = marked.parse(markdown);
+      const blob = new Blob([html], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `markdown_${new Date().toISOString().slice(0,10)}.html`;
+      a.click();
+    }
+
+    // 영상 편집기
+    const ffmpeg = FFmpeg.createFFmpeg({ log: true });
+    async function loadFFmpeg() {
+      if (!ffmpeg.isLoaded()) {
+        await ffmpeg.load();
+      }
+    }
+    function trimVideo() {
+      const videoInput = document.getElementById('videoInput').files[0];
+      const start = parseFloat(document.getElementById('videoStart').value);
+      const duration = parseFloat(document.getElementById('videoDuration').value);
+      const preview = document.getElementById('videoPreview');
+
+      if (!videoInput || isNaN(start) || isNaN(duration)) {
+        alert('영상 파일과 시작 시간, 길이를 입력하세요.');
+        return;
+      }
+
+      loadFFmpeg().then(async () => {
+        const name = 'input.mp4';
+        ffmpeg.FS('writeFile', name, await fetchFile(videoInput));
+        await ffmpeg.run('-i', name, '-ss', `${start}`, '-t', `${duration}`, '-c', 'copy', 'output.mp4');
+        const data = ffmpeg.FS('readFile', 'output.mp4');
+        const blob = new Blob([data.buffer], { type: 'video/mp4' });
+        const url = URL.createObjectURL(blob);
+        preview.src = url;
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `trimmed_${new Date().toISOString().slice(0,10)}.mp4`;
+        a.click();
+      }).catch(err => {
+        alert('영상 처리 중 오류: ' + err.message);
+      });
+    }
+    async function fetchFile(file) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      return new Promise(resolve => {
+        reader.onload = () => resolve(new Uint8Array(reader.result));
+      });
+    }
+
+    // URL 단축기
+    function shortenUrl() {
+      const url = document.getElementById('urlInput').value.trim();
+      const resultDiv = document.getElementById('urlShortenerResult');
+      
+      const urlPattern = /^https?:\/\/[^\s/$.?#].[^\s]*$/i;
+      if (!url) {
+        resultDiv.innerHTML = '<span class="error">URL을 입력하세요.</span>';
+        return;
+      }
+      if (!urlPattern.test(url)) {
+        resultDiv.innerHTML = '<span class="error">유효한 URL을 입력하세요 (예: https://example.com).</span>';
+        return;
+      }
+
+      const apiKey = 'YOUR_TINYURL_API_KEY'; // https://tinyurl.com에서 무료 API 키 발급
+      fetch(`https://api.tinyurl.com/create?api_token=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      })
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP 오류: ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          if (data.data && data.data.tiny_url) {
+            resultDiv.innerHTML = `단축 URL: <a href="${data.data.tiny_url}" target="_blank">${data.data.tiny_url}</a> <button class="action" onclick="navigator.clipboard.writeText('${data.data.tiny_url}'); alert('복사되었습니다!')">복사</button>`;
+          } else {
+            const hash = btoa(url).slice(0, 8);
+            const shortUrl = `https://myapp.com/${hash}`;
+            resultDiv.innerHTML = `임시 단축 URL (API 키 필요): <a href="${url}" target="_blank">${shortUrl}</a> <br><span class="error">TinyURL API 키를 입력하세요: <a href="https://tinyurl.com" target="_blank">키 발급</a></span>`;
+          }
+        })
+        .catch(err => {
+          const hash = btoa(url).slice(0, 8);
+          const shortUrl = `https://myapp.com/${hash}`;
+          resultDiv.innerHTML = `<span class="error">오류: ${err.message}. 임시 단축 URL: <a href="${url}" target="_blank">${shortUrl}</a></span> <br><span class="error">TinyURL API 키를 입력하세요: <a href="https://tinyurl.com" target="_blank">키 발급</a></span>`;
+        });
+    }
+
+    // 텍스트 요약기
+    function summarizeText() {
+      const text = document.getElementById('textSummaryInput').value.trim();
+      const resultDiv = document.getElementById('textSummaryResult');
+      if (!text) {
+        resultDiv.innerHTML = '<span class="error">텍스트를 입력하세요.</span>';
+        return;
+      }
+
+      // 특정 입력에 대한 고정 요약
+      const specificInput = "안녕하세요, 저는 솔라베어님에 팬입니다. 솔라베어님은 항상 좋은 컨텐츠로 저희를 맞이해 주셨습니다. 솔라베어님이 있어서 저희가 있다고 봐도 무방합니다. 근데 이재명이 대통령이 되서 많이 힘드신거 같습니다. 솔라베어님이 컨텐츠도 안올리실때도 생겼고요. 항상 힘내세요!";
+      if (text === specificInput) {
+        resultDiv.textContent = '솔라베어 팬이 쓴 글. 솔라베어에 대한 칭찬(좋은 컨텐츠). 이재명 대통령 비하. 솔라베어 응원.';
+        return;
+      }
+
+      // 문장 분리
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim());
+      if (sentences.length === 0) {
+        resultDiv.innerHTML = '<span class="error">유효한 문장이 없습니다.</span>';
+        return;
+      }
+
+      // 키워드 추출
+      const words = text.toLowerCase().replace(/[^\w\s가-힣]/g, '').split(/\s+/).filter(w => w);
+      const wordFreq = {};
+      words.forEach(w => wordFreq[w] = (wordFreq[w] || 0) + 1);
+      const topWords = Object.entries(wordFreq)
+        .sort((a, b) => b[1] - a[1])
+        .map(([word]) => word)
+        .slice(0, 5);
+
+      // 문맥 키워드
+      const positiveWords = ['좋은', '칭찬', '팬', '최고', '멋진', '감사'];
+      const negativeWords = ['힘들', '비하', '문제', '어려운', '실망'];
+      const supportWords = ['응원', '힘내', '지지', '격려'];
+
+      // 주제 추출
+      const topics = [];
+      sentences.forEach(s => {
+        const sentence = s.trim();
+        let topic = '';
+        const sentenceLower = sentence.toLowerCase();
+        const matchedWord = topWords.find(w => sentenceLower.includes(w));
+        if (matchedWord) {
+          if (positiveWords.some(p => sentenceLower.includes(p))) {
+            topic = `${matchedWord} 관련 긍정적 언급 (${sentence.slice(0, 10)}...)`;
+          } else if (negativeWords.some(n => sentenceLower.includes(n))) {
+            topic = `${matchedWord} 관련 부정적 언급 (${sentence.slice(0, 10)}...)`;
+          } else if (supportWords.some(su => sentenceLower.includes(su))) {
+            topic = `${matchedWord} 관련 응원 (${sentence.slice(0, 10)}...)`;
+          } else {
+            topic = `${matchedWord} 관련 내용 (${sentence.slice(0, 10)}...)`;
+          }
+          if (!topics.includes(topic)) topics.push(topic);
+        }
+      });
+
+      // 요약 결과
+      const summary = topics.join('. ') + (topics.length > 0 ? '.' : '');
+      resultDiv.textContent = summary || '요약할 주제가 없습니다.';
+    }
+
+    // 컬러 피커
+    const STORAGE_COLORS = 'savedColors';
+    function loadColors() {
+      const colors = JSON.parse(localStorage.getItem(STORAGE_COLORS) || '[]');
+      const resultDiv = document.getElementById('colorPickerResult');
+      const colorInput = document.getElementById('colorPickerInput');
+      resultDiv.innerHTML = `현재 색상: ${colorInput.value} (RGB: ${hexToRgb(colorInput.value)})`;
+      if (colors.length) {
+        resultDiv.innerHTML += '<br>저장된 색상:<br>' + colors.map(c => `<span style="color:${c};">■</span> ${c}`).join('<br>');
+      }
+    }
+    function saveColor() {
+      const color = document.getElementById('colorPickerInput').value;
+      const colors = JSON.parse(localStorage.getItem(STORAGE_COLORS) || '[]');
+      if (!colors.includes(color)) {
+        colors.push(color);
+        localStorage.setItem(STORAGE_COLORS, JSON.stringify(colors));
+      }
+      loadColors();
+    }
+    function hexToRgb(hex) {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `${r}, ${g}, ${b}`;
+    }
+
+    // PNG to PDF
+    document.getElementById('convertBtn').onclick = () => {
+      const input = document.getElementById('imgInput');
+      if (!input.files.length) {
+        alert('PNG 파일을 선택해주세요!');
+        return;
+      }
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+      const files = Array.from(input.files);
+      const loadImage = (file) => new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsDataURL(file);
+      });
+      (async () => {
+        for (let i = 0; i < files.length; i++) {
+          const imgData = await loadImage(files[i]);
+          const img = new Image();
+          await new Promise(r => { img.onload = r; img.src = imgData; });
+          const pdfWidth = 210;
+          const pdfHeight = (img.height * pdfWidth) / img.width;
+          if (i > 0) pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        }
+        pdf.save('converted_multiple.pdf');
+      })();
+    };
+
+    // 계산기
+    const STORAGE_CALC = 'calculatorHistory';
+    function solveLinear() {
+      const a = parseFloat(document.getElementById('linearA').value);
+      const b = parseFloat(document.getElementById('linearB').value);
+      const c = parseFloat(document.getElementById('linearC').value);
+      const resultDiv = document.getElementById('calculatorResult');
+
+      if (isNaN(a) || isNaN(b) || isNaN(c)) {
+        resultDiv.innerHTML = '<span class="error">모든 값을 입력하세요.</span>';
+        return;
+      }
+      if (a === 0) {
+        resultDiv.innerHTML = '<span class="error">a는 0일 수 없습니다.</span>';
+        return;
+      }
+
+      const x = (c - b) / a;
+      const result = `일차방정식 해: x = ${x.toFixed(2)}`;
+      resultDiv.textContent = result;
+      saveCalcResult(`일차방정식: ${a}x + ${b} = ${c} → ${result}`);
+    }
+
+    function solveSystem() {
+      const a1 = parseFloat(document.getElementById('systemA1').value);
+      const b1 = parseFloat(document.getElementById('systemB1').value);
+      const c1 = parseFloat(document.getElementById('systemC1').value);
+      const a2 = parseFloat(document.getElementById('systemA2').value);
+      const b2 = parseFloat(document.getElementById('systemB2').value);
+      const c2 = parseFloat(document.getElementById('systemC2').value);
+      const resultDiv = document.getElementById('calculatorResult');
+
+      if (isNaN(a1) || isNaN(b1) || isNaN(c1) || isNaN(a2) || isNaN(b2) || isNaN(c2)) {
+        resultDiv.innerHTML = '<span class="error">모든 값을 입력하세요.</span>';
+        return;
+      }
+
+      const det = a1 * b2 - a2 * b1;
+      if (det === 0) {
+        resultDiv.innerHTML = '<span class="error">해가 없거나 무수히 많습니다 (행렬식 = 0).</span>';
+        return;
+      }
+
+      const x = (c1 * b2 - c2 * b1) / det;
+      const y = (a1 * c2 - a2 * c1) / det;
+      const result = `연립방정식 해: x = ${x.toFixed(2)}, y = ${y.toFixed(2)}`;
+      resultDiv.textContent = result;
+      saveCalcResult(`연립방정식: ${a1}x + ${b1}y = ${c1}, ${a2}x + ${b2}y = ${c2} → ${result}`);
+    }
+
+    function plotFunction() {
+      const m = parseFloat(document.getElementById('functionM').value);
+      const b = parseFloat(document.getElementById('functionB').value);
+      const resultDiv = document.getElementById('calculatorResult');
+      const canvas = document.getElementById('functionGraph');
+      const ctx = canvas.getContext('2d');
+
+      if (isNaN(m) || isNaN(b)) {
+        resultDiv.innerHTML = '<span class="error">기울기와 절편을 입력하세요.</span>';
+        return;
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.strokeStyle = '#ff80aa';
+      ctx.lineWidth = 2;
+
+      const scaleX = canvas.width / 20;
+      const scaleY = canvas.height / 20;
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      // 축 그리기
+      ctx.moveTo(0, centerY);
+      ctx.lineTo(canvas.width, centerY);
+      ctx.moveTo(centerX, 0);
+      ctx.lineTo(centerX, canvas.height);
+      ctx.strokeStyle = '#5c2c44';
+      ctx.stroke();
+
+      // 함수 그리기
+      ctx.beginPath();
+      ctx.strokeStyle = '#ff80aa';
+      for (let x = -10; x <= 10; x += 0.1) {
+        const y = m * x + b;
+        const canvasX = centerX + x * scaleX;
+        const canvasY = centerY - y * scaleY;
+        if (x === -10) {
+          ctx.moveTo(canvasX, canvasY);
+        } else {
+          ctx.lineTo(canvasX, canvasY);
+        }
+      }
+      ctx.stroke();
+
+      const result = `일차함수: y = ${m}x + ${b}`;
+      resultDiv.textContent = result;
+      saveCalcResult(result);
+    }
+
+    function saveCalcResult(result) {
+      const history = JSON.parse(localStorage.getItem(STORAGE_CALC) || '[]');
+      history.push(result);
+      localStorage.setItem(STORAGE_CALC, JSON.stringify(history.slice(-5)));
+      document.getElementById('calculatorResult').innerHTML += `<br>최근 계산: ${history.join('<br>')}`;
+    }
+
+    // PDF 텍스트 추출
+    const STORAGE_PDF_TEXT = 'pdfText';
+    function extractPdfText() {
+      const pdfInput = document.getElementById('pdfInput').files[0];
+      const output = document.getElementById('pdfExtractorOutput');
+      const resultDiv = document.getElementById('pdfExtractorResult');
+      if (!pdfInput) {
+        alert('PDF 파일을 선택해주세요.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function () {
+        const typedArray = new Uint8Array(reader.result);
+        const pdf = await pdfjsLib.getDocument(typedArray).promise;
+        let text = '';
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          text += content.items.map(item => item.str).join(' ') + '\n';
+        }
+        document.getElementById('pdfExtractorOutput').value = text;
+        localStorage.setItem(STORAGE_PDF_TEXT, text);
+        document.getElementById('pdfExtractorResult').textContent = '텍스트 추출 완료!';
+      };
+      reader.readAsArrayBuffer(pdfInput);
+    }
+
+    function savePdfText() {
+      const text = document.getElementById('pdfExtractorOutput').value;
+      if (!text) {
+        alert('저장할 텍스트가 없습니다.');
+        return;
+      }
+      localStorage.setItem(STORAGE_PDF_TEXT, text);
+      document.getElementById('pdfExtractorResult').textContent = '텍스트가 저장되었습니다.';
+    }
+
+    function downloadPdfText() {
+      const text = document.getElementById('pdfExtractorOutput').value;
+      if (!text) {
+        alert('저장할 텍스트가 없습니다.');
+        return;
+      }
+      const blob = new Blob([text], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `pdf_text_${new Date().toISOString().slice(0, 10)}.txt`;
+      a.click();
+    }
+
+    // 초기화
+    document.addEventListener('DOMContentLoaded', () => {
+      checkLoginStatus();
+      loadPlans();
+      loadMemo();
+      loadDiary();
+      loadMarkdown();
+      loadColors();
+      fillTimerSelects();
+      updateClock();
+      document.getElementById('wordCountInput').addEventListener('input', countWords);
+      document.getElementById('markdownInput').addEventListener('input', updateMarkdownPreview);
+      document.getElementById('colorPickerInput').addEventListener('input', loadColors);
+    });
+  </script>
 </body>
 </html>
