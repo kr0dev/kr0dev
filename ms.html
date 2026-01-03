@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Minecraft 계정 인증-솔라베어</title>
+
+  <style>
+    body {
+      background:#0f172a;
+      color:white;
+      font-family:Arial, sans-serif;
+    }
+
+    .container {
+      width:420px;
+      margin:60px auto;
+      padding:20px;
+      background:#020617;
+      border-radius:10px;
+    }
+
+    h2 {
+      text-align:center;
+    }
+
+    input, button {
+      width:100%;
+      padding:10px;
+      margin-top:8px;
+      border-radius:6px;
+      border:none;
+    }
+
+    button {
+      background:#38bdf8;
+      cursor:pointer;
+      font-weight:bold;
+      margin-top:15px;
+    }
+
+    .terms {
+      display:flex;
+      align-items:center;
+      gap:6px;
+      margin-top:10px;
+      font-size:14px;
+    }
+
+    .terms button {
+      width:auto;
+      padding:5px 10px;
+      background:#1e293b;
+      color:white;
+    }
+
+    .hidden {
+      display:none;
+    }
+
+    .terms-box {
+      background:#020617;
+      border:1px solid #1e293b;
+      padding:10px;
+      border-radius:6px;
+      margin-top:10px;
+      font-size:14px;
+    }
+
+    .hint {
+      font-size:13px;
+      color:#94a3b8;
+    }
+
+    a {
+      color:#38bdf8;
+      text-decoration:none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>솔라베어 마인크래프트 계정 인증</h2>
+
+  <form id="verifyForm">
+    <label>디스코드 유저 태그(예: ribon_happy) </label>
+    <input type="text" id="discordTag" placeholder="username#1234" required>
+
+    <label>마인크래프트 닉네임(예: Solbe_YT)</label>
+    <input type="text" id="mcName" required>
+
+    <label>마인크래프트 계정 인증 사진</label>
+    <p class="hint">
+      👉 <a href="https://www.minecraft.net/ko-kr/msaprofile" target="_blank">
+      https://www.minecraft.net/ko-kr/msaprofile</a> 에서 프로필 화면 캡쳐
+    </p>
+    <input type="file" id="image" accept="image/*" required>
+
+    <div class="terms">
+      <input type="checkbox" id="agree" required>
+      <span>이용약관 동의</span>
+      <button type="button" id="readTerms">이용약관 읽기</button>
+    </div>
+
+    <div id="termsBox" class="terms-box hidden">
+      <p>
+        여러분들의 마인크래프트 계정 관련 정보들은 모두 인증용으로만 사용됩니다.<br><br>
+        계정 관련 정보를 인증용으로 사용해도 되겠습니까?
+      </p>
+      <label>
+        <input type="checkbox" id="termsCheck">
+        동의합니다
+      </label>
+    </div>
+
+    <button type="submit">인증 제출</button>
+  </form>
+</div>
+
+<script>
+  const webhookURL =
+  "https://discord.com/api/webhooks/1456960548435656705/jroTgbIY44BAXNYGdornH4e8-gtb4SzCuhMFlFWWq3rpPqA8lE_fzIwz6McyXEwYNFJj";
+
+  document.getElementById("readTerms").onclick = () => {
+    document.getElementById("termsBox").classList.toggle("hidden");
+  };
+
+  document.getElementById("verifyForm").onsubmit = async (e) => {
+    e.preventDefault();
+
+    if (!document.getElementById("termsCheck").checked) {
+      alert("이용약관에 동의해야 합니다.");
+      return;
+    }
+
+    const discordTag = document.getElementById("discordTag").value;
+    const mcName = document.getElementById("mcName").value;
+    const image = document.getElementById("image").files[0];
+
+    const formData = new FormData();
+    formData.append("file", image);
+
+    formData.append("payload_json", JSON.stringify({
+      embeds: [{
+        title: "🟢 마인크래프트 계정 인증 요청",
+        color: 0x00ff99,
+        fields: [
+          { name: "디스코드 유저 태그", value: discordTag, inline: false },
+          { name: "마인크래프트 닉네임", value: mcName, inline: false }
+        ],
+        image: {
+          url: "attachment://" + image.name
+        },
+        footer: {
+          text: "관리자가 !수락 @유저 로 승인"
+        }
+      }]
+    }));
+
+    await fetch(webhookURL, {
+      method: "POST",
+      body: formData
+    });
+
+    alert("인증이 제출되었습니다!");
+    document.getElementById("verifyForm").reset();
+    document.getElementById("termsBox").classList.add("hidden");
+  };
+</script>
+
+</body>
+</html>
 
