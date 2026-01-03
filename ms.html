@@ -175,29 +175,74 @@
 </div>
 
 <script>
-  const webhookURL = "웹훅_URL_여기";
+const webhookURL =
+"https://discord.com/api/webhooks/1456960548435656705/jroTgbIY44BAXNYGdornH4e8-gtb4SzCuhMFlFWWq3rpPqA8lE_fzIwz6McyXEwYNFJj";
 
-  const file = document.getElementById("file");
-  const fileName = document.getElementById("fileName");
+const file = document.getElementById("file");
+const fileName = document.getElementById("fileName");
 
-  file.onchange = () => {
-    fileName.textContent = file.files[0]?.name || "선택된 파일 없음";
-  };
+file.onchange = () => {
+  fileName.textContent = file.files[0]?.name || "선택된 파일 없음";
+};
 
-  document.getElementById("readTerms").onclick = () => {
-    document.getElementById("termsBox").classList.toggle("hidden");
-  };
+document.getElementById("readTerms").onclick = () => {
+  document.getElementById("termsBox").classList.toggle("hidden");
+};
 
-  document.getElementById("verifyForm").onsubmit = async (e) => {
-    e.preventDefault();
+document.getElementById("verifyForm").onsubmit = async (e) => {
+  e.preventDefault();
 
-    if (!document.getElementById("termsCheck").checked) {
-      alert("이용약관에 동의해주세요.");
-      return;
-    }
+  if (!document.getElementById("termsCheck").checked) {
+    alert("이용약관에 동의해주세요.");
+    return;
+  }
 
-    alert("인증 UI 완료 (웹훅 전송 부분 기존 코드 유지)");
-  };
+  const discordTag = document.getElementById("discordTag").value;
+  const mcName = document.getElementById("mcName").value;
+  const image = file.files[0];
+
+  if (!image) {
+    alert("인증 사진을 선택해주세요.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", image);
+
+  formData.append("payload_json", JSON.stringify({
+    content: "📥 **새 마인크래프트 인증 요청 도착**",
+    embeds: [{
+      title: "🟢 솔라베어 마인크래프트 계정 인증",
+      color: 0x38bdf8,
+      fields: [
+        { name: "디스코드 유저", value: discordTag, inline: false },
+        { name: "마인크래프트 닉네임", value: mcName, inline: false }
+      ],
+      image: { url: "attachment://" + image.name },
+      footer: { text: "!수락 @유저 로 승인" },
+      timestamp: new Date()
+    }]
+  }));
+
+  try {
+    const res = await fetch(webhookURL, {
+      method: "POST",
+      body: formData
+    });
+
+    if (!res.ok) throw new Error("Webhook error");
+
+    alert("✅ 인증이 정상적으로 제출되었습니다!\n관리자의 승인을 기다려주세요.");
+
+    document.getElementById("verifyForm").reset();
+    document.getElementById("termsBox").classList.add("hidden");
+    fileName.textContent = "선택된 파일 없음";
+
+  } catch (err) {
+    alert("❌ 인증 전송에 실패했습니다. 다시 시도해주세요.");
+    console.error(err);
+  }
+};
 </script>
 
 </body>
