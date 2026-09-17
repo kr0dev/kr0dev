@@ -416,37 +416,142 @@
 
     /* 번역기 전용 스타일 */
 /* 언어 선택 영역 스티일 */
-.trans-lang-select-group {
+/* 번역기 영역 전체 스타일 */
+#translator {
+  margin-top: 20px;
+}
+
+/* 출발어/도착어 셀렉트 박스 디자인 */
+.trans-lang-group {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 15px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .trans-select {
   flex: 1;
-  padding: 10px 14px;
+  padding: 10px 12px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: #1e293b;
-  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(20, 24, 33, 0.9);
+  color: #05d9e8;
   font-size: 0.9rem;
   font-weight: 600;
   outline: none;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.trans-select:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
 }
 
 .trans-arrow {
-  color: #818cf8;
+  color: #ff2a6d;
   font-weight: bold;
   font-size: 1.1rem;
-  user-select: none;
+}
+
+/* 말투 라디오 버튼 */
+.trans-mode-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 12px;
+  font-size: 0.88rem;
+  color: #e0e6ed;
+}
+
+.trans-mode-group label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 입력창 */
+#transInput {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(10, 12, 16, 0.8);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+/* 번역 버튼 */
+.trans-submit-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #ff2a6d 0%, #9a1f6e 100%);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 42, 109, 0.3);
+  transition: transform 0.1s, opacity 0.2s;
+}
+
+.trans-submit-btn:hover {
+  opacity: 0.9;
+}
+
+.trans-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* 결과 카드 디자인 (완벽 수정) */
+.trans-result-card {
+  margin-top: 16px;
+  padding: 16px;
+  background: rgba(15, 20, 28, 0.95);
+  border: 1px solid #05d9e8;
+  border-radius: 14px;
+  box-shadow: 0 0 15px rgba(5, 217, 232, 0.2);
+}
+
+.trans-text-main {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  word-break: break-all;
+  margin-bottom: 8px;
+}
+
+.trans-text-sub {
+  font-size: 0.85rem;
+  color: #a0aec0;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* 결과창 하단 버튼 모음 */
+.trans-btn-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.trans-btn-group button {
+  flex: 1;
+  padding: 9px 0;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 1px solid #05d9e8;
+  background: rgba(5, 217, 232, 0.15);
+  color: #05d9e8;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.trans-btn-group button:hover {
+  background: #05d9e8;
+  color: #0b0c10;
+}
 }
 
     /* 기타 유틸 스타일 */
@@ -759,8 +864,7 @@
 <section id="translator">
   <h2>🌐 만능 자동 번역기</h2>
   
-  <!-- 출발 언어 & 도착 언어 선택 UI -->
-  <div class="trans-lang-select-group">
+  <div class="trans-lang-group">
     <select id="transSourceLang" class="trans-select">
       <option value="autodetect">자동 감지</option>
       <option value="ko">한국어 (Korean)</option>
@@ -768,7 +872,6 @@
       <option value="en">영어 (English)</option>
       <option value="zh">중국어 (中文)</option>
       <option value="fr">프랑스어 (Français)</option>
-      <option value="ru">러시아어 (Русский)</option>
       <option value="es">스페인어 (Español)</option>
     </select>
     
@@ -780,7 +883,6 @@
       <option value="en">영어 (English)</option>
       <option value="zh">중국어 (中文)</option>
       <option value="fr">프랑스어 (Français)</option>
-      <option value="ru">러시아어 (Русский)</option>
       <option value="es">스페인어 (Español)</option>
     </select>
   </div>
@@ -791,8 +893,8 @@
     <label><input type="radio" name="speechStyle" value="formal" /> 존댓말 모드</label>
   </div>
 
-  <textarea id="transInput" rows="4" placeholder="번역할 단어나 문장을 아무렇게나 입력하세요!"></textarea>
-  <button class="cta-button" style="width: 100%;" onclick="runFreeApiTranslation()">✨ 무료 자동 번역하기</button>
+  <textarea id="transInput" rows="3" placeholder="번역할 단어나 문장을 입력하세요!"></textarea>
+  <button class="trans-submit-btn" onclick="runFreeApiTranslation()">✨ 무료 자동 번역하기</button>
 
   <div id="transResultContainer" class="trans-result-card" style="display: none;">
     <div id="transMainText" class="trans-text-main"></div>
@@ -800,8 +902,8 @@
     <div id="transSubKorean" class="trans-text-sub"></div>
     
     <div class="trans-btn-group">
-      <button class="cta-button" style="flex: 1;" onclick="speakTransResult()">🔊 소리듣기</button>
-      <button class="cta-button" style="flex: 1; background: #334155; box-shadow: 0 4px 0 #1e293b;" onclick="copyTransResult()">📋 결과 복사</button>
+      <button onclick="speakTransResult()">🔊 소리듣기</button>
+      <button onclick="copyTransResult()">📋 결과 복사</button>
     </div>
   </div>
 </section>
@@ -1501,127 +1603,149 @@
       }
     };
 // 일본어 가나 -> 로마자/한글 맵핑 알고리즘
+// 가나 -> 로마자 / 한글 발음 매핑
 const kanaToRomanMap = {
-      'あ':'a','い':'i','う':'u','え':'e','お':'o','か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko',
-      'さ':'sa','し':'shi','す':'su','せ':'se','そ':'so','た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to',
-      'な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no','は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho',
-      'ま':'ma','み':'mi','む':'mu','め':'me','も':'mo','や':'ya','ゆ':'yu','よ':'yo','ら':'ra','り':'ri',
-      'る':'ru','れ':'re','ろ':'ro','わ':'wa','を':'wo','ん':'n'
-    };
+  'あ':'a','い':'i','う':'u','え':'e','お':'o','か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko',
+  'さ':'sa','し':'shi','す':'su','せ':'se','そ':'so','た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to',
+  'な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no','は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho',
+  'ま':'ma','み':'mi','む':'mu','め':'me','も':'mo','や':'ya','ゆ':'yu','よ':'yo','ら':'ra','り':'ri',
+  'る':'ru','れ':'re','ろ':'ro','わ':'wa','을':'wo','ん':'n','っ':'tsu'
+};
 
-    const kanaToKorMap = {
-      'あ':'아','い':'이','う':'우','え':'에','お':'오','か':'카','き':'키','く':'쿠','け':'케','こ':'코',
-      'さ':'사','し':'시','す':'스','せ':'세','そ':'소','た':'타','ち':'치','つ':'츠','て':'테','と':'토',
-      'な':'나','に':'니','ぬ':'누','ね':'네','の':'노','は':'하','ひ':'히','ふ':'후','へ':'헤','ほ':'호',
-      'ま':'마','み':'미','む':'무','め':'메','も':'모','や':'야','ゆ':'유','よ':'요','ら':'라','り':'리',
-      'る':'루','れ':'레','ろ':'로','わ':'와','を':'오','ん':'ㄴ'
-    };
+const kanaToKorMap = {
+  'あ':'아','い':'이','う':'우','え':'에','お':'오','か':'카','き':'키','く':'쿠','け':'케','こ':'코',
+  'さ':'사','し':'시','す':'스','せ':'세','そ':'소','た':'타','ち':'치','つ':'츠','て':'테','と':'토',
+  'な':'나','に':'니','ぬ':'누','ね':'네','の':'노','は':'하','ひ':'히','ふ':'후','へ':'헤','ほ':'호',
+  'ま':'마','み':'미','む':'무','め':'메','も':'모','や':'야','ゆ':'유','よ':'요','ら':'라','り':'리',
+  'る':'루','れ':'레','ろ':'로','わ':'와','を':'오','ん':'ㄴ','っ':'쯧'
+};
 
-    let translatedFinalText = "";
-    let currentTargetLang = "ja";
+let translatedFinalText = "";
+let currentTargetLang = "ja";
+let globalUtterance = null; // 브라우저 가비지 컬렉션(음성 끊김) 방지용 전역 변수
 
-    // 무료 번역 실행 함수
-    async function runFreeApiTranslation() {
-      const input = document.getElementById('transInput').value.trim();
-      const sourceLang = document.getElementById('transSourceLang').value;
-      const targetLang = document.getElementById('transTargetLang').value;
-      const style = document.querySelector('input[name="speechStyle"]:checked').value;
+// 브라우저 음성 엔진 사전 로드
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+  };
+}
 
-      const container = document.getElementById('transResultContainer');
-      const mainBox = document.getElementById('transMainText');
-      const romanBox = document.getElementById('transSubRoman');
-      const korBox = document.getElementById('transSubKorean');
+async function runFreeApiTranslation() {
+  const input = document.getElementById('transInput').value.trim();
+  const sourceLang = document.getElementById('transSourceLang').value;
+  const targetLang = document.getElementById('transTargetLang').value;
+  const style = document.querySelector('input[name="speechStyle"]:checked').value;
 
-      if (!input) {
-        alert('번역할 문장을 입력해주세요!');
-        return;
-      }
+  const container = document.getElementById('transResultContainer');
+  const mainBox = document.getElementById('transMainText');
+  const romanBox = document.getElementById('transSubRoman');
+  const korBox = document.getElementById('transSubKorean');
 
-      currentTargetLang = targetLang;
-      mainBox.textContent = "번역 중...";
-      container.style.display = 'block';
+  if (!input) {
+    alert('번역할 문장을 입력해주세요!');
+    return;
+  }
 
-      try {
-        const langPair = `${sourceLang}|${targetLang}`;
-        const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(input)}&langpair=${langPair}`;
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+  currentTargetLang = targetLang;
+  mainBox.textContent = "번역 중...";
+  container.style.display = 'block';
 
-        let resultText = data.responseData.translatedText || input;
+  try {
+    const langPair = `${sourceLang}|${targetLang}`;
+    const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(input)}&langpair=${langPair}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-        // 말투 어미 처리
-        if (style === 'formal') {
-          if (targetLang === 'ja' && !resultText.endsWith('です') && !resultText.endsWith('ます')) {
-            resultText += 'です';
-          } else if (targetLang === 'ko' && !resultText.endsWith('요') && !resultText.endsWith('니다')) {
-            resultText += '요';
-          }
-        }
+    let resultText = data.responseData.translatedText || input;
 
-        translatedFinalText = resultText;
-        mainBox.textContent = resultText;
-
-        // 히라가나 읽기 처리
-        let romanText = '';
-        let korReading = '';
-
-        for (let char of resultText) {
-          if (kanaToRomanMap[char]) {
-            romanText += kanaToRomanMap[char];
-            korReading += kanaToKorMap[char];
-          } else {
-            romanText += char;
-            korReading += char;
-          }
-        }
-
-        romanBox.textContent = (romanText !== resultText) ? `발음/로마자: ${romanText}` : '';
-        korBox.textContent = (korReading !== resultText) ? `한글 읽기: ${korReading}` : '';
-
-      } catch (err) {
-        mainBox.textContent = "번역 통신 중 오류가 발생했습니다.";
+    // 말투 처리
+    if (style === 'formal') {
+      if (targetLang === 'ja' && !resultText.endsWith('です') && !resultText.endsWith('ます')) {
+        resultText += 'です';
+      } else if (targetLang === 'ko' && !resultText.endsWith('요') && !resultText.endsWith('니다')) {
+        resultText += '요';
       }
     }
 
-    // 🔊 소리듣기 (TTS)
-    function speakTransResult() {
-      if (!translatedFinalText) return;
+    translatedFinalText = resultText;
+    mainBox.textContent = resultText;
 
-      window.speechSynthesis.cancel(); // 진행 중인 소리 초기화
-      const utterance = new SpeechSynthesisUtterance(translatedFinalText);
-      
-      const langMap = {
-        ja: 'ja-JP',
-        ko: 'ko-KR',
-        en: 'en-US',
-        zh: 'zh-CN',
-        fr: 'fr-FR',
-        es: 'es-ES',
-        ru: 'ru-RU'
-      };
+    // 일본어 읽기 변환
+    let romanText = '';
+    let korReading = '';
 
-      utterance.lang = langMap[currentTargetLang] || 'en-US';
-      utterance.rate = 0.9; // 자연스러운 속도
-      window.speechSynthesis.speak(utterance);
-    }
-
-    // 📋 클립보드 복사
-    function copyTransResult() {
-      if (!translatedFinalText) return;
-
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(translatedFinalText).then(() => {
-          alert('복사되었습니다! 📋');
-        });
+    for (let char of resultText) {
+      if (kanaToRomanMap[char]) {
+        romanText += kanaToRomanMap[char];
+        korReading += kanaToKorMap[char];
       } else {
-        const textArea = document.createElement("textarea");
-        textArea.value = translatedFinalText;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('복사되었습니다! 📋');
+        romanText += char;
+        korReading += char;
       }
     }
+
+    romanBox.textContent = (romanText !== resultText) ? `발음/로마자: ${romanText}` : '';
+    korBox.textContent = (korReading !== resultText) ? `한글 읽기: ${korReading}` : '';
+
+  } catch (err) {
+    mainBox.textContent = "번역 중 오류가 발생했습니다.";
+  }
+}
+
+// 🔊 소리듣기 (TTS 끊김 오류 수정 완료)
+function speakTransResult() {
+  if (!translatedFinalText) return;
+
+  if (!('speechSynthesis' in window)) {
+    alert('현재 브라우저가 음성 재생을 지원하지 않습니다.');
+    return;
+  }
+
+  window.speechSynthesis.cancel(); // 이전 음성 취소
+
+  globalUtterance = new SpeechSynthesisUtterance(translatedFinalText);
+  
+  const langMap = {
+    ja: 'ja-JP',
+    ko: 'ko-KR',
+    en: 'en-US',
+    zh: 'zh-CN',
+    fr: 'fr-FR',
+    es: 'es-ES'
+  };
+
+  const targetLangCode = langMap[currentTargetLang] || 'en-US';
+  globalUtterance.lang = targetLangCode;
+  globalUtterance.rate = 0.85; // 재생 속도 설정
+
+  // 브라우저에서 언어에 맞는 목소리 찾기
+  const voices = window.speechSynthesis.getVoices();
+  const matchedVoice = voices.find(v => v.lang.includes(targetLangCode.replace('-', '_')) || v.lang.includes(targetLangCode));
+  if (matchedVoice) {
+    globalUtterance.voice = matchedVoice;
+  }
+
+  window.speechSynthesis.speak(globalUtterance);
+}
+
+// 📋 복사 기능
+function copyTransResult() {
+  if (!translatedFinalText) return;
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(translatedFinalText).then(() => {
+      alert('복사되었습니다! 📋');
+    });
+  } else {
+    const textArea = document.createElement("textarea");
+    textArea.value = translatedFinalText;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    alert('복사되었습니다! 📋');
+  }
+}
   </script>
 </html>
