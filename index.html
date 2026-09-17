@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>✨Jueun Site✨</title>
@@ -1695,21 +1696,66 @@ async function runFreeApiTranslation() {
 
 // 🔊 소리듣기 (TTS 끊김 오류 수정 완료)
 function speakTransResult() {
-  if (!translatedFinalText) return;
+  if (!translatedFinalText) {
+    alert('번역된 문장이 없습니다!');
+    return;
+  }
 
-  const langMap = { ja: 'ja', ko: 'ko', en: 'en', zh: 'zh-CN', fr: 'fr', es: 'es' };
-  const lang = langMap[currentTargetLang] || 'en';
+  // 언어 코드 매핑
+  const voiceMap = {
+    ja: 'Japanese Female',
+    ko: 'Korean Female',
+    en: 'US English Female',
+    zh: 'Chinese Female',
+    fr: 'French Female',
+    es: 'Spanish Female'
+  };
 
-  // 기존 재생 중인 오디오 제거
-  const oldAudio = document.getElementById('ttsAudio');
-  if (oldAudio) oldAudio.remove();
+  const selectedVoice = voiceMap[currentTargetLang] || 'US English Female';
 
-  // 새 오디오 객체 생성 및 재생
-  const audio = document.createElement('audio');
-  audio.id = 'ttsAudio';
-  audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(translatedFinalText)}&tl=${lang}&client=tw-ob`;
-  audio.autoplay = true;
-  document.body.appendChild(audio);
+  // 1. ResponsiveVoice 라이브러리 시도
+  if (typeof responsiveVoice !== 'undefined') {
+    responsiveVoice.cancel();
+    responsiveVoice.speak(translatedFinalText, selectedVoice, {
+      rate: 0.9,
+      onerror: function(err) {
+        console.warn("ResponsiveVoice 실패, 브라우저 기본 TTS로 전환합니다.", err);
+        fallbackWebTTS();
+      }
+    });
+  } else {
+    // 2. 라이브러리 로드 실패 시 브라우저 내장 TTS 실행
+    fallbackWebTTS();
+  }
+}
+
+// 브라우저 내장 음성 백업 함수
+function fallbackWebTTS() {
+  if (!('speechSynthesis' in window)) {
+    alert('현재 기기/브라우저가 음성 기능을 전혀 지원하지 않습니다.');
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  
+  const utterance = new SpeechSynthesisUtterance(translatedFinalText);
+  const langMap = {
+    ja: 'ja-JP',
+    ko: 'ko-KR',
+    en: 'en-US',
+    zh: 'zh-CN',
+    fr: 'fr-FR',
+    es: 'es-ES'
+  };
+
+  utterance.lang = langMap[currentTargetLang] || 'en-US';
+  utterance.rate = 0.9;
+
+  utterance.onerror = (e) => {
+    alert('음성 재생 오류가 발생했습니다. 기기의 미디어 음량이나 브라우저 소리 허용 권한을 확인해주세요.');
+  };
+
+  window.speechSynthesis.speak(utterance);
 }
 
 // 📋 복사 기능
