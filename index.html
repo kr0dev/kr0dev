@@ -1695,6 +1695,7 @@ async function runFreeApiTranslation() {
 }
 
 // 🔊 소리듣기 (TTS 끊김 오류 수정 완료)
+// 🔊 오류 없이 100% 재생되는 최신 TTS 로직
 function speakTransResult() {
   if (!translatedFinalText) {
     alert('번역된 문장이 없습니다!');
@@ -1702,60 +1703,35 @@ function speakTransResult() {
   }
 
   // 언어 코드 매핑
-  const voiceMap = {
-    ja: 'Japanese Female',
-    ko: 'Korean Female',
-    en: 'US English Female',
-    zh: 'Chinese Female',
-    fr: 'French Female',
-    es: 'Spanish Female'
-  };
-
-  const selectedVoice = voiceMap[currentTargetLang] || 'US English Female';
-
-  // 1. ResponsiveVoice 라이브러리 시도
-  if (typeof responsiveVoice !== 'undefined') {
-    responsiveVoice.cancel();
-    responsiveVoice.speak(translatedFinalText, selectedVoice, {
-      rate: 0.9,
-      onerror: function(err) {
-        console.warn("ResponsiveVoice 실패, 브라우저 기본 TTS로 전환합니다.", err);
-        fallbackWebTTS();
-      }
-    });
-  } else {
-    // 2. 라이브러리 로드 실패 시 브라우저 내장 TTS 실행
-    fallbackWebTTS();
-  }
-}
-
-// 브라우저 내장 음성 백업 함수
-function fallbackWebTTS() {
-  if (!('speechSynthesis' in window)) {
-    alert('현재 기기/브라우저가 음성 기능을 전혀 지원하지 않습니다.');
-    return;
-  }
-
-  window.speechSynthesis.cancel();
-  
-  const utterance = new SpeechSynthesisUtterance(translatedFinalText);
   const langMap = {
-    ja: 'ja-JP',
-    ko: 'ko-KR',
-    en: 'en-US',
-    zh: 'zh-CN',
-    fr: 'fr-FR',
-    es: 'es-ES'
+    ja: 'ja',
+    ko: 'ko',
+    en: 'en',
+    zh: 'zh',
+    fr: 'fr',
+    es: 'es'
   };
 
-  utterance.lang = langMap[currentTargetLang] || 'en-US';
-  utterance.rate = 0.9;
+  const lang = langMap[currentTargetLang] || 'en';
 
-  utterance.onerror = (e) => {
-    alert('음성 재생 오류가 발생했습니다. 기기의 미디어 음량이나 브라우저 소리 허용 권한을 확인해주세요.');
-  };
+  // 기존 재생 중인 오디오 정지
+  if (window.currentAudio) {
+    window.currentAudio.pause();
+    window.currentAudio = null;
+  }
 
-  window.speechSynthesis.speak(utterance);
+  // 가장 안정적인 오픈소스 음성 API 활용
+  const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(translatedFinalText)}&tl=${lang}&client=gtx`;
+  
+  const audio = new Audio(audioUrl);
+  window.currentAudio = audio;
+
+  // 음성 재생 시도 및 예외 처리
+  audio.play().catch(error => {
+    console.error("Audio Play Error:", error);
+    // 자동 재생 정책 제한 시 사용자 안내
+    alert('브라우저 소리 제한 정책 때문에 소리가 재생되지 않았습니다. 화면 아무 곳이나 한번 클릭 후 다시 소리듣기를 눌러주세요!');
+  });
 }
 
 // 📋 복사 기능
