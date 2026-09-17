@@ -3,48 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>✨ Cute & Clean All-in-One Tools ✨</title>
+  <title>✨ Neon Cute All-in-One Tools ✨</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.0/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
   <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=swap');
 
     * {
       box-sizing: border-box;
-      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
     }
 
     body {
-      background: linear-gradient(135deg, #fff0f5 0%, #e6e6fa 100%);
+      background-color: #0b0c10;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(255, 42, 109, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(5, 217, 232, 0.12) 0%, transparent 45%);
       margin: 0;
       padding: 30px 15px;
-      color: #4a3b52;
+      color: #e0e6ed;
       min-height: 100vh;
     }
 
+    /* 메인 타이틀 네온 헤더 */
     header {
       text-align: center;
-      font-size: 2.2rem;
-      font-weight: 800;
+      font-family: 'Gaegu', cursive, 'Pretendard', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
       margin-bottom: 25px;
-      color: #ff6b8b;
-      text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.4);
-      letter-spacing: -0.5px;
+      color: #fff;
+      text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #ff2a6d,
+        0 0 30px #ff2a6d,
+        0 0 40px #ff2a6d;
+      letter-spacing: 1px;
       user-select: none;
+      animation: neonGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes neonGlow {
+      from {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff2a6d, 0 0 30px #ff2a6d;
+      }
+      to {
+        text-shadow: 0 0 2px #fff, 0 0 8px #fff, 0 0 15px #ff2a6d, 0 0 22px #ff2a6d, 0 0 35px #ff2a6d;
+      }
     }
 
     /* 사용자 정보 칩 */
     #userStatus {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       font-weight: 700;
-      color: #7b68ee;
-      background: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+      color: #05d9e8;
+      background: rgba(11, 12, 16, 0.6);
+      border: 1px solid #05d9e8;
       display: inline-block;
-      padding: 6px 18px;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      padding: 6px 20px;
+      border-radius: 50px;
+      box-shadow: 0 0 10px rgba(5, 217, 232, 0.3), inset 0 0 8px rgba(5, 217, 232, 0.2);
     }
 
     .status-container {
@@ -57,34 +80,35 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      max-width: 900px;
-      margin: 0 auto 30px auto;
+      max-width: 950px;
+      margin: 0 auto 35px auto;
     }
 
     nav button {
-      padding: 10px 18px;
-      border: 2px solid transparent;
-      background: #ffffff;
-      color: #6c5ce7;
+      padding: 9px 18px;
+      border: 1px solid #ff2a6d;
+      background: rgba(11, 12, 16, 0.8);
+      color: #ff2a6d;
       border-radius: 50px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(108, 92, 231, 0.08);
+      box-shadow: 0 0 8px rgba(255, 42, 109, 0.2);
       transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     nav button:hover {
-      transform: translateY(-3px);
-      background: #ff758f;
-      color: white;
-      box-shadow: 0 6px 15px rgba(255, 117, 143, 0.3);
+      transform: translateY(-3px) scale(1.02);
+      background: #ff2a6d;
+      color: #0b0c10;
+      box-shadow: 0 0 15px #ff2a6d, 0 0 25px rgba(255, 42, 109, 0.5);
     }
 
     nav button.active {
-      background: #ff4757;
-      color: white;
-      box-shadow: 0 6px 15px rgba(255, 71, 87, 0.35);
+      background: #05d9e8;
+      color: #0b0c10;
+      border-color: #05d9e8;
+      box-shadow: 0 0 15px #05d9e8, 0 0 25px rgba(5, 217, 232, 0.6);
     }
 
     /* 카드 컨테이너 메인 섹션 */
@@ -92,17 +116,18 @@
       display: none;
       max-width: 620px;
       margin: auto;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
+      background: rgba(19, 21, 29, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(255, 182, 193, 0.25);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 15px rgba(255, 42, 109, 0.15);
       padding: 30px;
-      border: 2px solid #fff0f5;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       animation: fadeIn 0.4s ease-in-out;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -112,21 +137,24 @@
 
     h2 {
       margin-top: 0;
-      color: #ff5252;
-      font-size: 1.5rem;
-      border-bottom: 2px dashed #ffccd5;
+      color: #05d9e8;
+      font-size: 1.4rem;
+      font-weight: 800;
+      border-bottom: 1px dashed rgba(5, 217, 232, 0.4);
       padding-bottom: 12px;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 8px;
+      text-shadow: 0 0 8px rgba(5, 217, 232, 0.5);
     }
 
     h3 {
-      color: #57606f;
-      font-size: 1.1rem;
-      margin-top: 15px;
+      color: #ff2a6d;
+      font-size: 1.05rem;
+      margin-top: 18px;
       margin-bottom: 10px;
+      text-shadow: 0 0 5px rgba(255, 42, 109, 0.4);
     }
 
     /* 폼 요소 공통 스타일 */
@@ -141,32 +169,37 @@
       margin-top: 6px;
       margin-bottom: 14px;
       border-radius: 14px;
-      border: 2px solid #ffeaa7;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       font-size: 0.95rem;
-      background: #fffdf9;
-      color: #2d3436;
-      transition: all 0.2s;
+      background: rgba(11, 12, 16, 0.7);
+      color: #ffffff;
+      transition: all 0.25s ease;
       outline: none;
     }
 
     input:focus, textarea:focus, select:focus {
-      border-color: #ff7675;
-      background: #ffffff;
-      box-shadow: 0 0 8px rgba(255, 118, 117, 0.2);
+      border-color: #05d9e8;
+      background: rgba(11, 12, 16, 0.9);
+      box-shadow: 0 0 12px rgba(5, 217, 232, 0.4);
+    }
+
+    select option {
+      background: #13151d;
+      color: #fff;
     }
 
     /* 커스텀 버튼 디자인 */
     button.action {
-      background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
-      color: white;
-      border: none;
+      background: transparent;
+      color: #ff2a6d;
+      border: 1.5px solid #ff2a6d;
       padding: 12px 20px;
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
       font-weight: 700;
       font-size: 0.95rem;
-      box-shadow: 0 4px 10px rgba(214, 48, 49, 0.2);
-      transition: all 0.2s;
+      box-shadow: 0 0 10px rgba(255, 42, 109, 0.2);
+      transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -174,9 +207,10 @@
     }
 
     button.action:hover {
+      background: #ff2a6d;
+      color: #0b0c10;
+      box-shadow: 0 0 18px #ff2a6d;
       transform: translateY(-2px);
-      box-shadow: 0 6px 14px rgba(214, 48, 49, 0.3);
-      filter: brightness(1.05);
     }
 
     button.action:active {
@@ -195,18 +229,20 @@
       justify-content: center;
       gap: 8px;
       padding: 14px 20px;
-      background: #eccc68;
-      color: #2f3542;
+      background: rgba(11, 12, 16, 0.7);
+      color: #f1f2f6;
+      border: 1.5px dashed #f1f2f6;
       border-radius: 14px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 10px rgba(236, 204, 104, 0.3);
+      transition: all 0.25s ease;
+      box-shadow: 0 0 8px rgba(241, 242, 246, 0.2);
     }
 
     .file-upload-label:hover {
-      background: #ffa502;
-      color: white;
+      background: #f1f2f6;
+      color: #0b0c10;
+      box-shadow: 0 0 15px #f1f2f6;
     }
 
     input[type="file"] {
@@ -223,57 +259,72 @@
 
     .calc-screen {
       grid-column: span 4;
-      background: #2f3542;
-      color: #70a1ff;
+      background: rgba(11, 12, 16, 0.9);
+      color: #05d9e8;
       font-size: 2rem;
       font-family: 'Consolas', monospace;
       text-align: right;
       padding: 15px 20px;
       border-radius: 16px;
+      border: 1px solid rgba(5, 217, 232, 0.3);
       margin-bottom: 10px;
       word-break: break-all;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 10px rgba(5, 217, 232, 0.2);
+      text-shadow: 0 0 8px #05d9e8;
     }
 
     .calc-btn {
       padding: 18px;
       font-size: 1.25rem;
       font-weight: 700;
-      border: none;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 14px;
-      background: #f1f2f6;
-      color: #2f3542;
+      background: rgba(255, 255, 255, 0.05);
+      color: #e0e6ed;
       cursor: pointer;
-      transition: all 0.15s;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+      transition: all 0.2s;
     }
 
     .calc-btn:hover {
-      background: #dfe4ea;
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
     }
 
     .calc-btn.op {
-      background: #ff70a6;
-      color: white;
+      background: rgba(255, 42, 109, 0.15);
+      color: #ff2a6d;
+      border-color: rgba(255, 42, 109, 0.4);
     }
 
     .calc-btn.op:hover {
-      background: #ff4757;
+      background: #ff2a6d;
+      color: #0b0c10;
+      box-shadow: 0 0 12px #ff2a6d;
     }
 
     .calc-btn.equal {
-      background: #70a1ff;
-      color: white;
+      background: rgba(5, 217, 232, 0.2);
+      color: #05d9e8;
+      border-color: rgba(5, 217, 232, 0.5);
       grid-column: span 2;
     }
 
     .calc-btn.equal:hover {
-      background: #1e90ff;
+      background: #05d9e8;
+      color: #0b0c10;
+      box-shadow: 0 0 15px #05d9e8;
     }
 
     .calc-btn.clear {
-      background: #ff6b81;
-      color: white;
+      background: rgba(255, 121, 198, 0.15);
+      color: #ff79c6;
+      border-color: rgba(255, 121, 198, 0.4);
+    }
+
+    .calc-btn.clear:hover {
+      background: #ff79c6;
+      color: #0b0c10;
+      box-shadow: 0 0 12px #ff79c6;
     }
 
     /* 리스트 스타일 */
@@ -286,15 +337,17 @@
     }
 
     ul#planList li, ul#memoList li {
-      padding: 12px;
-      background: #fff0f3;
+      padding: 12px 16px;
+      background: rgba(11, 12, 16, 0.6);
+      border: 1px solid rgba(255, 42, 109, 0.3);
       border-radius: 12px;
       margin-bottom: 8px;
       font-weight: 600;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      color: #f1f2f6;
     }
 
     ul#planList li button, ul#memoList li button {
@@ -302,24 +355,27 @@
       border: none;
       cursor: pointer;
       font-size: 1.1rem;
-      color: #ff4757;
-      transition: transform 0.1s;
+      color: #ff2a6d;
+      transition: transform 0.2s, color 0.2s;
     }
 
     ul#planList li button:hover, ul#memoList li button:hover {
-      transform: scale(1.2);
+      transform: scale(1.25);
+      color: #ff79c6;
+      text-shadow: 0 0 8px #ff79c6;
     }
 
     /* 결과 출력 영역 */
     .result-box {
       margin-top: 15px;
       padding: 14px 18px;
-      background: #f8efba;
+      background: rgba(11, 12, 16, 0.8);
+      border: 1px solid #f1f2f6;
       border-radius: 14px;
       font-size: 0.95rem;
       word-break: break-all;
-      color: #2c2c54;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      color: #f1f2f6;
+      box-shadow: 0 0 10px rgba(241, 242, 246, 0.15);
     }
 
     /* 시계 디스플레이 */
@@ -328,11 +384,13 @@
       font-weight: 800;
       text-align: center;
       padding: 25px;
-      background: linear-gradient(135deg, #a8ff78 0%, #78ffd6 100%);
-      color: #2d3436;
+      background: rgba(11, 12, 16, 0.85);
+      color: #05d9e8;
+      border: 1.5px solid #05d9e8;
       border-radius: 20px;
       user-select: none;
-      box-shadow: 0 8px 20px rgba(120, 255, 214, 0.3);
+      box-shadow: 0 0 20px rgba(5, 217, 232, 0.3), inset 0 0 15px rgba(5, 217, 232, 0.2);
+      text-shadow: 0 0 12px #05d9e8;
     }
 
     /* 응원가 플레이어 전용 */
@@ -341,24 +399,27 @@
       margin: 4px;
       font-size: 0.9rem;
       font-weight: 600;
-      border: none;
+      border: 1px solid #05d9e8;
       border-radius: 20px;
-      background: #70a1ff;
-      color: white;
+      background: rgba(11, 12, 16, 0.8);
+      color: #05d9e8;
       cursor: pointer;
       transition: all 0.2s;
     }
 
     #cheerMusic button:hover {
-      background: #1e90ff;
+      background: #05d9e8;
+      color: #0b0c10;
+      box-shadow: 0 0 12px #05d9e8;
       transform: scale(1.05);
     }
 
     /* 기타 유틸 스타일 */
-    .error { color: #ff4757; font-weight: bold; margin-top: 8px; text-align: center; }
-    .success { color: #2ed573; font-weight: bold; margin-top: 8px; text-align: center; }
+    .error { color: #ff2a6d; font-weight: bold; margin-top: 8px; text-align: center; text-shadow: 0 0 6px rgba(255, 42, 109, 0.5); }
+    .success { color: #05d9e8; font-weight: bold; margin-top: 8px; text-align: center; text-shadow: 0 0 6px rgba(5, 217, 232, 0.5); }
   </style>
-  <body>
+</head>
+<body>
   <header>🌸 Main Page 🌸</header>
   
   <div class="status-container">
@@ -373,7 +434,7 @@
       <input type="text" id="loginUsername" placeholder="아이디를 입력하세요" />
       <input type="password" id="loginPassword" placeholder="비밀번호를 입력하세요" />
       <button class="action" onclick="login()">🔓 로그인</button>
-      <button class="action" style="background: #a29bfe;" onclick="showSignup()">✨ 회원가입으로 전환</button>
+      <button class="action" style="border-color: #05d9e8; color: #05d9e8;" onclick="showSignup()">✨ 회원가입으로 전환</button>
       <div id="loginMessage" class="error"></div>
     </div>
     <div id="signupForm" style="display: none;">
@@ -382,7 +443,7 @@
       <input type="password" id="signupPassword" placeholder="비밀번호" />
       <input type="password" id="signupPasswordConfirm" placeholder="비밀번호 확인" />
       <button class="action" onclick="signup()">✨ 회원가입</button>
-      <button class="action" style="background: #a29bfe;" onclick="showLogin()">🔓 로그인으로 전환</button>
+      <button class="action" style="border-color: #05d9e8; color: #05d9e8;" onclick="showLogin()">🔓 로그인으로 전환</button>
       <div id="signupMessage" class="error"></div>
     </div>
   </section>
@@ -407,7 +468,7 @@
     <button onclick="showTab('calculator', this)">🧮 계산기</button>
     <button onclick="showTab('pdfExtractor', this)">📄 PDF 텍스트 추출</button>
     <button onclick="showTab('cheerMusic', this)">⚾ KBO 응원가</button>
-    <button style="background: #ff6b6b; color: white;" onclick="logout()">🚪 로그아웃</button>
+    <button style="border-color: #ff79c6; color: #ff79c6;" onclick="logout()">🚪 로그아웃</button>
   </nav>
 
   <!-- KBO 응원가 -->
@@ -428,7 +489,7 @@
     </select>
     <div style="margin-top:10px;">
       <button class="action" style="padding: 8px 16px;" onclick="showCheerType('team')">🎶 팀 응원가</button>
-      <button class="action" style="padding: 8px 16px; background: #6c5ce7;" onclick="showCheerType('player')">🎵 선수 응원가</button>
+      <button class="action" style="padding: 8px 16px; border-color: #05d9e8; color: #05d9e8;" onclick="showCheerType('player')">🎵 선수 응원가</button>
     </div>
     <div id="cheerButtons" style="margin-top:15px;"></div>
     <div id="cheerAudioPlayer"></div>
@@ -452,7 +513,7 @@
       </label>
       <input type="file" id="imgInput" accept="image/png" multiple onchange="updateFileName(this, 'pngFileName')" />
     </div>
-    <div id="pngFileName" style="text-align: center; margin-bottom: 10px; font-weight: 600; color: #ff6b8b;"></div>
+    <div id="pngFileName" style="text-align: center; margin-bottom: 10px; font-weight: 600; color: #05d9e8; text-shadow: 0 0 5px #05d9e8;"></div>
     <button class="action" style="width: 100%;" id="convertBtn">📄 PDF 변환 및 다운로드</button>
   </section>
 
@@ -475,9 +536,9 @@
     </div>
     <div style="display: flex; gap: 10px;">
       <button class="action" style="flex: 1;" id="timerStartBtn" onclick="startTimer()">▶ 시작</button>
-      <button class="action" style="flex: 1; background: #636e72;" id="timerStopBtn" onclick="stopTimer()" disabled>■ 정지</button>
+      <button class="action" style="flex: 1; border-color: rgba(255,255,255,0.3); color: #888;" id="timerStopBtn" onclick="stopTimer()" disabled>■ 정지</button>
     </div>
-    <div id="timerDisplay" class="result-box" style="font-size: 2.2rem; text-align: center; font-weight: bold; background: #ffeaa7;">00:00:00</div>
+    <div id="timerDisplay" class="result-box" style="font-size: 2.2rem; text-align: center; font-weight: bold; color: #05d9e8; border-color: #05d9e8; text-shadow: 0 0 10px #05d9e8;">00:00:00</div>
   </section>
 
   <!-- 음악 재생기 (검색 자동 재생) -->
@@ -493,8 +554,8 @@
     <h2>📥 유튜브 미디어 다운로더</h2>
     <input type="text" id="videoUrl" placeholder="유튜브 영상 URL을 입력하세요 (https://...)" />
     <div style="display: flex; gap: 10px;">
-      <button class="action" style="flex: 1; background: #00b894;" onclick="downloadYoutube('video')">🎬 비디오(MP4) 다운로드</button>
-      <button class="action" style="flex: 1; background: #0984e3;" onclick="downloadYoutube('audio')">🎧 오디오(MP3) 다운로드</button>
+      <button class="action" style="flex: 1; border-color: #05d9e8; color: #05d9e8;" onclick="downloadYoutube('video')">🎬 비디오(MP4) 다운로드</button>
+      <button class="action" style="flex: 1; border-color: #ff79c6; color: #ff79c6;" onclick="downloadYoutube('audio')">🎧 오디오(MP3) 다운로드</button>
     </div>
     <div id="videoLink" class="result-box" style="display: none;"></div>
   </section>
@@ -531,7 +592,7 @@
     <textarea id="memoText" rows="6" placeholder="자유롭게 메모를 작성해보세요..."></textarea>
     <div style="display: flex; gap: 10px;">
       <button class="action" style="flex: 1;" onclick="saveMemo()">💾 저장하기</button>
-      <button class="action" style="flex: 1; background: #00cec9;" onclick="downloadMemo()">📥 TXT 다운로드</button>
+      <button class="action" style="flex: 1; border-color: #05d9e8; color: #05d9e8;" onclick="downloadMemo()">📥 TXT 다운로드</button>
     </div>
     <ul id="memoList"></ul>
   </section>
@@ -542,7 +603,7 @@
     <textarea id="diaryText" rows="8" placeholder="오늘 하루 어떤 일이 있었나요? 감성 어린 일기를 적어보세요..."></textarea>
     <div style="display: flex; gap: 10px;">
       <button class="action" style="flex: 1;" onclick="saveDiary()">💾 일기 저장</button>
-      <button class="action" style="flex: 1; background: #fd79a8;" onclick="downloadDiary()">🖼 이미지(PNG) 저장</button>
+      <button class="action" style="flex: 1; border-color: #ff79c6; color: #ff79c6;" onclick="downloadDiary()">🖼 이미지(PNG) 저장</button>
     </div>
   </section>
 
@@ -553,12 +614,12 @@
     <div>
       <h3>✨ 팬시 스타일 (Fancy)</h3>
       <div id="fontResultFancy" class="result-box"></div>
-      <button class="action" style="margin-top: 5px;" onclick="copyFancy()">📋 팬시체 복사</button>
+      <button class="action" style="margin-top: 8px;" onclick="copyFancy()">📋 팬시체 복사</button>
     </div>
     <div>
       <h3>✒️ 필기체 스타일 (Cursive)</h3>
       <div id="fontResultHandwriting" class="result-box"></div>
-      <button class="action" style="margin-top: 5px;" onclick="copyHandwriting()">📋 필기체 복사</button>
+      <button class="action" style="margin-top: 8px;" onclick="copyHandwriting()">📋 필기체 복사</button>
     </div>
   </section>
 
@@ -580,9 +641,9 @@
     <textarea id="markdownInput" rows="6" placeholder="# 제목을 입력하세요&#10;**굵은 글씨**와 *기울임꼴* 지원"></textarea>
     <div style="display: flex; gap: 10px;">
       <button class="action" style="flex: 1;" onclick="saveMarkdown()">💾 저장하기</button>
-      <button class="action" style="flex: 1; background: #0984e3;" onclick="downloadMarkdown()">📥 HTML 다운로드</button>
+      <button class="action" style="flex: 1; border-color: #05d9e8; color: #05d9e8;" onclick="downloadMarkdown()">📥 HTML 다운로드</button>
     </div>
-    <div id="markdownPreview" class="result-box" style="margin-top: 15px; background: #ffffff;"></div>
+    <div id="markdownPreview" class="result-box" style="margin-top: 15px; background: rgba(11, 12, 16, 0.9);"></div>
   </section>
 
   <!-- API 키가 필요없는 URL 단축기 -->
@@ -604,7 +665,7 @@
   <!-- 컬러 피커 -->
   <section id="colorPicker">
     <h2>🎨 컬러 피커 & 색상 팔레트</h2>
-    <input type="color" id="colorPickerInput" value="#ff7675" style="height: 50px; cursor: pointer;" />
+    <input type="color" id="colorPickerInput" value="#ff2a6d" style="height: 50px; cursor: pointer;" />
     <button class="action" style="width: 100%;" onclick="saveColor()">💾 선택 색상 저장</button>
     <div id="colorPickerResult" class="result-box"></div>
   </section>
@@ -644,15 +705,15 @@
   <section id="pdfExtractor">
     <h2>📄 PDF 파일 텍스트 추출기</h2>
     <div class="file-upload-wrapper">
-      <label for="pdfInput" class="file-upload-label" style="background: #a29bfe; color: white;">
+      <label for="pdfInput" class="file-upload-label" style="border-color: #05d9e8; color: #05d9e8;">
         📂 PDF 문서 파일 선택하기
       </label>
       <input type="file" id="pdfInput" accept="application/pdf" onchange="updateFileName(this, 'pdfFileName')" />
     </div>
-    <div id="pdfFileName" style="text-align: center; margin-bottom: 10px; font-weight: 600; color: #6c5ce7;"></div>
+    <div id="pdfFileName" style="text-align: center; margin-bottom: 10px; font-weight: 600; color: #ff79c6; text-shadow: 0 0 5px #ff79c6;"></div>
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
       <button class="action" style="flex: 1;" onclick="extractPdfText()">📝 텍스트 추출</button>
-      <button class="action" style="flex: 1; background: #00cec9;" onclick="downloadPdfText()">📥 TXT 저장</button>
+      <button class="action" style="flex: 1; border-color: #05d9e8; color: #05d9e8;" onclick="downloadPdfText()">📥 TXT 저장</button>
     </div>
     <textarea id="pdfExtractorOutput" rows="8" placeholder="추출된 PDF 본문 내용이 여기에 표시됩니다..."></textarea>
     <div id="pdfExtractorResult" class="result-box"></div>
@@ -741,7 +802,7 @@
         }
         iframe.src = `${embedLink}?autoplay=1`;
         iframe.allow = "autoplay";
-        iframe.style = "width:100%; height:200px; border:0; border-radius:12px; margin-top:15px;";
+        iframe.style = "width:100%; height:200px; border:1px solid #05d9e8; border-radius:12px; margin-top:15px; box-shadow: 0 0 15px rgba(5,217,232,0.3);";
         player.appendChild(iframe);
       } catch (e) {
         alert('링크 처리 중 오류 발생: ' + e.message);
@@ -985,7 +1046,7 @@
 
       const iframe = document.createElement('iframe');
       iframe.src = embedUrl;
-      iframe.style = "width: 100%; height: 260px; border: none; border-radius: 16px; margin-top: 10px;";
+      iframe.style = "width: 100%; height: 260px; border: 1px solid #ff2a6d; border-radius: 16px; margin-top: 10px; box-shadow: 0 0 15px rgba(255,42,109,0.3);";
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
       iframe.allowFullscreen = true;
       player.appendChild(iframe);
@@ -1012,10 +1073,10 @@
       resultBox.style.display = 'block';
       resultBox.innerHTML = `
         🎉 다운로드 준비 완료!<br>
-        <a href="${targetService}" target="_blank" style="color:#ff4757; font-weight:bold; text-decoration:underline;">
+        <a href="${targetService}" target="_blank" style="color:#05d9e8; font-weight:bold; text-decoration:underline; text-shadow: 0 0 5px #05d9e8;">
           👉 [여기]를 클릭하여 ${type === 'video' ? '비디오(MP4)' : '오디오(MP3)'} 파일 수령하기
         </a><br>
-        <small style="color:#888;">(외부 무료 다운로드 서버로 연결됩니다)</small>
+        <small style="color:#aaa;">(외부 무료 다운로드 서버로 연결됩니다)</small>
       `;
     }
 
@@ -1046,7 +1107,7 @@
         🎯 <strong>목표 점수 달성 분석</strong><br>
         • 현재 확보된 누적 점수: <strong>${currentSec.toFixed(2)}점</strong><br>
         • 목표 ${goal}점 달성을 위한 기말고사 필요 점수: 
-        <span style="color:#d63031; font-weight:bold; font-size:1.1rem;">
+        <span style="color:#ff2a6d; font-weight:bold; font-size:1.1rem; text-shadow: 0 0 5px #ff2a6d;">
           ${needed <= 0 ? '이미 목표 달성!' : needed > 100 ? '달성 불가능 (100점 초과 필요)' : needed.toFixed(2) + ' 점 이상'}
         </span>
       `;
@@ -1098,9 +1159,9 @@
       canvas.width = 600;
       canvas.height = 400;
       const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#fff0f5';
+      ctx.fillStyle = '#0b0c10';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#2d3436';
+      ctx.fillStyle = '#05d9e8';
       ctx.font = '18px Pretendard, sans-serif';
       
       const lines = text.split('\n');
@@ -1118,227 +1179,239 @@
 
     // 폰트 변환
     const fontMapFancy = { A:'𝔄', B:'𝔅', C:'ℭ', D:'𝔇', E:'𝔈', F:'𝔉', G:'𝔊', H:'ℌ', I:'ℑ', J:'𝔍', K:'𝔎', L:'𝔏', M:'𝔐', N:'𝔑', O:'𝔒', P:'𝔓', Q:'𝔔', R:'ℜ', S:'𝔖', T:'𝔗', U:'𝔘', V:'𝔙', W:'𝔚', X:'𝔛', Y:'𝔜', Z:'ℨ', a:'𝔞', b:'𝔟', c:'𝔠', d:'𝔡', e:'𝔢', f:'𝔣', g:'𝔤', h:'𝔥', i:'𝔦', j:'𝔧', k:'𝔨', l:'𝔩', m:'𝔪', n:'𝔫', o:'𝔬', p:'𝔭', q:'𝔮', r:'𝔯', s:'𝔰', t:'𝔱', u:'𝔲', v:'𝔳', w:'𝔴', x:'𝔵', y:'𝔶', z:'𝔷' };
-    const fontMapHandwriting = { A:'𝓐', B:'𝓑', C:'𝓒', D:'𝓓', E:'𝓔', F:'𝓕', G:'𝓖', H:'𝓗', I:'𝓘', J:'𝓙', K:'𝓚', L:'𝓛', M:'𝓜', N:'𝓝', O:'𝓞', P:'𝓟', Q:'𝓠', R:'𝓡', S:'𝓢', T:'𝓣', U:'𝓤', V:'𝓥', W:'𝓦', X:'𝓧', Y:'𝓨', Z:'𝓩', a:'𝓪', b:'𝓫', c:'𝓬', d:'𝓭', e:'𝓮', f:'𝓯', g:'𝓰', h:'𝓱', i:'𝓲', j:'𝓳', k:'𝓴', l:'𝓵', m:'𝓶', n:'𝓷', o:'𝓸', p:'𝓹', q:'𝓺', r:'𝓻', s:'𝓼', t:'𝓽', u:'𝓾', v:'𝓿', w:'𝔀', x:'𝔁', y:'𝔂', z:'𝔃' };
+    const fontMapHandwriting = { A:'𝓐', B:'𝓑', C:'𝓒', D:'𝓓', E:'𝓔', F:'𝓕', G:'𝓖', H:'𝓗', I:'𝓘', J:'𝓙', K:'𝓚', L:'𝓛', M:'𝓜', N:'𝓝', O:'𝓞', P:'𝓟', Q:'𝓠', R:'𝓡', S:'𝓢', T:'𝓣', U:'𝓤', V:'𝓥', W:'𝓦', X:'𝓧', Y:'𝓨', Z:'𝓩', a:'𝓪', b:'𝓫', c:'𝓬', d:'𝓭', e:'𝓮', f:'𝓯', g:'𝓰', h:'𝒽', i:'𝒾', j:'𝓏', k:'𝓀', l:'𝓁', m:'𝓂', n:'𝓃', o:'𝓸', p:'𝓟', q:'𝓱', r:'𝓇', s:'𝓈', t:'𝓉', u:'𝓊', v:'𝓋', w:'𝓌', x:'𝓍', y:'𝓎', z:'𝓏' };
 
-    document.getElementById('fontInput').addEventListener('input', e => {
-      const txt = e.target.value;
-      document.getElementById('fontResultFancy').textContent = txt.split('').map(c => fontMapFancy[c] || c).join('');
-      document.getElementById('fontResultHandwriting').textContent = txt.split('').map(c => fontMapHandwriting[c] || c).join('');
+    document.getElementById('fontInput').addEventListener('input', (e) => {
+      const val = e.target.value;
+      let fancyStr = '';
+      let handStr = '';
+      for (let char of val) {
+        fancyStr += fontMapFancy[char] || char;
+        handStr += fontMapHandwriting[char] || char;
+      }
+      document.getElementById('fontResultFancy').textContent = fancyStr;
+      document.getElementById('fontResultHandwriting').textContent = handStr;
     });
 
     function copyFancy() {
-      navigator.clipboard.writeText(document.getElementById('fontResultFancy').textContent);
-      alert('팬시 문구가 클립보드에 복사되었습니다!');
+      const text = document.getElementById('fontResultFancy').textContent;
+      if (text) { navigator.clipboard.writeText(text); alert('팬시체가 복사되었습니다!'); }
     }
-
     function copyHandwriting() {
-      navigator.clipboard.writeText(document.getElementById('fontResultHandwriting').textContent);
-      alert('필기체 문구가 클립보드에 복사되었습니다!');
+      const text = document.getElementById('fontResultHandwriting').textContent;
+      if (text) { navigator.clipboard.writeText(text); alert('필기체가 복사되었습니다!'); }
     }
 
-    // 글자수 분석기
-    document.getElementById('wordCountInput').addEventListener('input', e => {
+    // PNG → PDF 변환
+    document.getElementById('convertBtn').addEventListener('click', async () => {
+      const files = document.getElementById('imgInput').files;
+      if (!files || files.length === 0) return alert('최소 1개 이상의 PNG 이미지를 등록해주세요.');
+      
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+      
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const imageUri = await new Promise(res => {
+          const r = new FileReader();
+          r.onload = e => res(e.target.result);
+          r.readAsDataURL(file);
+        });
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imageUri, 'PNG', 10, 10, 190, 0);
+      }
+      pdf.save('Image_Converted.pdf');
+    });
+
+    // 글자수 세기
+    document.getElementById('wordCountInput').addEventListener('input', (e) => {
       const text = e.target.value;
-      const withSpaces = text.length;
-      const withoutSpaces = text.replace(/\s/g, '').length;
+      const charWithSpaces = text.length;
+      const charWithoutSpaces = text.replace(/\s/g, '').length;
       const words = text.trim() ? text.trim().split(/\s+/).length : 0;
       const lines = text ? text.split('\n').length : 0;
 
       document.getElementById('wordCountResult').innerHTML = `
-        글자수 (공백 포함): <strong>${withSpaces}</strong> 자<br>
-        글자수 (공백 제외): <strong>${withoutSpaces}</strong> 자<br>
-        단어 수: <strong>${words}</strong> 개<br>
-        줄 수: <strong>${lines}</strong> 줄
+        • 글자수 (공백 포함): <strong>${charWithSpaces}</strong> 자<br>
+        • 글자수 (공백 미포함): <strong>${charWithoutSpaces}</strong> 자<br>
+        • 총 단어 수: <strong>${words}</strong> 개<br>
+        • 총 줄(Line) 수: <strong>${lines}</strong> 줄
       `;
     });
 
     // 마크다운
-    function saveMarkdown() {
-      localStorage.setItem('myMarkdown', document.getElementById('markdownInput').value);
-      alert('마크다운 문서가 저장되었습니다.');
-    }
-
-    document.getElementById('markdownInput').addEventListener('input', e => {
-      document.getElementById('markdownPreview').innerHTML = marked.parse(e.target.value);
+    const STORAGE_MARKDOWN = 'myMarkdownText';
+    document.getElementById('markdownInput').addEventListener('input', (e) => {
+      const md = e.target.value;
+      document.getElementById('markdownPreview').innerHTML = marked.parse(md);
     });
 
+    function saveMarkdown() {
+      const val = document.getElementById('markdownInput').value;
+      localStorage.setItem(STORAGE_MARKDOWN, val);
+      alert('마크다운 문서가 내장 메모리에 저장되었습니다.');
+    }
+
     function downloadMarkdown() {
-      const text = document.getElementById('markdownInput').value;
-      if (!text) return alert('저장할 마크다운이 없습니다.');
-      const html = marked.parse(text);
-      const blob = new Blob([html], { type: 'text/html' });
+      const content = document.getElementById('markdownPreview').innerHTML;
+      if (!content) return alert('다운로드할 내용이 없습니다.');
+      const blob = new Blob([`<html><body>${content}</body></html>`], {type:'text/html'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `document_${new Date().toISOString().slice(0,10)}.html`;
+      a.download = `Markdown_${new Date().toISOString().slice(0,10)}.html`;
       a.click();
     }
 
-    // API Key가 필요없는 링크 이동 단축 유틸리티
+    // URL 단축기 (v.gd API 활용)
     function shortenUrl() {
       const url = document.getElementById('urlInput').value.trim();
       const res = document.getElementById('urlShortenerResult');
-      
-      if (!url || !url.startsWith('http')) {
-        alert('https:// 로 시작하는 올바른 URL 경로를 입력하세요.');
-        return;
-      }
+      if (!url) return alert('단축할 주소를 입력하세요.');
 
-      res.style.display = 'block';
-      const tinyUrlWeb = `https://tinyurl.com/create.php?url=${encodeURIComponent(url)}`;
-      res.innerHTML = `
-        🔗 <strong>단축 링크 바로가기</strong><br>
-        <a href="${tinyUrlWeb}" target="_blank" style="color:#00b894; font-weight:bold;">
-          👉 [TinyURL로 1초만에 무료 단축 주소 생성하기]
-        </a>
-      `;
+      const encodedUrl = encodeURIComponent(url);
+      fetch(`https://is.gd/create.php?format=json&url=${encodedUrl}`)
+        .then(response => response.json())
+        .then(data => {
+          res.style.display = 'block';
+          if (data.shorturl) {
+            res.innerHTML = `단축 완료 Link: <a href="${data.shorturl}" target="_blank" style="color:#05d9e8; font-weight:bold;">${data.shorturl}</a>`;
+          } else {
+            res.textContent = '주소 변환 실패: 올바른 URL 형태인지 확인하세요.';
+          }
+        })
+        .catch(() => {
+          // 대체 API 동작
+          res.style.display = 'block';
+          res.innerHTML = `단축 링크: <a href="https://tinyurl.com/api-create.php?url=${encodedUrl}" target="_blank" style="color:#05d9e8;">TinyURL 단축 이동</a>`;
+        });
     }
 
     // 텍스트 요약
     function summarizeText() {
       const text = document.getElementById('textSummaryInput').value.trim();
       const res = document.getElementById('textSummaryResult');
-      if (!text) return alert('요약할 문장을 작성해주세요.');
+      if (!text) return alert('요약할 글을 등록해주세요.');
 
-      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      const sentences = text.split(/(?<=[.?!])\s+/);
       if (sentences.length <= 2) {
-        res.textContent = text;
+        res.innerHTML = `<strong>[핵심 요약]</strong><br>` + text;
         return;
       }
-      res.textContent = `💡 [요약 결과] ${sentences[0].trim()}. ${sentences[Math.floor(sentences.length / 2)].trim()}. ${sentences[sentences.length - 1].trim()}.`;
+      
+      const summary = [sentences[0], sentences[Math.floor(sentences.length / 2)], sentences[sentences.length - 1]].join(' ');
+      res.innerHTML = `<strong>[AI 스마트 문장 요약]</strong><br>${summary}`;
     }
 
     // 컬러 피커
+    const STORAGE_COLORS = 'myColors';
     function saveColor() {
-      const val = document.getElementById('colorPickerInput').value;
-      const colors = JSON.parse(localStorage.getItem('savedColors') || '[]');
-      if (!colors.includes(val)) colors.push(val);
-      localStorage.setItem('savedColors', JSON.stringify(colors));
+      const color = document.getElementById('colorPickerInput').value;
+      const list = JSON.parse(localStorage.getItem(STORAGE_COLORS) || '[]');
+      list.push(color);
+      localStorage.setItem(STORAGE_COLORS, JSON.stringify(list));
       renderColors();
     }
 
     function renderColors() {
-      const val = document.getElementById('colorPickerInput').value;
-      const colors = JSON.parse(localStorage.getItem('savedColors') || '[]');
+      const list = JSON.parse(localStorage.getItem(STORAGE_COLORS) || '[]');
       const res = document.getElementById('colorPickerResult');
-      res.innerHTML = `현재 선택 색상: <strong>${val}</strong><br>`;
-      if (colors.length) {
-        res.innerHTML += '저장 목록: ' + colors.map(c => `<span style="color:${c}; font-size:1.2rem;">■</span> ${c}`).join(' | ');
-      }
-    }
-    document.getElementById('colorPickerInput').addEventListener('input', renderColors);
-
-    // 🧮 표준 전자 계산기 패드 로직
-    let calcExpr = '';
-
-    function calcNum(n) {
-      if (calcExpr === '0') calcExpr = '';
-      calcExpr += n;
-      updateCalcDisplay();
+      res.innerHTML = '<strong>저장된 컬러 팔레트:</strong><br><div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;"></div>';
+      const container = res.querySelector('div');
+      list.forEach(c => {
+        const box = document.createElement('div');
+        box.style = `width:32px; height:32px; background:${c}; border-radius:8px; cursor:pointer; border:1px solid #fff; box-shadow:0 0 5px ${c};`;
+        box.title = c;
+        box.onclick = () => { navigator.clipboard.writeText(c); alert(`${c} 색상 코드가 복사되었습니다!`); };
+        container.appendChild(box);
+      });
     }
 
-    function calcOp(op) {
-      calcExpr += op;
-      updateCalcDisplay();
-    }
-
-    function calcClear() {
-      calcExpr = '';
-      updateCalcDisplay();
-    }
-
-    function calcCalculate() {
-      try {
-        const res = eval(calcExpr.replace(/×/g, '*').replace(/÷/g, '/'));
-        calcExpr = String(res);
-        updateCalcDisplay();
-      } catch (e) {
-        document.getElementById('calcDisplay').textContent = 'Error';
-        calcExpr = '';
-      }
-    }
-
-    function updateCalcDisplay() {
-      document.getElementById('calcDisplay').textContent = calcExpr || '0';
-    }
-
-    // PDF 텍스트 추출
-    function extractPdfText() {
+    // PDF 텍스트 추출 (pdf.js)
+    async function extractPdfText() {
       const file = document.getElementById('pdfInput').files[0];
-      if (!file) return alert('PDF 파일 문서를 첨부해주세요.');
+      const output = document.getElementById('pdfExtractorOutput');
+      if (!file) return alert('PDF 파일을 첨부해 주세요.');
 
       const reader = new FileReader();
       reader.onload = async function() {
-        const typedarray = new Uint8Array(reader.result);
+        const typedarray = new Uint8Array(this.result);
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
         const pdf = await pdfjsLib.getDocument(typedarray).promise;
-        let resultText = '';
+        let extractedText = '';
 
         for (let i = 1; i <= pdf.numPages; i++) {
           const page = await pdf.getPage(i);
-          const content = await page.getTextContent();
-          resultText += content.items.map(item => item.str).join(' ') + '\n';
+          const textContent = await page.getTextContent();
+          extractedText += textContent.items.map(item => item.str).join(' ') + '\n';
         }
-
-        document.getElementById('pdfExtractorOutput').value = resultText;
-        document.getElementById('pdfExtractorResult').textContent = '📄 PDF 텍스트 추출 작업 완료!';
+        output.value = extractedText;
+        document.getElementById('pdfExtractorResult').textContent = `총 ${pdf.numPages} 페이지 텍스트 추출 완.`;
       };
       reader.readAsArrayBuffer(file);
     }
 
     function downloadPdfText() {
       const text = document.getElementById('pdfExtractorOutput').value;
-      if (!text) return alert('추출된 텍스트 내용이 없습니다.');
-      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      if (!text) return alert('추출된 텍스트가 존재하지 않습니다.');
+      const blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `PDF_추출문서_${new Date().toISOString().slice(0,10)}.txt`;
+      a.download = `Extracted_PDF_${new Date().toISOString().slice(0,10)}.txt`;
       a.click();
     }
 
-    // 초기화 진입
-    document.addEventListener('DOMContentLoaded', () => {
+    // 계산기 로직
+    let calcExpression = '';
+    function calcNum(num) {
+      const display = document.getElementById('calcDisplay');
+      if (display.textContent === '0' && num !== '.') {
+        calcExpression = num;
+      } else {
+        calcExpression += num;
+      }
+      display.textContent = calcExpression;
+    }
+
+    function calcOp(op) {
+      calcExpression += op;
+      document.getElementById('calcDisplay').textContent = calcExpression;
+    }
+
+    function calcClear() {
+      calcExpression = '';
+      document.getElementById('calcDisplay').textContent = '0';
+    }
+
+    function calcCalculate() {
+      try {
+        const result = eval(calcExpression.replace(/×/g, '*').replace(/÷/g, '/'));
+        document.getElementById('calcDisplay').textContent = result;
+        calcExpression = result.toString();
+      } catch (e) {
+        document.getElementById('calcDisplay').textContent = 'Error';
+        calcExpression = '';
+      }
+    }
+
+    // 페이지 시작 초기화
+    window.onload = () => {
       checkLoginStatus();
-      loadPlans();
       fillTimerSelects();
+      loadPlans();
       renderMemoList();
       renderColors();
       
+      const savedMemo = localStorage.getItem(STORAGE_MEMO);
+      if (savedMemo) document.getElementById('memoText').value = savedMemo;
+
       const savedDiary = localStorage.getItem(STORAGE_DIARY);
       if (savedDiary) document.getElementById('diaryText').value = savedDiary;
 
-      const savedMd = localStorage.getItem('myMarkdown');
+      const savedMd = localStorage.getItem(STORAGE_MARKDOWN);
       if (savedMd) {
         document.getElementById('markdownInput').value = savedMd;
         document.getElementById('markdownPreview').innerHTML = marked.parse(savedMd);
       }
-
-      // PNG to PDF 변환 바인딩
-      document.getElementById('convertBtn').onclick = () => {
-        const input = document.getElementById('imgInput');
-        if (!input.files.length) return alert('PNG 이미지 파일을 첨부해주세요!');
-        
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
-        const files = Array.from(input.files);
-
-        const loadImage = (file) => new Promise(res => {
-          const r = new FileReader();
-          r.onload = e => res(e.target.result);
-          r.readAsDataURL(file);
-        });
-
-        (async () => {
-          for (let i = 0; i < files.length; i++) {
-            const imgData = await loadImage(files[i]);
-            const img = new Image();
-            await new Promise(r => { img.onload = r; img.src = imgData; });
-            const pdfWidth = 210;
-            const pdfHeight = (img.height * pdfWidth) / img.width;
-            if (i > 0) pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-          }
-          pdf.save('변환문서.pdf');
-        })();
-      };
-    });
+    };
   </script>
 </html>
