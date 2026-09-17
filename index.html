@@ -414,6 +414,60 @@
       transform: scale(1.05);
     }
 
+    /* 번역기 전용 스타일 */
+.trans-mode-group {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.trans-mode-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #05d9e8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trans-result-card {
+  background: rgba(11, 12, 16, 0.9);
+  border: 1px solid #05d9e8;
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 15px;
+  box-shadow: 0 0 10px rgba(5, 217, 232, 0.2);
+}
+
+.trans-text-main {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+  word-break: break-all;
+}
+
+.trans-text-sub {
+  font-size: 0.85rem;
+  color: #a0a0a0; /* 작고 회색조 폰트 */
+  margin-top: 4px;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.trans-btn-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.trans-btn-group button {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
     /* 기타 유틸 스타일 */
     .error { color: #ff2a6d; font-weight: bold; margin-top: 8px; text-align: center; text-shadow: 0 0 6px rgba(255, 42, 109, 0.5); }
     .success { color: #05d9e8; font-weight: bold; margin-top: 8px; text-align: center; text-shadow: 0 0 6px rgba(5, 217, 232, 0.5); }
@@ -467,7 +521,7 @@
     <button onclick="showTab('colorPicker', this)">🎨 컬러 피커</button>
     <button onclick="showTab('calculator', this)">🧮 계산기</button>
     <button onclick="showTab('pdfExtractor', this)">📄 PDF 텍스트 추출</button>
-    <button onclick="showTab('cheerMusic', this)">⚾ KBO 응원가</button>
+    <button onclick="showTab('translator', this)">🌐 무료 번역기</button>
     <button style="border-color: #ff79c6; color: #ff79c6;" onclick="logout()">🚪 로그아웃</button>
   </nav>
 
@@ -718,6 +772,44 @@
     <textarea id="pdfExtractorOutput" rows="8" placeholder="추출된 PDF 본문 내용이 여기에 표시됩니다..."></textarea>
     <div id="pdfExtractorResult" class="result-box"></div>
   </section>
+
+<!-- 번역 & 발음기 섹션 -->
+<section id="translator">
+  <h2>🌐 리얼타임 만능 발음 & 음성 변환기</h2>
+  
+  <div class="trans-mode-group">
+    <span>말투 모드:</span>
+    <label><input type="radio" name="speechStyle" value="informal" checked /> 반말 모드</label>
+    <label><input type="radio" name="speechStyle" value="formal" /> 존댓말 모드</label>
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    <select id="transTargetLang">
+      <option value="ja">일본어 (日本語)</option>
+      <option value="zh">중국어 (中文)</option>
+      <option value="en">영어 (English)</option>
+      <option value="fr">프랑스어 (Français)</option>
+      <option value="ru">러시아어 (Русский)</option>
+      <option value="ar">아랍어 (العربية)</option>
+      <option value="hi">힌디어 (हिन्दी)</option>
+      <option value="ko">한국어 (Korean)</option>
+    </select>
+  </div>
+
+  <textarea id="transInput" rows="4" placeholder="아무 텍스트나 입력해보세요! (예: 임내아ㅐㅏ재아ㅐㅏ, かわいい, Hello, 1234 등)"></textarea>
+  <button class="action" style="width: 100%;" onclick="runUniversalTranslator()">✨ 발음/읽기 변환하기</button>
+
+  <div id="transResultContainer" class="trans-result-card" style="display: none;">
+    <div id="transMainText" class="trans-text-main"></div>
+    <div id="transSubRoman" class="trans-text-sub"></div>
+    <div id="transSubKorean" class="trans-text-sub"></div>
+    
+    <div class="trans-btn-group">
+      <button class="action" onclick="speakTransResult()">🔊 소리듣기</button>
+      <button class="action" style="border-color: #05d9e8; color: #05d9e8;" onclick="copyTransResult()">📋 원문 복사</button>
+    </div>
+  </div>
+</section>
 </body>
 <script>
     // KBO 응원가 데이터베이스
@@ -1413,5 +1505,155 @@
         document.getElementById('markdownPreview').innerHTML = marked.parse(savedMd);
       }
     };
+// 일본어 가나 -> 로마자/한글 맵핑 알고리즘
+const kanaToRomanMap = {
+  'あ':'a','い':'i','う':'u','え':'e','お':'o',
+  'か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko',
+  'さ':'sa','し':'shi','す':'su','せ':'se','そ':'so',
+  'た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to',
+  'な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no',
+  'は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho',
+  'ま':'ma','み':'mi','む':'mu','め':'me','も':'mo',
+  'や':'ya','ゆ':'yu','よ':'yo',
+  'ら':'ra','り':'ri','る':'ru','れ':'re','ろ':'ro',
+  'わ':'wa','を':'wo','ん':'n',
+  'ア':'a','イ':'i','ウ':'u','エ':'e','オ':'o',
+  'カ':'ka','キ':'ki','ク':'ku','ケ':'ke','コ':'ko',
+  'サ':'sa','シ':'shi','ス':'su','セ':'se','ソ':'so',
+  'タ':'ta','チ':'chi','ツ':'tsu','テ':'te','ト':'to',
+  'ナ':'na','ニ':'ni','ヌ':'nu','ネ':'ne','ノ':'no',
+  'ハ':'ha','ヒ':'hi','フ':'fu','ヘ':'he','ホ':'ho',
+  'マ':'ma','ミ':'mi','ム':'mu','メ':'me','モ':'mo',
+  'ヤ':'ya','ユ':'yu','ヨ':'yo',
+  'ラ':'ra','リ':'ri','ル':'ru','レ':'re','ロ':'ro',
+  'ワ':'wa','ヲ':'wo','ン':'n'
+};
+
+const kanaToKorMap = {
+  'あ':'아','い':'이','う':'우','え':'에','お':'오',
+  'か':'카','き':'키','く':'쿠','け':'케','こ':'코',
+  'さ':'사','し':'시','す':'스','せ':'세','そ':'소',
+  'た':'타','ち':'치','つ':'츠','て':'테','と':'토',
+  'な':'나','に':'니','ぬ':'누','ね':'네','の':'노',
+  'は':'하','ひ':'히','ふ':'후','へ':'헤','ほ':'호',
+  'ま':'마','み':'미','む':'무','め':'메','も':'모',
+  'や':'야','ゆ':'유','よ':'요',
+  'ら':'라','り':'리','る':'루','れ':'레','ろ':'로',
+  'わ':'와','を':'오','ん':'ㄴ',
+  'ア':'아','イ':'이','ウ':'우','エ':'에','オ':'오',
+  'カ':'카','キ':'키','ク':'쿠','ケ':'케','コ':'코',
+  'サ':'사','シ':'시','ス':'스','セ':'세','ソ':'소',
+  'タ':'타','チ':'치','ツ':'츠','テ':'테','ト':'토',
+  'ナ':'나','ニ':'니','ヌ':'누','ネ':'네','ノ':'노',
+  'ハ':'하','ヒ':'히','フ':'후','ヘ':'헤','ホ':'호',
+  'マ':'마','ミ':'미','ム':'무','メ':'메','モ':'모',
+  'ヤ':'야','ユ':'유','ヨ':'요',
+  'ラ':'라','リ':'리','ル':'루','レ':'레','ロ':'로',
+  'ワ':'와','ヲ':'오','ン':'ㄴ'
+};
+
+// 한글 자음/모음 분리 알고리즘 (아무 한글 타자 조합도 로마자로 추출)
+const CHO = ['g','g','n','d','d','r','m','b','b','s','s','','j','j','ch','k','t','p','h'];
+const JUN = ['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','weo','we','wi','yu','eu','ui','i'];
+const JON = ['','g','g','gs','n','nj','nh','d','l','lg','lm','lb','ls','lt','lp','lh','m','b','bs','s','ss','ng','j','ch','k','t','p','h'];
+
+function hangulToRoman(str) {
+  let res = '';
+  for (let i = 0; i < str.length; i++) {
+    const code = str.charCodeAt(i) - 44032;
+    if (code >= 0 && code <= 11172) {
+      const cho = Math.floor(code / 588);
+      const jun = Math.floor((code % 588) / 28);
+      const jon = code % 28;
+      res += CHO[cho] + JUN[jun] + JON[jon];
+    } else {
+      res += str[i];
+    }
+  }
+  return res;
+}
+
+let currentTextToSpeak = "";
+let currentLangCode = "ja";
+
+function runUniversalTranslator() {
+  const input = document.getElementById('transInput').value.trim();
+  const lang = document.getElementById('transTargetLang').value;
+  const style = document.querySelector('input[name="speechStyle"]:checked').value;
+
+  const container = document.getElementById('transResultContainer');
+  const mainBox = document.getElementById('transMainText');
+  const romanBox = document.getElementById('transSubRoman');
+  const korBox = document.getElementById('transSubKorean');
+
+  if (!input) {
+    alert('문자나 단어를 입력해주세요.');
+    return;
+  }
+
+  currentLangCode = lang;
+
+  // 1. 말투(존댓말/반말) 어미 처리 로직 적용
+  let processedText = input;
+  if (style === 'formal') {
+    if (lang === 'ja' && !processedText.endsWith('です') && !processedText.endsWith('ます')) processedText += ' (です)';
+    else if (lang === 'ko' && !processedText.endsWith('요') && !processedText.endsWith('니다')) processedText += ' (요)';
+    else if (lang === 'en') processedText = 'Please, ' + processedText;
+  }
+
+  currentTextToSpeak = processedText;
+  mainBox.textContent = processedText;
+
+  // 2. 실시간 로마자 / 병음 / 읽는법 분석
+  let romanResult = '';
+  let korResult = '';
+
+  for (let char of processedText) {
+    if (kanaToRomanMap[char]) {
+      romanResult += kanaToRomanMap[char];
+      korResult += kanaToKorMap[char];
+    } else {
+      romanResult += char;
+      korResult += char;
+    }
+  }
+
+  // 한글 조합인 경우 로마자 자동 분리
+  if (/[가-힣]/.test(processedText)) {
+    romanResult = hangulToRoman(processedText);
+    korResult = processedText; // 원문 그대로
+  }
+
+  // 회색 소문자 발음 안내 업데이트
+  romanBox.textContent = (romanResult !== processedText) ? `${romanResult}` : '';
+  korBox.textContent = (korResult !== processedText) ? `${korResult}` : `읽는법: ${processedText}`;
+
+  container.style.display = 'block';
+}
+
+// 브라우저 내장 TTS (소리듣기 - 입력한 어떠한 텍스트도 음성 변환 가능)
+function speakTransResult() {
+  if (!currentTextToSpeak) return;
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(currentTextToSpeak);
+
+  const langMap = {
+    ja: 'ja-JP', zh: 'zh-CN', en: 'en-US', fr: 'fr-FR',
+    ru: 'ru-RU', ar: 'ar-SA', hi: 'hi-IN', ko: 'ko-KR'
+  };
+
+  utterance.lang = langMap[currentLangCode] || 'ko-KR';
+  utterance.rate = 0.85; // 듣기 편한 속도
+  window.speechSynthesis.speak(utterance);
+}
+
+// 텍스트 클립보드 복사
+function copyTransResult() {
+  if (!currentTextToSpeak) return;
+  navigator.clipboard.writeText(currentTextToSpeak).then(() => {
+    alert('원문 텍스트가 복사되었습니다! 📋');
+  });
+}
   </script>
 </html>
