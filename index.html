@@ -1697,36 +1697,19 @@ async function runFreeApiTranslation() {
 function speakTransResult() {
   if (!translatedFinalText) return;
 
-  if (!('speechSynthesis' in window)) {
-    alert('현재 브라우저가 음성 재생을 지원하지 않습니다.');
-    return;
-  }
+  const langMap = { ja: 'ja', ko: 'ko', en: 'en', zh: 'zh-CN', fr: 'fr', es: 'es' };
+  const lang = langMap[currentTargetLang] || 'en';
 
-  window.speechSynthesis.cancel(); // 이전 음성 취소
+  // 기존 재생 중인 오디오 제거
+  const oldAudio = document.getElementById('ttsAudio');
+  if (oldAudio) oldAudio.remove();
 
-  globalUtterance = new SpeechSynthesisUtterance(translatedFinalText);
-  
-  const langMap = {
-    ja: 'ja-JP',
-    ko: 'ko-KR',
-    en: 'en-US',
-    zh: 'zh-CN',
-    fr: 'fr-FR',
-    es: 'es-ES'
-  };
-
-  const targetLangCode = langMap[currentTargetLang] || 'en-US';
-  globalUtterance.lang = targetLangCode;
-  globalUtterance.rate = 0.85; // 재생 속도 설정
-
-  // 브라우저에서 언어에 맞는 목소리 찾기
-  const voices = window.speechSynthesis.getVoices();
-  const matchedVoice = voices.find(v => v.lang.includes(targetLangCode.replace('-', '_')) || v.lang.includes(targetLangCode));
-  if (matchedVoice) {
-    globalUtterance.voice = matchedVoice;
-  }
-
-  window.speechSynthesis.speak(globalUtterance);
+  // 새 오디오 객체 생성 및 재생
+  const audio = document.createElement('audio');
+  audio.id = 'ttsAudio';
+  audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(translatedFinalText)}&tl=${lang}&client=tw-ob`;
+  audio.autoplay = true;
+  document.body.appendChild(audio);
 }
 
 // 📋 복사 기능
