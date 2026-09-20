@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello</title>
+    <style>
+        /* 폰트 및 기본 초기화 */
+        @import url('https://googleapis.com');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+            background: #0a0a0c;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* 배경 그라데이션 오로라 효과 */
+        .background-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 50%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+            animation: pulse 8s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        /* 카드 컨테이너 */
+        .intro-card {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 3rem;
+            width: 90%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            transform-style: preserve-3d;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* 프로필 이미지 영역 */
+        .profile-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+        }
+
+        .profile-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            padding: 4px;
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+        }
+
+        .profile-circle img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1e1e24;
+        }
+
+        /* 텍스트 스타일링 */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            color: #c084fc;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .typing-text {
+            font-size: 1.1rem;
+            color: #9ca3af;
+            height: 24px;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .typing-text::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+            color: #a855f7;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .description {
+            font-size: 0.95rem;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            word-break: keep-all;
+        }
+
+        /* 버튼 스타일 */
+        .cta-button {
+            display: inline-block;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        /* 고급스러운 팝업 모달 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 8, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            transform: scale(0.8) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-img-wrapper {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-img-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .modal-desc {
+            font-size: 0.95rem;
+            color: #9ca3af;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-button {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-glow"></div>
+
+    <!-- 카드 본문 -->
+    <div class="intro-card" id="card">
+        <div class="profile-wrapper">
+            <div class="profile-circle">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShLwefeEbse8roKLf4rNGuQI9_jDAGVruizoqTcktSM7k2bCq_Qede24K1&s=10" alt="Profile">
+            </div>
+        </div>
+
+        <span class="badge">KT WIZ FAN</span>
+        <h1>Hello, I am Jueun Kim!</h1>
+        <div class="typing-text" id="typing"></div>
+        
+        <p class="description">
+           I think we can measure the height.<br>
+            We need some length meter.<br>
+            Good Luck! 🍀
+        </p>
+
+        <button class="cta-button" onclick="openPopup()">Thank you</button>
+    </div>
+
+    <!-- Thank you 버튼 클릭 시 나타날 모달 팝업 구조 -->
+    <div class="modal-overlay" id="popupModal" onclick="closePopup()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-img-wrapper">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfsRcTyEsOAjVONbKfYK9O-gZwaVaeXtxWOx5JtJcA2kuHJZTCMFXpiLQ&s=10" alt="KT Wiz Content">
+            </div>
+            <h2 class="modal-title">Welcome to KT WIZ!</h2>
+            <p class="modal-desc">방문해주셔서 감사합니다. 2026년 KT 위즈의 우승을 함께 응원합니다!🏆 <br> [현재 1등]</p>
+            <button class="close-button" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+    <script>
+        // 1. 타이핑 효과 스크립트
+        const words = ["In KBO, 2026", "KT WIZ Will be", "Champion🏆"];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingElement = document.getElementById("typing");
+
+        function type() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typingElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeSpeed = 2000; 
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typeSpeed = 500; 
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(type, 1000);
+        });
+
+        // 2. 마우스 움직임에 반응하는 3D 틸트 효과
+        const card = document.getElementById('card');
+        
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            card.style.transition = 'transform 0.5s ease';
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+
+        document.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+        });
+
+        // 3. 팝업 제어 함수
+        const modal = document.getElementById('popupModal');
+
+        function openPopup() {
+            modal.classList.add('active');
+        }
+
+        function closePopup() {
+            modal.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
